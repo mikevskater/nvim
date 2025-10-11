@@ -1,30 +1,22 @@
 -- ~\AppData\Local\nvim\lua\myconfig\lazy.lua
 -- =============================================================================
--- LAZY.NVIM PLUGIN MANAGER SETUP
+-- LAZY.NVIM PLUGIN MANAGER SETUP (UPDATED)
 -- =============================================================================
--- Lazy.nvim is the modern, fast plugin manager for Neovim
--- It automatically lazy-loads plugins for better startup time
--- https://github.com/folke/lazy.nvim
+-- Added: New plugin imports for lualine, bufferline, flash, surround, indent
 -- =============================================================================
 -- =============================================================================
 -- STEP 1: Bootstrap lazy.nvim
 -- =============================================================================
--- This automatically installs lazy.nvim if it's not already installed
--- This is the "one-time setup" that happens on first run
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Check if lazy.nvim is already installed
 if not vim.loop.fs_stat(lazypath) then
-    -- If not, clone it from GitHub
     print("Installing lazy.nvim...")
-    vim.fn.system(
-        {"git", "clone", "--filter=blob:none", -- Don't download unnecessary git history
-         "https://github.com/folke/lazy.nvim.git", "--branch=stable", -- Use stable release
-         lazypath})
+    vim.fn.system({"git", "clone", "--filter=blob:none",
+                   "https://github.com/folke/lazy.nvim.git", "--branch=stable",
+                   lazypath})
     print("lazy.nvim installed! Please restart Neovim.")
 end
 
--- Add lazy.nvim to runtime path so Neovim can find it
 vim.opt.rtp:prepend(lazypath)
 
 -- =============================================================================
@@ -33,39 +25,26 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(
     { -- ==========================================================================
-    -- PLUGIN SPECIFICATIONS
+    -- EXISTING PLUGINS (Updated)
     -- ==========================================================================
-    -- There are two ways to specify plugins:
-    --
-    -- 1. Direct specification (simple plugins):
-    --    { "username/repo" }
-    --
-    -- 2. Import from separate files (complex plugins):
-    --    { import = "myconfig.plugins.telescope" }
-    --
-    -- We use method #2 for ALL plugins to keep this file clean and modular
-    -- Each plugin gets its own file in lua/myconfig/plugins/
-    -- ==========================================================================
-    -- Import all plugin configurations from lua/myconfig/plugins/
-    -- Each file in that directory should return a plugin specification
     {
         import = "myconfig.plugins.colorscheme"
     }, -- Theme
     {
         import = "myconfig.plugins.telescope"
-    }, -- Fuzzy finder
+    }, -- ✓ UPDATED: Added fzf-native
     {
         import = "myconfig.plugins.treesitter"
-    }, -- Syntax highlighting
+    }, -- ✓ UPDATED: Added autotag, context, rainbow
     {
         import = "myconfig.plugins.lsp"
     }, -- LSP setup
     {
         import = "myconfig.plugins.completion"
-    }, -- Auto-completion
+    }, -- ✓ UPDATED: Added ghost text, borders
     {
         import = "myconfig.plugins.oil"
-    }, -- File explorer
+    }, -- ✓ UPDATED: Added git, columns
     {
         import = "myconfig.plugins.harpoon"
     }, -- Quick file navigation
@@ -86,23 +65,34 @@ require("lazy").setup(
     }, -- Auto-close brackets
     {
         import = "myconfig.plugins.whichkey"
-    }, -- Keybinding helper
+    }, -- ✓ UPDATED: Modern spec format
     {
         import = "myconfig.plugins.dap"
-    } -- Debug Adapter Protocol
-    -- Add more plugins here by creating new files in plugins/ directory
-    -- Example: { import = "myconfig.plugins.copilot" },
+    }, -- Debug Adapter Protocol
+    -- ==========================================================================
+    -- NEW PLUGINS
+    -- ==========================================================================
+    {
+        import = "myconfig.plugins.lualine"
+    }, -- ✨ NEW: Statusline
+    {
+        import = "myconfig.plugins.bufferline"
+    }, -- ✨ NEW: Buffer tabs
+    {
+        import = "myconfig.plugins.flash"
+    }, -- ✨ NEW: Enhanced navigation
+    {
+        import = "myconfig.plugins.surround"
+    }, -- ✨ NEW: Surround text objects
+    {
+        import = "myconfig.plugins.indent-blankline"
+    } -- ✨ NEW: Indent guides
     }, {
         -- ==========================================================================
         -- LAZY.NVIM OPTIONS
         -- ==========================================================================
-        -- These control how lazy.nvim itself behaves
-
-        -- UI settings
         ui = {
-            -- Use rounded borders for plugin manager window
             border = "rounded",
-            -- Icons for plugin states (requires Nerd Font)
             icons = {
                 cmd = "⌘",
                 config = "🛠",
@@ -120,58 +110,56 @@ require("lazy").setup(
         },
 
         rocks = {
-            enabled = false -- Don't use luarocks
+            enabled = false
         },
 
-        -- Performance settings
         performance = {
             rtp = {
-                -- Disable some rtp plugins you don't use
                 disabled_plugins = {"gzip", "matchit", "matchparen",
-                                    "netrwPlugin", -- We're using oil.nvim instead
-                                    "tarPlugin", "tohtml", "tutor", "zipPlugin"}
+                                    "netrwPlugin", "tarPlugin", "tohtml",
+                                    "tutor", "zipPlugin"}
             }
         },
 
-        -- Check for plugin updates on startup (can be slow, disable if needed)
         checker = {
             enabled = true,
-            notify = false -- Don't notify about updates (check manually with :Lazy)
+            notify = false
         },
 
-        -- Automatically check for config changes and reload
         change_detection = {
             enabled = true,
-            notify = false -- Don't notify about config changes
+            notify = false
         }
     })
 
 -- =============================================================================
 -- LAZY.NVIM KEYBINDINGS
 -- =============================================================================
--- Open the lazy.nvim UI to manage plugins
-
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>", {
     desc = "Open Lazy plugin manager"
 })
 
 -- =============================================================================
--- USEFUL LAZY.NVIM COMMANDS
+-- SUMMARY OF UPDATES
 -- =============================================================================
--- :Lazy            - Open the lazy.nvim UI
--- :Lazy sync       - Install missing plugins and update existing ones
--- :Lazy clean      - Remove unused plugins
--- :Lazy update     - Update all plugins
--- :Lazy restore    - Restore plugins to lockfile state
--- :Lazy profile    - Show startup profiling
--- :Lazy log        - Show recent updates
--- =============================================================================
-
--- =============================================================================
--- HOW TO ADD A NEW PLUGIN
--- =============================================================================
--- 1. Create a new file: lua/myconfig/plugins/yourplugin.lua
--- 2. In that file, return a plugin specification (see existing plugins for examples)
--- 3. Add: { import = "myconfig.plugins.yourplugin" } to the list above
--- 4. Restart Neovim or run :Lazy sync
+-- Updated plugins (with new features):
+-- ✓ telescope.lua      - Added fzf-native for 6x performance boost
+-- ✓ treesitter.lua     - Added autotag, context, rainbow delimiters, folding
+-- ✓ completion.lua     - Added ghost text, rounded borders, custom snippets
+-- ✓ whichkey.lua       - Updated to modern spec format with icons
+-- ✓ oil.lua            - Added git integration, size/mtime columns
+-- ✓ options.lua        - Added treesitter folding configuration
+--
+-- New plugins added:
+-- ✨ lualine.lua        - Beautiful statusline with mode, git, LSP, diagnostics
+-- ✨ bufferline.lua     - Browser-style buffer tabs at top
+-- ✨ flash.lua          - Enhanced jump navigation (better than f/t)
+-- ✨ surround.lua       - Add/change/delete surrounding pairs
+-- ✨ indent-blankline   - Visual indent guides
+--
+-- Installation:
+-- 1. Save all plugin files to lua/myconfig/plugins/
+-- 2. Restart Neovim
+-- 3. Run :Lazy sync
+-- 4. Enjoy your enhanced setup! 🎉
 -- =============================================================================

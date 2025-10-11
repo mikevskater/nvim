@@ -1,65 +1,57 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\completion.lua
 -- =============================================================================
--- COMPLETION - Auto-completion Engine
+-- COMPLETION - Auto-completion Engine (UPDATED)
 -- =============================================================================
--- Why blink.cmp? Much faster than nvim-cmp (0.5-4ms vs 60ms+)
--- Modern, batteries-included, works out of the box
--- https://github.com/Saghen/blink.cmp
+-- Added: Ghost text, rounded borders, custom snippet paths
 -- =============================================================================
 return {
     "saghen/blink.cmp",
 
-    -- Use a release tag to download pre-built binaries (faster)
     version = "v1.*",
 
-    -- Dependencies
-    dependencies = {"rafamadriz/friendly-snippets" -- Collection of snippets
-    },
+    dependencies = {"rafamadriz/friendly-snippets"},
 
-    -- Configuration
     opts = {
         -- ==========================================================================
         -- KEYMAP PRESET
         -- ==========================================================================
-        -- 'default': <Tab> to select, <Enter> to accept
-        -- 'super-tab': <Tab> for everything
-        -- 'enter': <Enter> to accept, <Tab> for snippets
         keymap = {
             preset = "default"
 
-            -- Custom keymaps (optional)
-            -- Uncomment to customize
-            -- ["<Tab>"] = { "select_next", "fallback" },
-            -- ["<S-Tab>"] = { "select_prev", "fallback" },
-            -- ["<CR>"] = { "accept", "fallback" },
+            -- You can customize individual keys if needed
+            -- ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+            -- ['<C-e>'] = { 'hide' },
+            -- ['<C-y>'] = { 'select_and_accept' },
+            -- ['<Tab>'] = { 'snippet_forward', 'fallback' },
+            -- ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
         },
 
         -- ==========================================================================
         -- APPEARANCE
         -- ==========================================================================
         appearance = {
-            -- Use nvim-cmp's highlight groups (for theme compatibility)
             use_nvim_cmp_as_default = true,
-
-            -- Nerd Font variant: 'mono' or 'normal'
             nerd_font_variant = "mono"
         },
 
         -- ==========================================================================
         -- COMPLETION SOURCES
         -- ==========================================================================
-        -- Where completion suggestions come from
         sources = {
-            default = {"lsp", -- From language servers
-            "path", -- File paths
-            "snippets", -- Code snippets
-            "buffer" -- Words from open buffers
-            }
+            default = {"lsp", "path", "snippets", "buffer"},
 
-            -- Per-filetype sources (optional)
-            -- providers = {
-            --   lsp = { fallback_for = { "lazydev" } },
-            -- },
+            -- Custom provider configurations
+            providers = {
+                snippets = {
+                    opts = {
+                        friendly_snippets = true,
+                        -- Custom snippet directories
+                        search_paths = {vim.fn.stdpath("config") .. "/snippets"},
+                        -- Global snippets available in all filetypes
+                        global_snippets = {"all"}
+                    }
+                }
+            }
         },
 
         -- ==========================================================================
@@ -70,12 +62,12 @@ return {
             menu = {
                 auto_show = true,
 
-                -- Draw behavior
+                -- ADDED: Rounded border for menu
+                border = "rounded",
+
                 draw = {
-                    -- Show treesitter context
                     treesitter = {"lsp"},
 
-                    -- Columns to display
                     columns = {{"kind_icon"}, {
                         "label",
                         "label_description",
@@ -87,18 +79,23 @@ return {
             -- Documentation window
             documentation = {
                 auto_show = true,
-                auto_show_delay_ms = 200
+                auto_show_delay_ms = 200,
+
+                -- ADDED: Rounded border for documentation
+                window = {
+                    border = "rounded"
+                }
             },
 
-            -- Ghost text (inline suggestions)
+            -- ADDED: Ghost text (inline suggestions)
             ghost_text = {
-                enabled = false -- Disable by default (can be distracting)
+                enabled = true -- Show completion as ghost text!
             },
 
             -- Auto-brackets
             accept = {
                 auto_brackets = {
-                    enabled = true -- Auto-insert closing brackets
+                    enabled = true
                 }
             }
         },
@@ -106,45 +103,65 @@ return {
         -- ==========================================================================
         -- SIGNATURE HELP
         -- ==========================================================================
-        -- Show function signatures while typing
         signature = {
-            enabled = true
+            enabled = true,
+
+            -- ADDED: Rounded border for signature help
+            window = {
+                border = "rounded"
+            }
         }
     },
 
-    -- ==========================================================================
-    -- ADDITIONAL SETUP
-    -- ==========================================================================
     config = function(_, opts)
         require("blink.cmp").setup(opts)
     end
 }
 
 -- =============================================================================
--- COMPLETION NOTES
+-- COMPLETION NOTES (UPDATED)
 -- =============================================================================
--- blink.cmp comes with sensible defaults, minimal config needed!
+-- New features enabled:
+--
+-- 1. GHOST TEXT:
+--    - Shows completion inline as you type
+--    - Appears as dimmed text after cursor
+--    - Press <Tab> or <CR> to accept
+--
+-- 2. ROUNDED BORDERS:
+--    - Completion menu has rounded border
+--    - Documentation window has rounded border
+--    - Signature help has rounded border
+--    - Matches modern UI aesthetics
+--
+-- 3. CUSTOM SNIPPETS:
+--    - Add your own snippets to: ~/.config/nvim/snippets/
+--    - Format: language.snippets (e.g., lua.snippets)
+--    - Use VSCode-style snippet syntax
 --
 -- Default keybindings:
--- <Tab>      - Select next item
--- <S-Tab>    - Select previous item
+-- <Tab>      - Select next / accept snippet placeholder
+-- <S-Tab>    - Select previous / previous placeholder
 -- <CR>       - Accept completion
 -- <C-e>      - Close completion menu
 -- <C-space>  - Trigger completion manually
+-- <C-b>      - Scroll docs up
+-- <C-f>      - Scroll docs down
 --
--- Completion sources explained:
--- - lsp: From language servers (functions, variables, etc.)
--- - path: File and directory paths
--- - buffer: Words from currently open files
--- - snippets: Code templates
+-- Example custom snippet file (~/.config/nvim/snippets/lua.snippets):
+-- snippet fn "function"
+-- function ${1:name}(${2:args})
+--   ${0}
+-- end
+-- endsnippet
 --
--- Performance notes:
+-- Performance:
 -- - blink.cmp is 10-100x faster than nvim-cmp
 -- - Updates on every keystroke with minimal lag
--- - Uses Rust for fuzzy matching (compiled to WASM)
+-- - Ghost text adds ~0ms overhead
 --
 -- Troubleshooting:
--- 1. No completions? Check LSP is running: :LspInfo
--- 2. Check blink.cmp is loaded: :Lazy
+-- 1. No completions? Check LSP: :LspInfo
+-- 2. Ghost text not showing? Make sure enabled = true
 -- 3. Manually trigger: <C-space>
 -- =============================================================================

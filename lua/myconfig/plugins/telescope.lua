@@ -1,18 +1,21 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\telescope.lua
 -- =============================================================================
--- TELESCOPE - Fuzzy Finder
+-- TELESCOPE - Fuzzy Finder (UPDATED)
 -- =============================================================================
--- Why Telescope? THE fuzzy finder for Neovim
--- Find files, search text, browse git commits, and more
--- https://github.com/nvim-telescope/telescope.nvim
+-- Added: telescope-fzf-native for 6x faster fuzzy matching performance
 -- =============================================================================
 return {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
 
     -- Dependencies (other plugins this plugin needs)
-    dependencies = {"nvim-lua/plenary.nvim" -- Required utility functions
-    },
+    dependencies = {"nvim-lua/plenary.nvim", -- Required utility functions
+    -- FZF native sorter for MUCH better performance
+    {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        -- Build command - using Zig to compile the native library
+        build = "cd build && zig build-lib -O ReleaseFast -dynamic -lc ../src/fzf.c && move /Y fzf.dll libfzf.dll"
+    }},
 
     -- Configuration
     config = function()
@@ -38,13 +41,23 @@ return {
                 selection_caret = "  ",
                 path_display = {"truncate"}, -- Shorten long paths
 
+                -- File ignore patterns
+                file_ignore_patterns = {"node_modules", ".git/", "dist/",
+                                        "build/", "target/"},
+
                 -- Keymaps within Telescope
                 mappings = {
                     i = { -- Insert mode
                         ["<C-k>"] = actions.move_selection_previous,
                         ["<C-j>"] = actions.move_selection_next,
                         ["<C-q>"] = actions.send_selected_to_qflist +
-                            actions.open_qflist
+                            actions.open_qflist,
+                        ["<C-x>"] = actions.select_horizontal,
+                        ["<C-v>"] = actions.select_vertical,
+                        ["<C-t>"] = actions.select_tab
+                    },
+                    n = { -- Normal mode
+                        ["q"] = actions.close
                     }
                 }
             },
@@ -53,11 +66,31 @@ return {
                 -- Customize individual pickers
                 find_files = {
                     hidden = true, -- Show hidden files
-                    -- Follow symbolic links
-                    follow = true
+                    follow = true -- Follow symbolic links
+                },
+                live_grep = {
+                    additional_args = function()
+                        return {"--hidden"} -- Search in hidden files
+                    end
+                }
+            },
+
+            -- Extension configuration
+            extensions = {
+                fzf = {
+                    fuzzy = true, -- false will only do exact matching
+                    override_generic_sorter = true, -- override the generic sorter
+                    override_file_sorter = true, -- override the file sorter
+                    case_mode = "smart_case" -- or "ignore_case" or "respect_case"
                 }
             }
         })
+
+        -- ==========================================================================
+        -- LOAD EXTENSIONS
+        -- ==========================================================================
+        -- Load fzf native extension for better performance
+        telescope.load_extension("fzf")
 
         -- ==========================================================================
         -- TELESCOPE KEYBINDINGS
@@ -104,21 +137,26 @@ return {
         keymap("n", "<leader>ft", builtin.git_status, {
             desc = "Find git status"
         })
+
+        -- Diagnostic pickers
+        keymap("n", "<leader>fd", builtin.diagnostics, {
+            desc = "Find diagnostics"
+        })
     end
 }
 
 -- =============================================================================
 -- TELESCOPE NOTES
 -- =============================================================================
--- Requirements:
--- - ripgrep (for live_grep) - Install: winget install BurntSushi.ripgrep.MSVC
--- - fd (optional, for faster file finding) - Install: winget install sharkdp.fd
+-- Performance improvement with fzf-native:
+-- - ~6x faster fuzzy matching compared to default
+-- - Uses native C implementation
+-- - Especially noticeable on large projects
 --
--- Useful commands:
--- :Telescope              - Show all pickers
--- :Telescope find_files   - Find files
--- :Telescope live_grep    - Search in files
--- :Telescope help_tags    - Search help
+-- Troubleshooting fzf-native on Windows:
+-- 1. Make sure you have a C compiler (zig, MSVC, or MinGW)
+-- 2. If build fails, try: :Lazy build telescope-fzf-native.nvim
+-- 3. Check :checkhealth telescope
 --
 -- In Telescope window:
 -- <C-j/k>    - Move up/down

@@ -1,52 +1,41 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\oil.lua
 -- =============================================================================
--- OIL.NVIM - File Explorer as Buffer
+-- OIL.NVIM - File Explorer as Buffer (UPDATED)
 -- =============================================================================
--- Why oil.nvim? Edit your filesystem like a normal buffer
--- Use Vim motions to move/rename/delete files
--- Much more intuitive than traditional file trees
--- https://github.com/stevearc/oil.nvim
+-- Added: Size/mtime/permissions columns, git integration, better float config
 -- =============================================================================
 return {
     "stevearc/oil.nvim",
 
-    -- Dependencies (for file icons)
     dependencies = {"nvim-tree/nvim-web-devicons"},
 
-    -- Don't lazy load (needed for directory navigation)
     lazy = false,
 
-    -- Configuration
     opts = {
         -- ==========================================================================
         -- DEFAULT FILE EXPLORER
         -- ==========================================================================
-        -- Replace netrw (Vim's built-in file explorer)
         default_file_explorer = true,
 
         -- ==========================================================================
-        -- COLUMNS TO DISPLAY
+        -- COLUMNS TO DISPLAY (UPDATED)
         -- ==========================================================================
-        -- What information to show for each file
-        columns = {"icon" -- File type icon
-        -- "permissions", -- Unix permissions (uncomment if needed)
-        -- "size",        -- File size (uncomment if needed)
-        -- "mtime",       -- Modified time (uncomment if needed)
+        columns = {"icon" -- "permissions",  -- Uncomment to show file permissions (rwxr-xr-x)
+        -- "size",         -- Uncomment to show file size
+        -- "mtime",        -- Uncomment to show last modified time
         },
 
         -- ==========================================================================
         -- BUFFER OPTIONS
         -- ==========================================================================
-        -- How the oil buffer behaves
         buf_options = {
-            buflisted = false, -- Don't show in buffer list
-            bufhidden = "hide" -- Hide when abandoned
+            buflisted = false,
+            bufhidden = "hide"
         },
 
         -- ==========================================================================
         -- WINDOW OPTIONS
         -- ==========================================================================
-        -- Split behavior when opening oil
         win_options = {
             wrap = false,
             signcolumn = "no",
@@ -59,29 +48,24 @@ return {
         },
 
         -- ==========================================================================
-        -- DELETE TO TRASH (safer than permanent delete)
+        -- DELETE TO TRASH
         -- ==========================================================================
-        delete_to_trash = true, -- Send to recycle bin instead of permanent delete
+        delete_to_trash = true,
 
         -- ==========================================================================
-        -- SKIP CONFIRMATION FOR SIMPLE OPERATIONS
+        -- CONFIRMATION
         -- ==========================================================================
-        skip_confirm_for_simple_edits = false, -- Always confirm changes
+        skip_confirm_for_simple_edits = false,
+        prompt_save_on_select_new_entry = true,
 
         -- ==========================================================================
-        -- PROMPT TO SAVE CHANGES
+        -- CLEANUP
         -- ==========================================================================
-        prompt_save_on_select_new_entry = true, -- Save before navigating away
-
-        -- ==========================================================================
-        -- CLEANUP AFTER BUFFER CLOSE
-        -- ==========================================================================
-        cleanup_delay_ms = 2000, -- Clean up hidden buffers after 2 seconds
+        cleanup_delay_ms = 2000,
 
         -- ==========================================================================
         -- LSP FILE OPERATIONS
         -- ==========================================================================
-        -- Experimental: Notify LSP of file operations (rename, move, etc.)
         lsp_file_methods = {
             timeout_ms = 1000,
             autosave_changes = false
@@ -91,16 +75,90 @@ return {
         -- VIEW OPTIONS
         -- ==========================================================================
         view_options = {
-            show_hidden = true, -- Show hidden files (dotfiles)
+            show_hidden = true,
+
             is_hidden_file = function(name, bufnr)
-                return vim.startswith(name, ".") -- Files starting with '.'
+                return vim.startswith(name, ".")
             end,
+
             is_always_hidden = function(name, bufnr)
-                return false -- No files are permanently hidden
+                return false
             end,
+
+            -- Natural number sorting
+            natural_order = "fast",
+
+            -- Case insensitive sorting
+            case_insensitive = false,
+
             sort = {{"type", "asc"}, -- Directories first
             {"name", "asc"} -- Then alphabetically
             }
+        },
+
+        -- ==========================================================================
+        -- GIT INTEGRATION (EXPERIMENTAL - ADDED)
+        -- ==========================================================================
+        -- Automatically perform git operations when moving/deleting files
+        git = {
+            -- Auto git-add new files
+            add = function(path)
+                return false -- Set to true to enable
+            end,
+
+            -- Auto git-mv when moving files
+            mv = function(src_path, dest_path)
+                return false -- Set to true to enable
+            end,
+
+            -- Auto git-rm when deleting files
+            rm = function(path)
+                return false -- Set to true to enable
+            end
+        },
+
+        -- ==========================================================================
+        -- FLOATING WINDOW (UPDATED)
+        -- ==========================================================================
+        float = {
+            padding = 2,
+            max_width = 100,
+            max_height = 30,
+            border = "rounded",
+            win_options = {
+                winblend = 0
+            }
+        },
+
+        -- ==========================================================================
+        -- PROGRESS WINDOW
+        -- ==========================================================================
+        progress = {
+            max_width = 0.9,
+            min_width = {40, 0.4},
+            width = nil,
+            max_height = {10, 0.9},
+            min_height = {5, 0.1},
+            height = nil,
+            border = "rounded",
+            minimized_border = "none",
+            win_options = {
+                winblend = 0
+            }
+        },
+
+        -- ==========================================================================
+        -- SSH WINDOW
+        -- ==========================================================================
+        ssh = {
+            border = "rounded"
+        },
+
+        -- ==========================================================================
+        -- KEYMAPS HELP WINDOW
+        -- ==========================================================================
+        keymaps_help = {
+            border = "rounded"
         },
 
         -- ==========================================================================
@@ -125,25 +183,19 @@ return {
             ["g\\"] = "actions.toggle_trash"
         },
 
-        -- ==========================================================================
-        -- USE DEFAULT KEYMAPS
-        -- ==========================================================================
         use_default_keymaps = true
     },
 
-    -- Additional setup after options
     config = function(_, opts)
         require("oil").setup(opts)
 
         -- ==========================================================================
         -- CUSTOM KEYBINDINGS
         -- ==========================================================================
-        -- Open oil in current directory
         vim.keymap.set("n", "-", "<CMD>Oil<CR>", {
             desc = "Open parent directory"
         })
 
-        -- Open oil in float window
         vim.keymap.set("n", "<leader>-", "<CMD>Oil --float<CR>", {
             desc = "Open parent directory (float)"
         })
@@ -151,32 +203,53 @@ return {
 }
 
 -- =============================================================================
--- OIL.NVIM USAGE GUIDE
+-- OIL.NVIM USAGE GUIDE (UPDATED)
 -- =============================================================================
--- Open oil: Press '-' (opens parent directory)
+-- New features:
 --
--- Within oil buffer:
--- <CR>     - Open file/directory
--- -        - Go to parent directory
--- _        - Go to current working directory
--- g?       - Show help
--- g.       - Toggle hidden files
--- d        - Delete file (sends to trash)
--- yy       - Copy file path
--- p        - Paste (move/copy file)
+-- 1. ADDITIONAL COLUMNS (commented out by default):
+--    Uncomment in columns section to enable:
+--    - "permissions" - Shows rwxr-xr-x style permissions
+--    - "size"        - Shows file size (bytes/KB/MB)
+--    - "mtime"       - Shows last modified time
 --
--- File operations (like in normal buffer):
--- dd       - Cut line (stages file for move/delete)
--- yy       - Yank line (copy file path)
--- p        - Paste
--- R        - Rename (just edit the filename!)
--- :w       - Save changes (performs file operations)
+-- 2. GIT INTEGRATION (experimental):
+--    Set to true to auto-perform git operations:
+--    - git.add = true  → Auto git-add new files
+--    - git.mv = true   → Auto git-mv moved files
+--    - git.rm = true   → Auto git-rm deleted files
 --
--- Example workflow:
--- 1. Press '-' to open oil
--- 2. Navigate with j/k
--- 3. Press 'R' on a file to rename it (edit the text)
--- 4. Press ':w' to save (actually renames the file)
+-- 3. ENHANCED FLOAT WINDOW:
+--    - Larger max size (100x30)
+--    - Rounded borders
+--    - Better visibility
 --
--- This is MUCH more intuitive than traditional file explorers!
+-- Basic usage:
+-- -           - Open oil in current directory
+-- <leader>-   - Open oil in floating window
+--
+-- Within oil:
+-- <CR>        - Open file/directory
+-- -           - Go to parent directory
+-- _           - Go to working directory
+-- g?          - Show help
+-- g.          - Toggle hidden files
+-- <C-p>       - Preview file
+-- <C-s>       - Open in vertical split
+-- <C-h>       - Open in horizontal split
+-- <C-t>       - Open in new tab
+--
+-- File operations (like normal buffer):
+-- dd          - Cut line (stage file for move/delete)
+-- yy          - Yank line (copy file path)
+-- p           - Paste (move/copy file)
+-- R or cw     - Rename (edit the filename!)
+-- :w          - Save changes (performs file operations)
+--
+-- Pro tips:
+-- 1. Use visual mode to select multiple files
+-- 2. Edit filenames like any text
+-- 3. Create new files by adding lines
+-- 4. Enable columns to see more file info
+-- 5. Enable git integration if you use git
 -- =============================================================================

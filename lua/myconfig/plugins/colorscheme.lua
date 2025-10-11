@@ -31,8 +31,8 @@ return {
             highlight_groups = {
                 -- Make the background transparent
                 -- Uncomment these if you want a transparent background
-                -- Normal = {bg = "none"},
-                -- NormalFloat = {bg = "none"}
+                 Normal = {bg = "none"},
+                 NormalFloat = {bg = "none"}
 
                 -- Or customize specific highlight groups
                 -- CursorLine = { bg = "#2a2837" },

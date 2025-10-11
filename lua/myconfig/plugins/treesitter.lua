@@ -1,12 +1,11 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\treesitter.lua
 -- =============================================================================
--- TREESITTER - Advanced Syntax Highlighting
+-- TREESITTER - Advanced Syntax Highlighting (UPDATED)
 -- =============================================================================
--- Why Treesitter? Better syntax highlighting than regex-based highlighting
--- Understands code structure, enables smart text objects, code folding, etc.
--- https://github.com/nvim-treesitter/nvim-treesitter
+-- Added: Rainbow delimiters, context, autotag, and folding support
 -- =============================================================================
-return {
+return { -- Main treesitter plugin
+{
     "nvim-treesitter/nvim-treesitter",
 
     -- Run :TSUpdate after installation/updates
@@ -15,33 +14,26 @@ return {
     -- Load on events for better startup time
     event = {"BufReadPre", "BufNewFile"},
 
-    -- Optional dependencies (useful text objects)
-    dependencies = {"nvim-treesitter/nvim-treesitter-textobjects"},
+    -- Optional dependencies
+    dependencies = {"nvim-treesitter/nvim-treesitter-textobjects",
+                    "nvim-treesitter/nvim-treesitter-context",
+                    "windwp/nvim-ts-autotag"},
 
     config = function()
         require("nvim-treesitter.configs").setup({
             -- ==========================================================================
             -- PARSER INSTALLATION
             -- ==========================================================================
-            -- Install parsers for these languages automatically
-            -- Add/remove languages as needed
             ensure_installed = { -- General purpose
-            "lua", -- Neovim config
-            "vim", -- Vim help files
-            "vimdoc", -- Vim documentation
-            -- Web development
+            "lua", "vim", "vimdoc", -- Web development
             "javascript", "typescript", "tsx", "html", "css", "json",
 
             -- Systems programming
             "c", "cpp", "rust", "go", -- Scripting
             "python", "bash", -- Markup/config
-            "markdown", "markdown_inline", "yaml", "toml" -- Add more as needed...
-            },
+            "markdown", "markdown_inline", "yaml", "toml"},
 
-            -- Install parsers synchronously (only for ensure_installed)
             sync_install = false,
-
-            -- Automatically install missing parsers when entering buffer
             auto_install = true,
 
             -- ==========================================================================
@@ -50,7 +42,7 @@ return {
             highlight = {
                 enable = true,
 
-                -- Disable for large files (improves performance)
+                -- Disable for large files
                 disable = function(lang, buf)
                     local max_filesize = 100 * 1024 -- 100 KB
                     local ok, stats = pcall(vim.loop.fs_stat,
@@ -60,7 +52,6 @@ return {
                     end
                 end,
 
-                -- Enable additional highlighting by vim's regex
                 additional_vim_regex_highlighting = false
             },
 
@@ -72,9 +63,20 @@ return {
             },
 
             -- ==========================================================================
+            -- AUTO TAG (HTML/JSX/XML)
+            -- ==========================================================================
+            autotag = {
+                enable = true,
+                enable_rename = true,
+                enable_close = true,
+                enable_close_on_slash = true,
+                filetypes = {"html", "javascript", "typescript",
+                             "javascriptreact", "typescriptreact", "vue", "xml"}
+            },
+
+            -- ==========================================================================
             -- INCREMENTAL SELECTION
             -- ==========================================================================
-            -- Expand selection based on syntax tree
             incremental_selection = {
                 enable = true,
                 keymaps = {
@@ -86,14 +88,12 @@ return {
             },
 
             -- ==========================================================================
-            -- TEXT OBJECTS (requires nvim-treesitter-textobjects)
+            -- TEXT OBJECTS
             -- ==========================================================================
-            -- Smart text objects based on syntax tree
-            -- Example: "daf" = delete a function, "vac" = select a class
             textobjects = {
                 select = {
                     enable = true,
-                    lookahead = true, -- Automatically jump forward to textobj
+                    lookahead = true,
                     keymaps = {
                         -- Functions
                         ["af"] = "@function.outer",
@@ -120,7 +120,7 @@ return {
                 -- Move between functions, classes, etc.
                 move = {
                     enable = true,
-                    set_jumps = true, -- Add to jumplist
+                    set_jumps = true,
                     goto_next_start = {
                         ["]f"] = "@function.outer",
                         ["]c"] = "@class.outer"
@@ -141,22 +141,114 @@ return {
             }
         })
     end
-}
+},
+
+-- =============================================================================
+-- RAINBOW DELIMITERS
+-- =============================================================================
+-- Shows matching brackets in alternating colors
+{
+    "HiPhish/rainbow-delimiters.nvim",
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    event = {"BufReadPre", "BufNewFile"},
+    config = function()
+        local rainbow = require("rainbow-delimiters")
+
+        vim.g.rainbow_delimiters = {
+            strategy = {
+                [''] = rainbow.strategy['global'],
+                vim = rainbow.strategy['local']
+            },
+            query = {
+                [''] = 'rainbow-delimiters',
+                lua = 'rainbow-blocks'
+            },
+            priority = {
+                [''] = 110,
+                lua = 210
+            },
+            highlight = {'RainbowDelimiterRed', 'RainbowDelimiterYellow',
+                         'RainbowDelimiterBlue', 'RainbowDelimiterOrange',
+                         'RainbowDelimiterGreen', 'RainbowDelimiterViolet',
+                         'RainbowDelimiterCyan'}
+        }
+    end
+},
+
+-- =============================================================================
+-- TREESITTER CONTEXT
+-- =============================================================================
+-- Shows current function/class at top of buffer
+{
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    event = {"BufReadPre", "BufNewFile"},
+    opts = {
+        enable = true,
+        max_lines = 3, -- How many lines the window should span
+        min_window_height = 0, -- Minimum editor window height
+        line_numbers = true,
+        multiline_threshold = 20,
+        trim_scope = "outer",
+        mode = "cursor", -- Line used to calculate context (cursor/topline)
+        separator = nil, -- Separator between context and content
+        zindex = 20
+    },
+    keys = {{
+        "[x",
+        function()
+            require("treesitter-context").go_to_context()
+        end,
+        desc = "Go to context"
+    }}
+},
+
+-- =============================================================================
+-- AUTO TAG
+-- =============================================================================
+-- Auto close and rename HTML/JSX tags
+{
+    "windwp/nvim-ts-autotag",
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    ft = {"html", "javascript", "typescript", "javascriptreact",
+          "typescriptreact", "vue", "xml"},
+    config = function()
+        require("nvim-ts-autotag").setup({
+            opts = {
+                enable_close = true, -- Auto close tags
+                enable_rename = true, -- Auto rename pairs of tags
+                enable_close_on_slash = false -- Auto close on trailing </
+            }
+        })
+    end
+}}
 
 -- =============================================================================
 -- TREESITTER NOTES
 -- =============================================================================
--- Treesitter requires a C compiler on Windows:
--- 1. Install zig: winget install zig.zig
--- 2. OR install Visual Studio Build Tools
+-- New features added:
 --
--- Useful commands:
--- :TSInstall <language>    - Install parser for language
--- :TSUpdate                - Update all parsers
--- :TSUninstall <language>  - Remove parser
--- :TSInstallInfo           - Show installed parsers
+-- 1. RAINBOW DELIMITERS:
+--    - Brackets/parens colored by nesting level
+--    - Makes it easy to match pairs visually
 --
--- Text object examples (with textobjects enabled):
+-- 2. TREESITTER CONTEXT:
+--    - Shows current function/class at top
+--    - Press [x to jump to context
+--    - Useful when scrolling through long functions
+--
+-- 3. AUTO TAG:
+--    - Automatically closes HTML/JSX tags
+--    - Renames closing tag when you rename opening tag
+--    - Works in: HTML, JSX, TSX, Vue, XML
+--
+-- 4. FOLDING:
+--    - Configured in options.lua
+--    - Use 'za' to toggle fold
+--    - Use 'zM' to fold all
+--    - Use 'zR' to unfold all
+--
+-- Text object examples:
 -- daf  - Delete a function
 -- vif  - Select inside function
 -- yac  - Yank a class
