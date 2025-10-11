@@ -9,26 +9,25 @@
 -- The configuration automatically detects the environment and loads
 -- the appropriate modules
 -- =============================================================================
-
 -- Detect if running inside VSCode
 if vim.g.vscode then
-  -- ==========================================================================
-  -- VSCODE MODE
-  -- ==========================================================================
-  -- When running inside VSCode, we load a minimal config
-  -- VSCode handles: LSP, completion, file explorer, fuzzy finding, etc.
-  -- Neovim handles: Modal editing, text objects, motions
-  
-  require("myconfig.vscode")
-  
+    -- ==========================================================================
+    -- VSCODE MODE
+    -- ==========================================================================
+    -- When running inside VSCode, we load a minimal config
+    -- VSCode handles: LSP, completion, file explorer, fuzzy finding, etc.
+    -- Neovim handles: Modal editing, text objects, motions
+
+    require("myconfig.vscode")
+
 else
-  -- ==========================================================================
-  -- STANDALONE MODE
-  -- ==========================================================================
-  -- Full-featured Neovim configuration with all plugins
-  
-  require("myconfig")
-  
+    -- ==========================================================================
+    -- STANDALONE MODE
+    -- ==========================================================================
+    -- Full-featured Neovim configuration with all plugins
+
+    require("myconfig")
+
 end
 
 -- =============================================================================

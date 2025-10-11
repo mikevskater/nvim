@@ -4,7 +4,6 @@
 -- =============================================================================
 -- These options work well in both environments
 -- =============================================================================
-
 local opt = vim.opt
 
 -- =============================================================================
@@ -43,39 +42,39 @@ opt.clipboard = "unnamedplus"
 -- These only apply when NOT in VSCode
 
 if not vim.g.vscode then
-  -- UI Appearance
-  opt.number = true
-  opt.relativenumber = true
-  opt.signcolumn = "yes"
-  opt.cursorline = true
-  opt.guicursor = ""
-  opt.termguicolors = true
-  opt.scrolloff = 8
-  opt.sidescrolloff = 8
-  opt.showmode = false
-  opt.colorcolumn = "80"
-  opt.showcmd = true
-  opt.cmdheight = 1
-  
-  -- Splits
-  opt.splitright = true
-  opt.splitbelow = true
-  
-  -- Undo/Backup
-  opt.swapfile = false
-  opt.backup = false
-  local undodir = vim.fn.expand("~/.vim/undodir")
-  if vim.fn.isdirectory(undodir) == 0 then
-    vim.fn.mkdir(undodir, "p")
-  end
-  opt.undodir = undodir
-  opt.undofile = true
-  
-  -- Search highlighting
-  opt.hlsearch = false
-  
-  -- Mouse
-  opt.mouse = "a"
+    -- UI Appearance
+    opt.number = true
+    opt.relativenumber = true
+    opt.signcolumn = "yes"
+    opt.cursorline = true
+    opt.guicursor = ""
+    opt.termguicolors = true
+    opt.scrolloff = 8
+    opt.sidescrolloff = 8
+    opt.showmode = false
+    opt.colorcolumn = "80"
+    opt.showcmd = true
+    opt.cmdheight = 1
+
+    -- Splits
+    opt.splitright = true
+    opt.splitbelow = true
+
+    -- Undo/Backup
+    opt.swapfile = false
+    opt.backup = false
+    local undodir = vim.fn.expand("~/.vim/undodir")
+    if vim.fn.isdirectory(undodir) == 0 then
+        vim.fn.mkdir(undodir, "p")
+    end
+    opt.undodir = undodir
+    opt.undofile = true
+
+    -- Search highlighting
+    opt.hlsearch = false
+
+    -- Mouse
+    opt.mouse = "a"
 end
 
 -- =============================================================================
@@ -83,14 +82,14 @@ end
 -- =============================================================================
 
 if vim.g.vscode then
-  -- In VSCode, we want minimal options
-  -- VSCode handles most of the UI
-  
-  -- Disable some Neovim UI elements
-  opt.number = false
-  opt.relativenumber = false
-  opt.signcolumn = "no"
-  
-  -- Let VSCode handle search highlighting
-  opt.hlsearch = false
+    -- In VSCode, we want minimal options
+    -- VSCode handles most of the UI
+
+    -- Disable some Neovim UI elements
+    opt.number = false
+    opt.relativenumber = false
+    opt.signcolumn = "no"
+
+    -- Let VSCode handle search highlighting
+    opt.hlsearch = false
 end

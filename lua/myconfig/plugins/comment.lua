@@ -2,10 +2,9 @@
 -- =============================================================================
 -- COMMENT.NVIM - Smart Commenting
 -- =============================================================================
-
 return {
-  "numToStr/Comment.nvim",
-  opts = {},
+    "numToStr/Comment.nvim",
+    opts = {}
 }
 
 -- Usage: gcc to comment line, gc in visual mode to comment selection

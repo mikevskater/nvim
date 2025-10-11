@@ -6,7 +6,6 @@
 -- VSCode handles: LSP, completion, file explorer, fuzzy finding
 -- Neovim handles: Modal editing, text objects, motions
 -- =============================================================================
-
 -- Load shared core configuration
 require("myconfig.core.options")
 require("myconfig.core.keymaps")

@@ -6,120 +6,118 @@
 -- Modern, batteries-included, works out of the box
 -- https://github.com/Saghen/blink.cmp
 -- =============================================================================
-
 return {
-  "saghen/blink.cmp",
-  
-  -- Use a release tag to download pre-built binaries (faster)
-  version = "v1.*",
-  
-  -- Dependencies
-  dependencies = {
-    "rafamadriz/friendly-snippets",  -- Collection of snippets
-  },
-  
-  -- Configuration
-  opts = {
-    -- ==========================================================================
-    -- KEYMAP PRESET
-    -- ==========================================================================
-    -- 'default': <Tab> to select, <Enter> to accept
-    -- 'super-tab': <Tab> for everything
-    -- 'enter': <Enter> to accept, <Tab> for snippets
-    keymap = { 
-      preset = "default",
-      
-      -- Custom keymaps (optional)
-      -- Uncomment to customize
-      -- ["<Tab>"] = { "select_next", "fallback" },
-      -- ["<S-Tab>"] = { "select_prev", "fallback" },
-      -- ["<CR>"] = { "accept", "fallback" },
+    "saghen/blink.cmp",
+
+    -- Use a release tag to download pre-built binaries (faster)
+    version = "v1.*",
+
+    -- Dependencies
+    dependencies = {"rafamadriz/friendly-snippets" -- Collection of snippets
     },
-    
-    -- ==========================================================================
-    -- APPEARANCE
-    -- ==========================================================================
-    appearance = {
-      -- Use nvim-cmp's highlight groups (for theme compatibility)
-      use_nvim_cmp_as_default = true,
-      
-      -- Nerd Font variant: 'mono' or 'normal'
-      nerd_font_variant = "mono",
-    },
-    
-    -- ==========================================================================
-    -- COMPLETION SOURCES
-    -- ==========================================================================
-    -- Where completion suggestions come from
-    sources = {
-      default = { 
-        "lsp",       -- From language servers
-        "path",      -- File paths
-        "snippets",  -- Code snippets
-        "buffer",    -- Words from open buffers
-      },
-      
-      -- Per-filetype sources (optional)
-      -- providers = {
-      --   lsp = { fallback_for = { "lazydev" } },
-      -- },
-    },
-    
-    -- ==========================================================================
-    -- COMPLETION BEHAVIOR
-    -- ==========================================================================
-    completion = {
-      -- Automatically show completion menu
-      menu = {
-        auto_show = true,
-        
-        -- Draw behavior
-        draw = {
-          -- Show treesitter context
-          treesitter = { "lsp" },
-          
-          -- Columns to display
-          columns = { 
-            { "kind_icon" }, 
-            { "label", "label_description", gap = 1 },
-          },
+
+    -- Configuration
+    opts = {
+        -- ==========================================================================
+        -- KEYMAP PRESET
+        -- ==========================================================================
+        -- 'default': <Tab> to select, <Enter> to accept
+        -- 'super-tab': <Tab> for everything
+        -- 'enter': <Enter> to accept, <Tab> for snippets
+        keymap = {
+            preset = "default"
+
+            -- Custom keymaps (optional)
+            -- Uncomment to customize
+            -- ["<Tab>"] = { "select_next", "fallback" },
+            -- ["<S-Tab>"] = { "select_prev", "fallback" },
+            -- ["<CR>"] = { "accept", "fallback" },
         },
-      },
-      
-      -- Documentation window
-      documentation = {
-        auto_show = true,
-        auto_show_delay_ms = 200,
-      },
-      
-      -- Ghost text (inline suggestions)
-      ghost_text = {
-        enabled = false,  -- Disable by default (can be distracting)
-      },
-      
-      -- Auto-brackets
-      accept = {
-        auto_brackets = {
-          enabled = true,  -- Auto-insert closing brackets
+
+        -- ==========================================================================
+        -- APPEARANCE
+        -- ==========================================================================
+        appearance = {
+            -- Use nvim-cmp's highlight groups (for theme compatibility)
+            use_nvim_cmp_as_default = true,
+
+            -- Nerd Font variant: 'mono' or 'normal'
+            nerd_font_variant = "mono"
         },
-      },
+
+        -- ==========================================================================
+        -- COMPLETION SOURCES
+        -- ==========================================================================
+        -- Where completion suggestions come from
+        sources = {
+            default = {"lsp", -- From language servers
+            "path", -- File paths
+            "snippets", -- Code snippets
+            "buffer" -- Words from open buffers
+            }
+
+            -- Per-filetype sources (optional)
+            -- providers = {
+            --   lsp = { fallback_for = { "lazydev" } },
+            -- },
+        },
+
+        -- ==========================================================================
+        -- COMPLETION BEHAVIOR
+        -- ==========================================================================
+        completion = {
+            -- Automatically show completion menu
+            menu = {
+                auto_show = true,
+
+                -- Draw behavior
+                draw = {
+                    -- Show treesitter context
+                    treesitter = {"lsp"},
+
+                    -- Columns to display
+                    columns = {{"kind_icon"}, {
+                        "label",
+                        "label_description",
+                        gap = 1
+                    }}
+                }
+            },
+
+            -- Documentation window
+            documentation = {
+                auto_show = true,
+                auto_show_delay_ms = 200
+            },
+
+            -- Ghost text (inline suggestions)
+            ghost_text = {
+                enabled = false -- Disable by default (can be distracting)
+            },
+
+            -- Auto-brackets
+            accept = {
+                auto_brackets = {
+                    enabled = true -- Auto-insert closing brackets
+                }
+            }
+        },
+
+        -- ==========================================================================
+        -- SIGNATURE HELP
+        -- ==========================================================================
+        -- Show function signatures while typing
+        signature = {
+            enabled = true
+        }
     },
-    
+
     -- ==========================================================================
-    -- SIGNATURE HELP
+    -- ADDITIONAL SETUP
     -- ==========================================================================
-    -- Show function signatures while typing
-    signature = { 
-      enabled = true 
-    },
-  },
-  
-  -- ==========================================================================
-  -- ADDITIONAL SETUP
-  -- ==========================================================================
-  config = function(_, opts)
-    require("blink.cmp").setup(opts)
-  end,
+    config = function(_, opts)
+        require("blink.cmp").setup(opts)
+    end
 }
 
 -- =============================================================================
