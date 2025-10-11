@@ -68,6 +68,7 @@ require("lazy").setup({
   { import = "myconfig.plugins.comment" },      -- Smart commenting
   { import = "myconfig.plugins.autopairs" },    -- Auto-close brackets
   { import = "myconfig.plugins.whichkey" },     -- Keybinding helper
+  { import = "myconfig.plugins.dap" },          -- Debug Adapter Protocol
   
   -- Add more plugins here by creating new files in plugins/ directory
   -- Example: { import = "myconfig.plugins.copilot" },

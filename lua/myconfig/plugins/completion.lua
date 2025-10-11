@@ -11,7 +11,7 @@ return {
   "saghen/blink.cmp",
   
   -- Use a release tag to download pre-built binaries (faster)
-  --version = "v0.*",
+  version = "v1.*",
   
   -- Dependencies
   dependencies = {
