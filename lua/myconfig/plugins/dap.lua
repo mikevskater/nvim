@@ -3,6 +3,7 @@ return {
   -- Core DAP plugin
   {
     "mfussenegger/nvim-dap",
+    lazy = true,  -- Only load when needed
     dependencies = {
       -- UI for debugging
       "rcarriga/nvim-dap-ui",
@@ -13,10 +14,6 @@ return {
       
       -- Mason integration for debugger installation
       "jay-babu/mason-nvim-dap.nvim",
-      
-      -- Language-specific extensions (add as needed)
-      "leoluz/nvim-dap-go",               -- Go
-      -- "jbyuki/one-small-step-for-vimkind", -- Lua/Neovim
     },
     
     config = function()
@@ -152,19 +149,28 @@ return {
       keymap("n", "<leader>dr", dap.repl.open, { desc = "Debug: Open REPL" })
       keymap("n", "<leader>dl", dap.run_last, { desc = "Debug: Run Last" })
       keymap("n", "<leader>dt", dap.terminate, { desc = "Debug: Terminate" })
-      
-      -- ========================================================================
-      -- LANGUAGE-SPECIFIC SETUP
-      -- ========================================================================
-      
-      -- Python (using nvim-dap-python)
-      require("dap-python").setup("python")  -- or path to debugpy
-      
-      -- Go (using nvim-dap-go)
+    end,
+  },
+  
+  -- Python DAP extension (install as regular plugin, NOT via luarocks)
+  {
+    "mfussenegger/nvim-dap-python",
+    ft = "python",
+    dependencies = { "mfussenegger/nvim-dap" },
+    config = function()
+      -- Setup Python debugger
+      -- This will use the python in your PATH by default
+      require("dap-python").setup("python")
+    end,
+  },
+  
+  -- Go DAP extension
+  {
+    "leoluz/nvim-dap-go",
+    ft = "go",
+    dependencies = { "mfussenegger/nvim-dap" },
+    config = function()
       require("dap-go").setup()
-      
-      -- Add configurations for other languages as needed
-      -- See: https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
     end,
   },
   
@@ -175,22 +181,17 @@ return {
       "williamboman/mason.nvim",
       "mfussenegger/nvim-dap",
     },
-    config = function()
-      require("mason-nvim-dap").setup({
-        -- Automatically install these debuggers
-        ensure_installed = {
-          "python",     -- debugpy
-          "delve",      -- Go
-          "js",         -- JavaScript/TypeScript
-          -- Add more as needed
-        },
-        
-        -- Auto-configure installed debuggers
-        automatic_installation = true,
-        
-        -- Handlers for specific debuggers
-        handlers = {},
-      })
-    end,
+    cmd = { "DapInstall", "DapUninstall" },
+    opts = {
+      -- Automatically install these debuggers
+      ensure_installed = {
+        "python",     -- debugpy
+        "delve",      -- Go
+        -- "js",      -- JavaScript/TypeScript (uncomment if needed)
+      },
+      
+      automatic_installation = true,
+      handlers = {},
+    },
   },
 }

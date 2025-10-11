@@ -100,6 +100,10 @@ require("lazy").setup({
     },
   },
   
+  rocks = {
+    enabled = false,  -- Don't use luarocks
+  },
+  
   -- Performance settings
   performance = {
     rtp = {
