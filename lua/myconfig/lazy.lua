@@ -1,9 +1,10 @@
 -- ~\AppData\Local\nvim\lua\myconfig\lazy.lua
 -- =============================================================================
--- LAZY.NVIM PLUGIN MANAGER SETUP (UPDATED)
+-- LAZY.NVIM PLUGIN MANAGER SETUP (UPDATED with Database Support)
 -- =============================================================================
--- Added: New plugin imports for lualine, bufferline, flash, surround, indent
+-- Added: Database plugins (vim-dadbod suite)
 -- =============================================================================
+
 -- =============================================================================
 -- STEP 1: Bootstrap lazy.nvim
 -- =============================================================================
@@ -24,88 +25,51 @@ vim.opt.rtp:prepend(lazypath)
 -- =============================================================================
 
 require("lazy").setup(
-    { -- ==========================================================================
-    -- EXISTING PLUGINS (Updated)
-    -- ==========================================================================
     {
-        import = "myconfig.plugins.colorscheme"
-    }, -- Theme
+        -- ==========================================================================
+        -- EXISTING PLUGINS
+        -- ==========================================================================
+        { import = "myconfig.plugins.colorscheme" },
+        { import = "myconfig.plugins.telescope" },
+        { import = "myconfig.plugins.treesitter" },
+        { import = "myconfig.plugins.lsp" },
+        { import = "myconfig.plugins.completion" },
+        { import = "myconfig.plugins.oil" },
+        { import = "myconfig.plugins.harpoon" },
+        { import = "myconfig.plugins.undotree" },
+        { import = "myconfig.plugins.fugitive" },
+        { import = "myconfig.plugins.gitsigns" },
+        { import = "myconfig.plugins.comment" },
+        { import = "myconfig.plugins.autopairs" },
+        { import = "myconfig.plugins.whichkey" },
+        { import = "myconfig.plugins.dap" },
+        { import = "myconfig.plugins.lualine" },
+        { import = "myconfig.plugins.bufferline" },
+        { import = "myconfig.plugins.flash" },
+        { import = "myconfig.plugins.surround" },
+        { import = "myconfig.plugins.indent-blankline" },
+        { import = "myconfig.plugins.database" },
+    },
     {
-        import = "myconfig.plugins.telescope"
-    }, -- ✓ UPDATED: Added fzf-native
-    {
-        import = "myconfig.plugins.treesitter"
-    }, -- ✓ UPDATED: Added autotag, context, rainbow
-    {
-        import = "myconfig.plugins.lsp"
-    }, -- LSP setup
-    {
-        import = "myconfig.plugins.completion"
-    }, -- ✓ UPDATED: Added ghost text, borders
-    {
-        import = "myconfig.plugins.oil"
-    }, -- ✓ UPDATED: Added git, columns
-    {
-        import = "myconfig.plugins.harpoon"
-    }, -- Quick file navigation
-    {
-        import = "myconfig.plugins.undotree"
-    }, -- Undo history visualizer
-    {
-        import = "myconfig.plugins.fugitive"
-    }, -- Git integration
-    {
-        import = "myconfig.plugins.gitsigns"
-    }, -- Git decorations
-    {
-        import = "myconfig.plugins.comment"
-    }, -- Smart commenting
-    {
-        import = "myconfig.plugins.autopairs"
-    }, -- Auto-close brackets
-    {
-        import = "myconfig.plugins.whichkey"
-    }, -- ✓ UPDATED: Modern spec format
-    {
-        import = "myconfig.plugins.dap"
-    }, -- Debug Adapter Protocol
-    -- ==========================================================================
-    -- NEW PLUGINS
-    -- ==========================================================================
-    {
-        import = "myconfig.plugins.lualine"
-    }, -- ✨ NEW: Statusline
-    {
-        import = "myconfig.plugins.bufferline"
-    }, -- ✨ NEW: Buffer tabs
-    {
-        import = "myconfig.plugins.flash"
-    }, -- ✨ NEW: Enhanced navigation
-    {
-        import = "myconfig.plugins.surround"
-    }, -- ✨ NEW: Surround text objects
-    {
-        import = "myconfig.plugins.indent-blankline"
-    } -- ✨ NEW: Indent guides
-    }, {
         -- ==========================================================================
         -- LAZY.NVIM OPTIONS
         -- ==========================================================================
         ui = {
             border = "rounded",
             icons = {
-                cmd = "⌘",
-                config = "🛠",
-                event = "📅",
-                ft = "📂",
-                init = "⚙",
-                keys = "🗝",
-                plugin = "🔌",
-                runtime = "💻",
-                source = "📄",
-                start = "🚀",
-                task = "📌",
-                lazy = "💤 "
+                cmd = "\u{f120} ",      -- fa-terminal
+                config = "\u{f013} ",   -- fa-cog/gear
+                event = "\u{f0e7} ",    -- fa-bolt
+                ft = "\u{f016} ",       -- fa-file-o
+                init = "\u{f013} ",     -- fa-cog
+                keys = "\u{f084} ",     -- fa-key
+                plugin = "\u{f1e6} ",   -- fa-plug
+                runtime = "\u{f085} ",  -- fa-cogs
+                require = "\u{f1c9} ",  -- fa-file-code-o
+                source = "\u{f121} ",   -- fa-code
+                start = "\u{f135} ",    -- fa-rocket
+                task = "\u{f058} ",     -- fa-check-circle
+                lazy = "\u{f186} "      -- fa-moon-o
             }
         },
 
@@ -138,6 +102,40 @@ require("lazy").setup(
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>", {
     desc = "Open Lazy plugin manager"
 })
+
+-- =============================================================================
+-- SUMMARY OF DATABASE ADDITIONS
+-- =============================================================================
+-- New plugins added:
+-- âœ¨ vim-dadbod          - Core database interface
+-- âœ¨ vim-dadbod-ui       - Database UI (browse, execute queries)
+-- âœ¨ vim-dadbod-completion - SQL completion for blink.cmp
+-- âœ¨ sql-lsp (optional)  - SQL LSP server (disabled by default)
+--
+-- Updated plugins:
+-- âœ" completion.lua     - Added SQL completion source
+--
+-- Supported Databases:
+-- âœ" MSSQL / SQL Server  - via sqlcmd
+-- âœ" MySQL               - via mysql client
+-- âœ" Azure SQL Database  - via sqlcmd
+-- âœ" BigQuery            - via bq CLI
+-- âœ" PostgreSQL          - via psql (bonus!)
+-- âœ" SQLite              - via sqlite3 (bonus!)
+--
+-- Quick Start:
+-- 1. Install CLI tools (sqlcmd, mysql, bq)
+-- 2. Restart Neovim
+-- 3. Press <leader>db to open Database UI
+-- 4. Add connection with :DBUIAddConnection
+-- 5. Start querying!
+--
+-- Example Connection URLs:
+-- MSSQL:    sqlserver://user:pass@localhost:1433/dbname
+-- MySQL:    mysql://root:pass@localhost:3306/dbname
+-- BigQuery: bigquery:project-id:dataset-id
+-- Azure:    sqlserver://user:pass@server.database.windows.net:1433/db
+-- =============================================================================
 
 -- =============================================================================
 -- SUMMARY OF UPDATES

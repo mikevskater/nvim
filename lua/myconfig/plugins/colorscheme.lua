@@ -32,7 +32,11 @@ return {
                 -- Make the background transparent
                 -- Uncomment these if you want a transparent background
                  Normal = {bg = "none"},
-                 NormalFloat = {bg = "none"}
+                 NormalFloat = {bg = "none"},
+                 NormalNC = {bg = "none"},  -- Non-current (inactive) windows
+                 WinSeparator = {bg = "none"},  -- Window separators
+                 WinBar = {bg = "none"},  -- Window bars
+                 FloatBorder = {bg = "none"},  -- Floating window borders
 
                 -- Or customize specific highlight groups
                 -- CursorLine = { bg = "#2a2837" },

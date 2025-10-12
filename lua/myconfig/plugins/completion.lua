@@ -1,15 +1,18 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\completion.lua
 -- =============================================================================
--- COMPLETION - Auto-completion Engine (UPDATED)
+-- COMPLETION - Auto-completion Engine (UPDATED with SQL support)
 -- =============================================================================
--- Added: Ghost text, rounded borders, custom snippet paths
+-- Added: SQL completion support via vim-dadbod-completion
 -- =============================================================================
 return {
     "saghen/blink.cmp",
 
     version = "v1.*",
 
-    dependencies = {"rafamadriz/friendly-snippets"},
+    dependencies = {
+        "rafamadriz/friendly-snippets",
+        -- SQL completion support (loaded in database.lua)
+    },
 
     opts = {
         -- ==========================================================================
@@ -35,9 +38,10 @@ return {
         },
 
         -- ==========================================================================
-        -- COMPLETION SOURCES
+        -- COMPLETION SOURCES (UPDATED)
         -- ==========================================================================
         sources = {
+            -- Default sources for most filetypes
             default = {"lsp", "path", "snippets", "buffer"},
 
             -- Custom provider configurations
@@ -50,8 +54,26 @@ return {
                         -- Global snippets available in all filetypes
                         global_snippets = {"all"}
                     }
-                }
-            }
+                },
+
+                -- ADDED: vim-dadbod completion provider
+                dadbod = {
+                    name = "Dadbod",
+                    module = "vim_dadbod_completion.blink",
+                    -- Only enable for SQL filetypes
+                    enabled = function()
+                        local ft = vim.bo.filetype
+                        return ft == "sql" or ft == "mysql" or ft == "plsql"
+                    end,
+                },
+            },
+
+            -- Per-filetype sources (ADDED)
+            per_filetype = {
+                sql = { "dadbod", "buffer" },
+                mysql = { "dadbod", "buffer" },
+                plsql = { "dadbod", "buffer" },
+            },
         },
 
         -- ==========================================================================
@@ -121,6 +143,27 @@ return {
 -- =============================================================================
 -- COMPLETION NOTES (UPDATED)
 -- =============================================================================
+-- SQL Completion Features:
+-- - Table and column name completion
+-- - SQL keyword completion
+-- - Function completion
+-- - Completion based on current database connection
+--
+-- SQL Completion Usage:
+-- 1. Open or create a .sql file
+-- 2. Connect to database via DBUI
+-- 3. Start typing - completions will appear automatically
+-- 4. Completions are context-aware based on your connection
+--
+-- Example:
+-- SELECT * FROM cus<Tab>  → completes to your 'customers' table
+-- SELECT name, em<Tab>    → completes to 'email' column
+--
+-- Troubleshooting SQL Completion:
+-- - No completions? Make sure you're connected to a DB via DBUI
+-- - Wrong completions? Check your active connection in DBUI
+-- - Slow completions? Large databases may take time to load schema
+--
 -- New features enabled:
 --
 -- 1. GHOST TEXT:
