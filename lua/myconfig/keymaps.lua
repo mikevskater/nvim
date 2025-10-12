@@ -16,7 +16,7 @@ local keymap = vim.keymap.set -- Shorthand for convenience
 
 -- File explorer (using netrw for now, will be replaced by oil.nvim)
 keymap("n", "<leader>pv", vim.cmd.Ex, {
-    desc = "Open file explorer"
+    desc = "\u{f115} File explorer" --  (folder open)
 })
 
 -- =============================================================================
@@ -25,34 +25,34 @@ keymap("n", "<leader>pv", vim.cmd.Ex, {
 
 -- Stay in visual mode when indenting
 keymap("v", "<", "<gv", {
-    desc = "Indent left and stay in visual mode"
+    desc = "\u{f060} Indent left" --  (arrow left)
 })
 keymap("v", ">", ">gv", {
-    desc = "Indent right and stay in visual mode"
+    desc = "\u{f061} Indent right" --  (arrow right)
 })
 
 -- Move selected lines up/down (ThePrimeagen's favorite)
 keymap("v", "J", ":m '>+1<CR>gv=gv", {
-    desc = "Move selection down"
+    desc = "\u{f063} Move selection down" --  (arrow down)
 })
 keymap("v", "K", ":m '<-2<CR>gv=gv", {
-    desc = "Move selection up"
+    desc = "\u{f062} Move selection up" --  (arrow up)
 })
 
 -- Keep cursor centered when scrolling
 keymap("n", "<C-d>", "<C-d>zz", {
-    desc = "Scroll down and center"
+    desc = "\u{f063} Scroll down (centered)" --  (arrow down)
 })
 keymap("n", "<C-u>", "<C-u>zz", {
-    desc = "Scroll up and center"
+    desc = "\u{f062} Scroll up (centered)" --  (arrow up)
 })
 
 -- Keep search terms centered
 keymap("n", "n", "nzzzv", {
-    desc = "Next search result (centered)"
+    desc = "\u{f002} Next search (centered)" --  (search)
 })
 keymap("n", "N", "Nzzzv", {
-    desc = "Previous search result (centered)"
+    desc = "\u{f002} Previous search (centered)" --  (search)
 })
 
 -- =============================================================================
@@ -61,20 +61,20 @@ keymap("n", "N", "Nzzzv", {
 
 -- Delete without yanking (delete to void register)
 keymap({"n", "v"}, "<leader>d", '"_d', {
-    desc = "Delete without yanking"
+    desc = "\u{f00d} Delete without yanking" --  (close/delete)
 })
 
 -- Paste over selection without yanking (ThePrimeagen special)
 keymap("x", "<leader>p", '"_dP', {
-    desc = "Paste without yanking selection"
+    desc = "\u{f0c5} Paste without yanking" --  (files/paste)
 })
 
 -- Yank to system clipboard
 keymap({"n", "v"}, "<leader>y", '"+y', {
-    desc = "Yank to system clipboard"
+    desc = "\u{f0c5} Yank to clipboard" --  (copy)
 })
 keymap("n", "<leader>Y", '"+Y', {
-    desc = "Yank line to system clipboard"
+    desc = "\u{f0c5} Yank line to clipboard" --  (copy)
 })
 
 -- =============================================================================
@@ -83,30 +83,30 @@ keymap("n", "<leader>Y", '"+Y', {
 
 -- Navigate between splits
 keymap("n", "<C-h>", "<C-w>h", {
-    desc = "Move to left split"
+    desc = "\u{f060} Move to left split" --  (arrow left)
 })
 keymap("n", "<C-j>", "<C-w>j", {
-    desc = "Move to bottom split"
+    desc = "\u{f063} Move to bottom split" --  (arrow down)
 })
 keymap("n", "<C-k>", "<C-w>k", {
-    desc = "Move to top split"
+    desc = "\u{f062} Move to top split" --  (arrow up)
 })
 keymap("n", "<C-l>", "<C-w>l", {
-    desc = "Move to right split"
+    desc = "\u{f061} Move to right split" --  (arrow right)
 })
 
 -- Resize splits
 keymap("n", "<C-Up>", ":resize +2<CR>", {
-    desc = "Increase split height"
+    desc = "\u{f062} Increase height" --  (arrow up)
 })
 keymap("n", "<C-Down>", ":resize -2<CR>", {
-    desc = "Decrease split height"
+    desc = "\u{f063} Decrease height" --  (arrow down)
 })
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", {
-    desc = "Decrease split width"
+    desc = "\u{f060} Decrease width" --  (arrow left)
 })
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", {
-    desc = "Increase split width"
+    desc = "\u{f061} Increase width" --  (arrow right)
 })
 
 -- =============================================================================
@@ -114,13 +114,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", {
 -- =============================================================================
 
 keymap("n", "<S-h>", ":bprevious<CR>", {
-    desc = "Previous buffer"
+    desc = "\u{f053} Previous buffer" --  (chevron left)
 })
 keymap("n", "<S-l>", ":bnext<CR>", {
-    desc = "Next buffer"
+    desc = "\u{f054} Next buffer" --  (chevron right)
 })
 keymap("n", "<leader>bd", ":bdelete<CR>", {
-    desc = "Delete buffer"
+    desc = "\u{f00d} Delete buffer" --  (close)
 })
 
 -- =============================================================================
@@ -129,28 +129,28 @@ keymap("n", "<leader>bd", ":bdelete<CR>", {
 
 -- Save file
 keymap("n", "<leader>w", ":w<CR>", {
-    desc = "Save file"
+    desc = "\u{f0c7} Save file" --  (save/floppy disk)
 })
 
 -- Quit
 keymap("n", "<leader>q", ":q<CR>", {
-    desc = "Quit"
+    desc = "\u{f2d1} Quit" --  (window close)
 })
 
 -- Source current file (reload config)
 keymap("n", "<leader><leader>", ":source %<CR>", {
-    desc = "Source current file"
+    desc = "\u{f021} Source file" --  (refresh/reload)
 })
 
 -- Replace word under cursor (ThePrimeagen style)
 keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     {
-        desc = "Replace word under cursor"
+        desc = "\u{f002} Replace word under cursor" --  (search)
     })
 
 -- Make current file executable
 keymap("n", "<leader>x", ":!chmod +x %<CR>", {
-    desc = "Make file executable"
+    desc = "\u{f013} Make file executable" --  (gear/settings)
 })
 
 -- =============================================================================
@@ -173,7 +173,7 @@ keymap("n", "<Space>", "<nop>", {
 
 -- Easier escape from terminal mode
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", {
-    desc = "Exit terminal mode"
+    desc = "\u{ead4} Exit terminal mode" --  (terminal)
 })
 
 -- =============================================================================

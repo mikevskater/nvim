@@ -29,9 +29,9 @@ return {
         -- ICONS
         -- ==========================================================================
         icons = {
-            breadcrumb = "»", -- Symbol in command line
-            separator = "➜", -- Symbol between key and label
-            group = "+" -- Symbol prepended to groups
+            breadcrumb = "\u{00bb}", -- »
+            separator = " ", --"\u{27a1}", -- ➡
+            group = "\u{002b}" -- +
         },
 
         -- ==========================================================================
@@ -92,7 +92,7 @@ return {
             "<leader>f",
             group = "Find (Telescope)",
             icon = {
-                icon = "🔍",
+                icon = "\u{f002}", --  (search)
                 color = "blue"
             }
         }, -- Git operations
@@ -100,7 +100,7 @@ return {
             "<leader>g",
             group = "Git",
             icon = {
-                icon = "",
+                icon = "\u{f1d3}", --  (git logo)
                 color = "orange"
             }
         }, -- Git hunks (from gitsigns)
@@ -108,7 +108,7 @@ return {
             "<leader>h",
             group = "Git Hunks",
             icon = {
-                icon = "",
+                icon = "\u{f126}", --  (branch/fork)
                 color = "orange"
             }
         }, -- Debug/Diagnostics
@@ -116,15 +116,15 @@ return {
             "<leader>d",
             group = "Debug/Diagnostics",
             icon = {
-                icon = "",
-                color = "red"
+                icon = "\u{f1c0}", --  (database)
+                color = "blue"
             }
         }, -- Code actions
         {
             "<leader>c",
             group = "Code",
             icon = {
-                icon = "",
+                icon = "\u{f121}", --  (code)
                 color = "cyan"
             }
         }, -- Buffer operations
@@ -132,7 +132,7 @@ return {
             "<leader>b",
             group = "Buffer",
             icon = {
-                icon = "",
+                icon = "\u{f0c5}", --  (files)
                 color = "yellow"
             }
         }, -- Window/split operations
@@ -140,7 +140,7 @@ return {
             "<leader>w",
             group = "Window",
             icon = {
-                icon = "",
+                icon = "\u{f2d0}", --  (window)
                 color = "green"
             }
         }, -- LSP operations
@@ -148,41 +148,39 @@ return {
             "<leader>l",
             group = "LSP",
             icon = {
-                icon = "",
+                icon = "\u{f085}", --  (gears)
                 color = "purple"
             }
-        }, -- Quick actions
-        {
-            "<leader><leader>",
-            desc = "Source file"
-        }, -- File operations
-        {
-            "<leader>q",
-            desc = "Quit"
-        }, {
-            "<leader>w",
-            desc = "Save file"
-        }, -- Toggle operations
-        {
-            "<leader>u",
-            desc = "Toggle undotree"
-        }, {
-            "<leader>-",
-            desc = "Oil float"
-        }, {
-            "-",
-            desc = "Open parent directory"
-        }, -- Special keys help
+        }, -- Individual key descriptions
         {
             mode = {"n", "v"},
             {
                 "<leader>y",
-                desc = "Yank to clipboard"
+                desc = "\u{f0c5} Yank to clipboard" --  (copy)
             },
             {
                 "<leader>d",
-                desc = "Delete without yank"
+                desc = "\u{f00d} Delete without yank" --  (delete)
             }
+        }, -- Quick actions
+        {
+            "<leader><leader>",
+            desc = "\u{f021} Source file" --  (refresh)
+        }, {
+            "<leader>q",
+            desc = "\u{f2d1} Quit" --  (window close)
+        }, {
+            "<leader>w",
+            desc = "\u{f0c7} Save file" --  (save)
+        }, {
+            "<leader>u",
+            desc = "\u{f1da} Toggle undotree" --  (history)
+        }, {
+            "<leader>-",
+            desc = "\u{f07c} Oil float" --  (folder open)
+        }, {
+            "-",
+            desc = "\u{f115} Parent directory" --  (folder open outline)
         }}
     },
 
@@ -196,7 +194,7 @@ return {
                 global = false
             })
         end,
-        desc = "Buffer Local Keymaps (which-key)"
+        desc = "\u{f059} Buffer Local Keymaps" --  (question circle)
     }}
 }
 

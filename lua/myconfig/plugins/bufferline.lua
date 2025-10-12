@@ -1,6 +1,6 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\bufferline.lua
 -- =============================================================================
--- BUFFERLINE - Better Buffer Tabs (NEW)
+-- BUFFERLINE - Better Buffer Tabs
 -- =============================================================================
 -- Shows open buffers as tabs at the top, like browser tabs
 -- =============================================================================
@@ -24,11 +24,11 @@ return {
                 -- Options: default, minimal, no_italic, no_bold
 
                 -- Buffer close icon
-                buffer_close_icon = "",
-                modified_icon = "●",
-                close_icon = "",
-                left_trunc_marker = "",
-                right_trunc_marker = "",
+                buffer_close_icon = "\u{f00d}", --  (close/X)
+                modified_icon = "\u{f111}", --  (filled circle)
+                close_icon = "\u{f00d}", -- 
+                left_trunc_marker = "\u{f053}", --  (chevron left)
+                right_trunc_marker = "\u{f054}", --  (chevron right)
 
                 -- ==========================================================================
                 -- NUMBERS
@@ -44,8 +44,12 @@ return {
                 diagnostics = "nvim_lsp",
                 diagnostics_indicator = function(count, level, diagnostics_dict,
                     context)
-                    local icon = level:match("error") and " " or " "
-                    return " " .. icon .. count
+                    local icons = {
+                        error = "\u{f658}", --  (times circle)
+                        warning = "\u{f071}" --  (warning triangle)
+                    }
+                    local icon = icons[level] or "\u{f05a}" --  (info)
+                    return " " .. icon .. " " .. count
                 end,
 
                 -- ==========================================================================
@@ -53,7 +57,7 @@ return {
                 -- ==========================================================================
                 offsets = {{
                     filetype = "oil",
-                    text = "File Explorer",
+                    text = "\u{f115} File Explorer", --  (folder open)
                     text_align = "center",
                     separator = true
                 }},
@@ -103,42 +107,42 @@ return {
 
         -- Navigate buffers
         keymap("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", {
-            desc = "Previous buffer"
+            desc = "\u{f053} Previous buffer" --  (chevron left)
         })
         keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", {
-            desc = "Next buffer"
+            desc = "\u{f054} Next buffer" --  (chevron right)
         })
 
         -- Move buffers
         keymap("n", "<leader>bp", "<cmd>BufferLineMovePrev<cr>", {
-            desc = "Move buffer left"
+            desc = "\u{f060} Move buffer left" --  (arrow left)
         })
         keymap("n", "<leader>bn", "<cmd>BufferLineMoveNext<cr>", {
-            desc = "Move buffer right"
+            desc = "\u{f061} Move buffer right" --  (arrow right)
         })
 
         -- Pick buffer
         keymap("n", "<leader>bb", "<cmd>BufferLinePick<cr>", {
-            desc = "Pick buffer"
+            desc = "\u{f002} Pick buffer" --  (search)
         })
 
         -- Close buffers
         keymap("n", "<leader>bc", "<cmd>BufferLinePickClose<cr>", {
-            desc = "Pick buffer to close"
+            desc = "\u{f00d} Pick buffer to close" --  (close)
         })
         keymap("n", "<leader>bh", "<cmd>BufferLineCloseLeft<cr>", {
-            desc = "Close buffers to left"
+            desc = "\u{f060} Close buffers to left" --  (arrow left)
         })
         keymap("n", "<leader>bl", "<cmd>BufferLineCloseRight<cr>", {
-            desc = "Close buffers to right"
+            desc = "\u{f061} Close buffers to right" --  (arrow right)
         })
 
         -- Sort buffers
         keymap("n", "<leader>be", "<cmd>BufferLineSortByExtension<cr>", {
-            desc = "Sort by extension"
+            desc = "\u{f0c9} Sort by extension" --  (align justify)
         })
         keymap("n", "<leader>bd", "<cmd>BufferLineSortByDirectory<cr>", {
-            desc = "Sort by directory"
+            desc = "\u{f07b} Sort by directory" --  (folder)
         })
     end
 }

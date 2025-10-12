@@ -12,7 +12,6 @@ return
     {
         "tpope/vim-dadbod",
         lazy = true
-        -- Loaded automatically by vim-dadbod-ui
     },
 
     -- ==========================================================================
@@ -36,91 +35,52 @@ return
             -- UI CONFIGURATION
             -- ==========================================================================
 
-            -- Use Nerd Fonts for icons
             vim.g.db_ui_use_nerd_fonts = 1
-
-            -- Show database icons
             vim.g.db_ui_show_database_icon = 1
-
-            -- UI layout
             vim.g.db_ui_win_position = "left"
             vim.g.db_ui_winwidth = 40
-
-            -- Notifications
             vim.g.db_ui_use_nvim_notify = true
-
-            -- Don't auto-execute queries on save (safer for large queries)
             vim.g.db_ui_execute_on_save = false
-
-            -- Auto-execute table helpers (COUNT, DESCRIBE, etc.)
             vim.g.db_ui_auto_execute_table_helpers = 1
 
-            -- Save location for queries
             local data_path = vim.fn.stdpath("data")
             vim.g.db_ui_save_location = data_path .. "/dadbod_ui"
 
-            -- Disable some buffer mappings if desired
-            -- vim.g.db_ui_disable_mappings = 0
+            -- ==========================================================================
+            -- ICONS
+            -- ==========================================================================
+            vim.g.db_ui_icons = {
+                expanded = {
+                    db = "\u{25be} \u{f1c0}", -- ▾  (database)
+                    buffers = "\u{25be} \u{f0c5}", -- ▾  (files)
+                    saved_queries = "\u{25be} \u{f0f6}", -- ▾  (file-text)
+                    schemas = "\u{25be} \u{f1c0}", -- ▾  (database)
+                    schema = "\u{25be} \u{e5ff}", -- ▾  (folder)
+                    tables = "\u{25be} \u{f0ce}", -- ▾  (table)
+                    table = "\u{25be} \u{f0ce}" -- ▾  (table)
+                },
+                collapsed = {
+                    db = "\u{25b8} \u{f1c0}", -- ▸ 
+                    buffers = "\u{25b8} \u{f0c5}", -- ▸ 
+                    saved_queries = "\u{25b8} \u{f0f6}", -- ▸ 
+                    schemas = "\u{25b8} \u{f1c0}", -- ▸ 
+                    schema = "\u{25b8} \u{e5ff}", -- ▸ 
+                    tables = "\u{25b8} \u{f0ce}", -- ▸ 
+                    table = "\u{25b8} \u{f0ce}" -- ▸ 
+                },
+                saved_query = "\u{f0f6}", --  (file-text)
+                new_query = "\u{f067}", --  (plus)
+                tables = "\u{f0ce}", --  (table)
+                buffers = "\u{f0c5}", --  (files)
+                add_connection = "\u{f067}", --  (plus)
+                connection_ok = "\u{2713}", -- ✓ (checkmark)
+                connection_error = "\u{2715}" -- ✕ (X)
+            }
 
             -- ==========================================================================
-            -- DATABASE CONNECTIONS
-            -- ==========================================================================
-            -- IMPORTANT: Don't commit credentials to git!
-            -- Options for managing connections:
-            -- 1. Use :DBUIAddConnection command (stores in ~/.local/share/db_ui/)
-            -- 2. Use environment variables (shown below)
-            -- 3. Use vim.g.dbs dictionary (shown below, commented out)
-            -- ==========================================================================
-
-            -- METHOD 1: Environment Variables (Recommended for security)
-            -- Set these in your shell profile (.bashrc, .zshrc, etc.)
-            -- export DBUI_URL_PROD_MSSQL="sqlserver://user:pass@server.database.windows.net:1433/dbname"
-            -- Neovim will automatically detect $DBUI_URL_* variables
-
-            -- METHOD 2: Define connections directly (USE WITH CAUTION)
-            -- Uncomment and configure for your databases
-            -- SECURITY WARNING: Add this file to .gitignore if using this method!
-
-            -- vim.g.dbs = {
-            --     -- ==========================================================================
-            --     -- MSSQL CONNECTIONS
-            --     -- ==========================================================================
-            --     {
-            --         name = "local_mssql",
-            --         url = "sqlserver://localhost:1433/master?integratedSecurity=true"
-            --         -- For integrated security (Windows Auth), omit user/password
-            --         -- For SQL Auth: sqlserver://username:password@localhost:1433/dbname
-            --     },
-            --     {
-            --         name = "azure_db_prod",
-            --         url = "sqlserver://username:password@yourserver.database.windows.net:1433/yourdb"
-            --     },
-            --
-            --     -- ==========================================================================
-            --     -- MYSQL CONNECTIONS
-            --     -- ==========================================================================
-            --     {
-            --         name = "local_mysql",
-            --         url = "mysql://root:password@localhost:3306/mydb"
-            --         -- No password: mysql://root@localhost:3306/mydb
-            --     },
-            --
-            --     -- ==========================================================================
-            --     -- BIGQUERY CONNECTIONS
-            --     -- ==========================================================================
-            --     {
-            --         name = "bigquery_project",
-            --         url = "bigquery:your-project-id:your-dataset?use_legacy_sql=false"
-            --         -- Uses gcloud authentication automatically
-            --         -- Make sure you've run: gcloud auth application-default login
-            --     },
-            -- }
-
-            -- ==========================================================================
-            -- TABLE HELPERS (Custom queries for database objects)
+            -- TABLE HELPERS
             -- ==========================================================================
             vim.g.db_ui_table_helpers = {
-                -- MSSQL/SQL Server helpers
                 sqlserver = {
                     Count = "SELECT COUNT(*) FROM {table}",
                     Columns = [[
@@ -145,84 +105,41 @@ return
                     ]],
                     Top100 = "SELECT TOP 100 * FROM {table}"
                 },
-
-                -- MySQL helpers
                 mysql = {
                     Count = "SELECT COUNT(*) FROM {table}",
                     Describe = "DESCRIBE {table}",
                     Indexes = "SHOW INDEXES FROM {table}",
                     Limit100 = "SELECT * FROM {table} LIMIT 100"
                 },
-
-                -- BigQuery helpers
                 bigquery = {
                     Count = "SELECT COUNT(*) FROM `{table}`",
                     Schema = "SELECT * FROM `{table}` LIMIT 0",
                     Sample = "SELECT * FROM `{table}` LIMIT 100"
                 }
             }
-
-            -- ==========================================================================
-            -- ICONS (Optional customization)
-            -- ==========================================================================
-            vim.g.db_ui_icons = {
-                expanded = {
-                    -- Font Awesome server icon (nf-fa-server)
-                    db = "\u{25be} \u{f233}",
-                    -- Codicons files icon (nf-cod-files)
-                    buffers = "\u{25be} \u{eae7}",
-                    -- Font Awesome file-code icon (nf-fa-file_code_o)
-                    saved_queries = "\u{25be} \u{f1c9}",
-                    -- Font Awesome sitemap (layers) icon
-                    schemas = "\u{25be} \u{f0e8}",
-                    schema = "\u{25be} \u{f0e8}",
-                    -- Font Awesome th (grid) icon
-                    tables = "\u{25be} \u{f00a}",
-                    table = "\u{25be} \u{f00a}",
-                },
-                collapsed = {
-                    db = "\u{25b8} \u{f233}",
-                    buffers = "\u{25b8} \u{eae7}",
-                    saved_queries = "\u{25b8} \u{f1c9}",
-                    schemas = "\u{25b8} \u{f0e8}",
-                    schema = "\u{25b8} \u{f0e8}",
-                    tables = "\u{25b8} \u{f00a}",
-                    table = "\u{25b8} \u{f00a}",
-                },
-                saved_query = "\u{f1c9}",
-                new_query = "\u{f067}",
-                tables = "\u{f1c0}",
-                buffers = "\u{eae7}",
-                -- Font Awesome link icon (nf-fa-link)
-                add_connection = "\u{f0c1}",
-                -- Font Awesome check-circle icon
-                connection_ok = "\u{f058}",
-                -- Font Awesome times-circle icon
-                connection_error = "\u{f057}",
-            }
         end,
 
         keys = {{
             "<leader>db",
             "<cmd>DBUIToggle<cr>",
-            desc = "Toggle Database UI"
+            desc = "\u{f1c0} Toggle Database UI"
         }, {
             "<leader>df",
             "<cmd>DBUIFindBuffer<cr>",
-            desc = "Find Database Buffer"
+            desc = "\u{f002} Find Database Buffer"
         }, {
             "<leader>dr",
             "<cmd>DBUIRenameBuffer<cr>",
-            desc = "Rename Database Buffer"
+            desc = "\u{f040} Rename Database Buffer"
         }, {
             "<leader>dl",
             "<cmd>DBUILastQueryInfo<cr>",
-            desc = "Last Query Info"
+            desc = "\u{f05a} Last Query Info"
         }}
     },
 
     -- ==========================================================================
-    -- SQL COMPLETION (Integrates with blink.cmp)
+    -- SQL COMPLETION
     -- ==========================================================================
     {
         "kristijanhusak/vim-dadbod-completion",
@@ -230,36 +147,26 @@ return
         lazy = true,
 
         init = function()
-            -- Integrate with blink.cmp
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {"sql", "mysql", "plsql"},
                 callback = function()
-                    -- Check if blink.cmp is available
-                    local ok, blink = pcall(require, "blink.cmp")
-                    if ok then
-                        -- Add vim-dadbod-completion as a source
-                        -- This will be handled by the blink.cmp config update below
-                    end
-
-                    -- Set up SQL-specific keymaps
                     local keymap = vim.keymap.set
                     local opts = {
                         buffer = true,
                         silent = true
                     }
 
-                    -- Execute current query
                     keymap("n", "<leader>dw", "<Plug>(DBUI_SaveQuery)",
                         vim.tbl_extend("force", opts, {
-                            desc = "Save Query"
+                            desc = "\u{f0c7} Save Query"
                         }))
                     keymap("n", "<leader>de", "<Plug>(DBUI_EditBindParameters)",
                         vim.tbl_extend("force", opts, {
-                            desc = "Edit Bind Parameters"
+                            desc = "\u{f040} Edit Bind Parameters"
                         }))
                     keymap("v", "<leader>dx", "<Plug>(DBUI_ExecuteQuery)",
                         vim.tbl_extend("force", opts, {
-                            desc = "Execute Selected Query"
+                            desc = "\u{f04b} Execute Selected Query"
                         }))
                 end
             })

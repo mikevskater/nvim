@@ -121,7 +121,7 @@ return {
         -- ==========================================================================
         prompt = {
             enabled = true,
-            prefix = {{"⚡", "FlashPromptIcon"}}
+            prefix = {{"\u{26a1}", "FlashPromptIcon"}} -- ⚡ (lightning bolt)
         }
     },
 
@@ -134,35 +134,35 @@ return {
         function()
             require("flash").jump()
         end,
-        desc = "Flash"
+        desc = "\u{26a1} Flash" -- ⚡
     }, {
         "S",
         mode = {"n", "x", "o"},
         function()
             require("flash").treesitter()
         end,
-        desc = "Flash Treesitter"
+        desc = "\u{f1bb} Flash Treesitter" --  (tree)
     }, {
         "r",
         mode = "o",
         function()
             require("flash").remote()
         end,
-        desc = "Remote Flash"
+        desc = "\u{f1e5} Remote Flash" --  (location arrow)
     }, {
         "R",
         mode = {"o", "x"},
         function()
             require("flash").treesitter_search()
         end,
-        desc = "Treesitter Search"
+        desc = "\u{f002} Treesitter Search" --  (search)
     }, {
         "<c-s>",
         mode = {"c"},
         function()
             require("flash").toggle()
         end,
-        desc = "Toggle Flash Search"
+        desc = "\u{26a1} Toggle Flash Search" -- ⚡
     }}
 }
 

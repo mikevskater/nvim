@@ -19,12 +19,12 @@ return {
 
                 -- Separators between components
                 component_separators = {
-                    left = "|",
-                    right = "|"
+                    left = "\u{e0b1}", -- 
+                    right = "\u{e0b3}" -- 
                 },
                 section_separators = {
-                    left = "",
-                    right = ""
+                    left = "\u{e0b0}", -- 
+                    right = "\u{e0b2}" -- 
                 },
 
                 -- Disable for these filetypes
@@ -50,14 +50,25 @@ return {
             sections = {
                 -- Left side
                 lualine_a = {"mode"},
-                lualine_b = {"branch", "diff", {
+
+                lualine_b = {{
+                    "branch",
+                    icon = "\u{f126}" --  (git branch)
+                }, {
+                    "diff",
+                    symbols = {
+                        added = "\u{f067} ", --  (plus)
+                        modified = "\u{f040} ", --  (pencil)
+                        removed = "\u{f068} " --  (minus)
+                    }
+                }, {
                     "diagnostics",
                     sources = {"nvim_diagnostic"},
                     symbols = {
-                        error = " ",
-                        warn = " ",
-                        info = " ",
-                        hint = " "
+                        error = "\u{f658} ", --  (times-circle)
+                        warn = "\u{f071} ", --  (warning triangle)
+                        info = "\u{f05a} ", --  (info circle)
+                        hint = "\u{f0eb} " --  (lightbulb)
                     }
                 }},
                 lualine_c = {{
@@ -66,31 +77,32 @@ return {
                     path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
                     shorting_target = 40, -- Shorten if too long
                     symbols = {
-                        modified = "[+]",
-                        readonly = "[-]",
-                        unnamed = "[No Name]"
+                        modified = "\u{f040}", --  (pencil)
+                        readonly = "\u{f023}", --  (lock)
+                        unnamed = "\u{f016}", --  (file)
+                        newfile = "\u{f067}" --  (plus)
                     }
                 }},
 
                 -- Right side
-                lualine_x = {{
-                    -- Show active LSP servers
-                    function()
-                        local clients = vim.lsp.get_clients({
-                            bufnr = 0
-                        })
-                        if next(clients) == nil then
-                            return ""
-                        end
+                lualine_x = {{ -- Show active LSP servers
+                function()
+                    local clients = vim.lsp.get_clients({
+                        bufnr = 0
+                    })
+                    if next(clients) == nil then
+                        return ""
+                    end
 
-                        local names = {}
-                        for _, client in pairs(clients) do
-                            table.insert(names, client.name)
-                        end
-                        return " " .. table.concat(names, ", ")
-                    end,
-                    icon = ""
-                }, "encoding", {
+                    local names = {}
+                    for _, client in pairs(clients) do
+                        table.insert(names, client.name)
+                    end
+                    return "\u{f085} " .. table.concat(names, ", ") --  (gears)
+                end}, {
+                    "encoding",
+                    icon = "\u{f0f2}" --  (font)
+                }, {
                     "fileformat",
                     symbols = {
                         unix = "LF",
@@ -98,13 +110,15 @@ return {
                         mac = "CR"
                     }
                 }, "filetype"},
+
                 lualine_y = {"progress"},
-                lualine_z = {"location"}
+
+                lualine_z = {{
+                    "location",
+                    icon = "\u{f041}" --  (map marker)
+                }}
             },
 
-            -- ==========================================================================
-            -- INACTIVE SECTIONS (for inactive windows)
-            -- ==========================================================================
             inactive_sections = {
                 lualine_a = {},
                 lualine_b = {},

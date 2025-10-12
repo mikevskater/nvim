@@ -4,7 +4,6 @@
 -- =============================================================================
 -- Added: Database plugins (vim-dadbod suite)
 -- =============================================================================
-
 -- =============================================================================
 -- STEP 1: Bootstrap lazy.nvim
 -- =============================================================================
@@ -25,51 +24,69 @@ vim.opt.rtp:prepend(lazypath)
 -- =============================================================================
 
 require("lazy").setup(
+    { -- ==========================================================================
+    -- EXISTING PLUGINS
+    -- ==========================================================================
     {
-        -- ==========================================================================
-        -- EXISTING PLUGINS
-        -- ==========================================================================
-        { import = "myconfig.plugins.colorscheme" },
-        { import = "myconfig.plugins.telescope" },
-        { import = "myconfig.plugins.treesitter" },
-        { import = "myconfig.plugins.lsp" },
-        { import = "myconfig.plugins.completion" },
-        { import = "myconfig.plugins.oil" },
-        { import = "myconfig.plugins.harpoon" },
-        { import = "myconfig.plugins.undotree" },
-        { import = "myconfig.plugins.fugitive" },
-        { import = "myconfig.plugins.gitsigns" },
-        { import = "myconfig.plugins.comment" },
-        { import = "myconfig.plugins.autopairs" },
-        { import = "myconfig.plugins.whichkey" },
-        { import = "myconfig.plugins.dap" },
-        { import = "myconfig.plugins.lualine" },
-        { import = "myconfig.plugins.bufferline" },
-        { import = "myconfig.plugins.flash" },
-        { import = "myconfig.plugins.surround" },
-        { import = "myconfig.plugins.indent-blankline" },
-        { import = "myconfig.plugins.database" },
-    },
-    {
+        import = "myconfig.plugins.colorscheme"
+    }, {
+        import = "myconfig.plugins.telescope"
+    }, {
+        import = "myconfig.plugins.treesitter"
+    }, {
+        import = "myconfig.plugins.lsp"
+    }, {
+        import = "myconfig.plugins.completion"
+    }, {
+        import = "myconfig.plugins.oil"
+    }, {
+        import = "myconfig.plugins.harpoon"
+    }, {
+        import = "myconfig.plugins.undotree"
+    }, {
+        import = "myconfig.plugins.fugitive"
+    }, {
+        import = "myconfig.plugins.gitsigns"
+    }, {
+        import = "myconfig.plugins.comment"
+    }, {
+        import = "myconfig.plugins.autopairs"
+    }, {
+        import = "myconfig.plugins.whichkey"
+    }, {
+        import = "myconfig.plugins.dap"
+    }, {
+        import = "myconfig.plugins.lualine"
+    }, {
+        import = "myconfig.plugins.bufferline"
+    }, {
+        import = "myconfig.plugins.flash"
+    }, {
+        import = "myconfig.plugins.surround"
+    }, {
+        import = "myconfig.plugins.indent-blankline"
+    }, {
+        import = "myconfig.plugins.database"
+    }}, {
         -- ==========================================================================
         -- LAZY.NVIM OPTIONS
         -- ==========================================================================
         ui = {
             border = "rounded",
             icons = {
-                cmd = "\u{f120} ",      -- fa-terminal
-                config = "\u{f013} ",   -- fa-cog/gear
-                event = "\u{f0e7} ",    -- fa-bolt
-                ft = "\u{f016} ",       -- fa-file-o
-                init = "\u{f013} ",     -- fa-cog
-                keys = "\u{f084} ",     -- fa-key
-                plugin = "\u{f1e6} ",   -- fa-plug
-                runtime = "\u{f085} ",  -- fa-cogs
-                require = "\u{f1c9} ",  -- fa-file-code-o
-                source = "\u{f121} ",   -- fa-code
-                start = "\u{f135} ",    -- fa-rocket
-                task = "\u{f058} ",     -- fa-check-circle
-                lazy = "\u{f186} "      -- fa-moon-o
+                cmd = "\u{f120} ", -- fa-terminal
+                config = "\u{f013} ", -- fa-cog/gear
+                event = "\u{f0e7} ", -- fa-bolt
+                ft = "\u{f016} ", -- fa-file-o
+                init = "\u{f013} ", -- fa-cog
+                keys = "\u{f084} ", -- fa-key
+                plugin = "\u{f1e6} ", -- fa-plug
+                runtime = "\u{f085} ", -- fa-cogs
+                require = "\u{f1c9} ", -- fa-file-code-o
+                source = "\u{f121} ", -- fa-code
+                start = "\u{f135} ", -- fa-rocket
+                task = "\u{f058} ", -- fa-check-circle
+                lazy = "\u{f186} " -- fa-moon-o
             }
         },
 
@@ -100,7 +117,7 @@ require("lazy").setup(
 -- LAZY.NVIM KEYBINDINGS
 -- =============================================================================
 vim.keymap.set("n", "<leader>l", ":Lazy<CR>", {
-    desc = "Open Lazy plugin manager"
+    desc = "\u{eb29} Open Lazy plugin manager"
 })
 
 -- =============================================================================

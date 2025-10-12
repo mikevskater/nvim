@@ -24,6 +24,12 @@ return {
 
         telescope.setup({
             defaults = {
+                -- Icons
+                prompt_prefix = "\u{f002} ", --  (search/magnifying glass)
+                selection_caret = "\u{f0da} ", --  (caret right)
+                entry_prefix = "  ",
+                multi_icon = "\u{f00c} ", --  (check)
+
                 -- Layout
                 layout_strategy = "horizontal",
                 layout_config = {
@@ -36,12 +42,7 @@ return {
                     preview_cutoff = 120
                 },
 
-                -- Behavior
-                prompt_prefix = " 🔍 ",
-                selection_caret = "  ",
-                path_display = {"truncate"}, -- Shorten long paths
-
-                -- File ignore patterns
+                path_display = {"truncate"},
                 file_ignore_patterns = {"node_modules", ".git/", "dist/",
                                         "build/", "target/"},
 
@@ -100,47 +101,47 @@ return {
 
         -- File pickers
         keymap("n", "<leader>ff", builtin.find_files, {
-            desc = "Find files"
+            desc = "\u{f002} Find files" --  (search)
         })
         keymap("n", "<leader>fg", builtin.git_files, {
-            desc = "Find git files"
+            desc = "\u{f1d3} Find git files" --  (git)
         })
         keymap("n", "<leader>fr", builtin.oldfiles, {
-            desc = "Find recent files"
+            desc = "\u{f1da} Find recent files" --  (history)
         })
 
         -- Search pickers
         keymap("n", "<leader>fw", builtin.live_grep, {
-            desc = "Find word (grep)"
+            desc = "\u{f1e5} Find word" --  (location arrow)
         })
         keymap("n", "<leader>fs", builtin.grep_string, {
-            desc = "Find string under cursor"
+            desc = "\u{f002} Find string" --  (search)
         })
 
         -- Buffer pickers
         keymap("n", "<leader>fb", builtin.buffers, {
-            desc = "Find buffers"
+            desc = "\u{f0c5} Find buffers" --  (files)
         })
 
         -- Help pickers
         keymap("n", "<leader>fh", builtin.help_tags, {
-            desc = "Find help"
+            desc = "\u{f059} Find help" --  (question circle)
         })
         keymap("n", "<leader>fk", builtin.keymaps, {
-            desc = "Find keymaps"
+            desc = "\u{ea83} Find keymaps" --  (key)
         })
 
         -- Git pickers
         keymap("n", "<leader>fc", builtin.git_commits, {
-            desc = "Find git commits"
+            desc = "\u{f1d3} Find git commits" --  (git)
         })
         keymap("n", "<leader>ft", builtin.git_status, {
-            desc = "Find git status"
+            desc = "\u{f126} Find git status" --  (branch)
         })
 
         -- Diagnostic pickers
         keymap("n", "<leader>fd", builtin.diagnostics, {
-            desc = "Find diagnostics"
+            desc = "\u{f658} Find diagnostics" --  (times circle)
         })
     end
 }

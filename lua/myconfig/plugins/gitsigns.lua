@@ -10,22 +10,22 @@ return {
     opts = {
         signs = {
             add = {
-                text = '│'
+                text = "\u{2503}" -- ┃ (thick vertical line)
             },
             change = {
-                text = '│'
+                text = "\u{2503}" -- ┃
             },
             delete = {
-                text = '_'
+                text = "\u{2581}" -- ▁ (lower block)
             },
             topdelete = {
-                text = '‾'
+                text = "\u{2594}" -- ▔ (upper block)
             },
             changedelete = {
-                text = '~'
+                text = "\u{2503}" -- ┃
             },
             untracked = {
-                text = '┆'
+                text = "\u{2507}" -- ┇ (dotted vertical line)
             }
         },
         on_attach = function(bufnr)
@@ -35,29 +35,29 @@ return {
             -- Navigation
             keymap('n', ']c', gs.next_hunk, {
                 buffer = bufnr,
-                desc = "Next git hunk"
+                desc = "\u{f063} Next git hunk" --  (arrow down)
             })
             keymap('n', '[c', gs.prev_hunk, {
                 buffer = bufnr,
-                desc = "Previous git hunk"
+                desc = "\u{f062} Previous git hunk" --  (arrow up)
             })
 
             -- Actions
             keymap('n', '<leader>hs', gs.stage_hunk, {
                 buffer = bufnr,
-                desc = "Stage hunk"
+                desc = "\u{f067} Stage hunk" --  (plus)
             })
             keymap('n', '<leader>hr', gs.reset_hunk, {
                 buffer = bufnr,
-                desc = "Reset hunk"
+                desc = "\u{f0e2} Reset hunk" --  (undo)
             })
             keymap('n', '<leader>hp', gs.preview_hunk, {
                 buffer = bufnr,
-                desc = "Preview hunk"
+                desc = "\u{f06e} Preview hunk" --  (eye)
             })
             keymap('n', '<leader>hb', gs.blame_line, {
                 buffer = bufnr,
-                desc = "Blame line"
+                desc = "\u{f1d3} Blame line" --  (git)
             })
         end
     }

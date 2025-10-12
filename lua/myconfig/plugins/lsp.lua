@@ -14,9 +14,9 @@ return { -- Mason: Package manager for LSP servers
             ui = {
                 border = "rounded",
                 icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗"
+                    package_installed = "\u{2713}", -- ✓
+                    package_pending = "\u{f252}", --  (spinner)
+                    package_uninstalled = "\u{2715}" -- ✕
                 }
             }
         })
@@ -53,6 +53,44 @@ return { -- Mason: Package manager for LSP servers
         end
 
         -- ==========================================================================
+        -- DIAGNOSTIC SIGNS WITH ICONS
+        -- ==========================================================================
+        local signs = {
+            Error = "\u{f658}", --  (times-circle)
+            Warn = "\u{f071}", --  (warning triangle)
+            Hint = "\u{f0eb}", --  (lightbulb)
+            Info = "\u{f05a}" --  (info circle)
+        }
+
+        for type, icon in pairs(signs) do
+            local hl = "DiagnosticSign" .. type
+            vim.fn.sign_define(hl, {
+                text = icon,
+                texthl = hl,
+                numhl = hl
+            })
+        end
+
+        -- ==========================================================================
+        -- DIAGNOSTIC CONFIGURATION
+        -- ==========================================================================
+        vim.diagnostic.config({
+            virtual_text = {
+                prefix = "\u{25cf}" -- ● (filled circle)
+            },
+            signs = true,
+            underline = true,
+            update_in_insert = false,
+            severity_sort = true,
+            float = {
+                border = "rounded",
+                source = "always",
+                header = "",
+                prefix = ""
+            }
+        })
+
+        -- ==========================================================================
         -- LSP KEYBINDINGS
         -- ==========================================================================
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -67,64 +105,64 @@ return { -- Mason: Package manager for LSP servers
                 -- Navigation
                 keymap("n", "gd", vim.lsp.buf.definition,
                     vim.tbl_extend("force", opts, {
-                        desc = "Go to definition"
+                        desc = "\u{f1e5} Go to definition" --  (location arrow)
                     }))
                 keymap("n", "gD", vim.lsp.buf.declaration,
                     vim.tbl_extend("force", opts, {
-                        desc = "Go to declaration"
+                        desc = "\u{f1e5} Go to declaration"
                     }))
                 keymap("n", "gi", vim.lsp.buf.implementation,
                     vim.tbl_extend("force", opts, {
-                        desc = "Go to implementation"
+                        desc = "\u{f121} Go to implementation" --  (code)
                     }))
                 keymap("n", "gr", vim.lsp.buf.references,
                     vim.tbl_extend("force", opts, {
-                        desc = "Show references"
+                        desc = "\u{f126} Show references" --  (branch)
                     }))
 
                 -- Information
                 keymap("n", "K", vim.lsp.buf.hover,
                     vim.tbl_extend("force", opts, {
-                        desc = "Show hover information"
+                        desc = "\u{f059} Show hover" --  (question circle)
                     }))
                 keymap("n", "<C-k>", vim.lsp.buf.signature_help,
                     vim.tbl_extend("force", opts, {
-                        desc = "Show signature help"
+                        desc = "\u{f059} Signature help"
                     }))
 
                 -- Diagnostics
                 keymap("n", "[d", vim.diagnostic.goto_prev,
                     vim.tbl_extend("force", opts, {
-                        desc = "Previous diagnostic"
+                        desc = "\u{f062} Previous diagnostic" --  (arrow up)
                     }))
                 keymap("n", "]d", vim.diagnostic.goto_next,
                     vim.tbl_extend("force", opts, {
-                        desc = "Next diagnostic"
+                        desc = "\u{f063} Next diagnostic" --  (arrow down)
                     }))
                 keymap("n", "<leader>e", vim.diagnostic.open_float,
                     vim.tbl_extend("force", opts, {
-                        desc = "Show diagnostic"
+                        desc = "\u{f05a} Show diagnostic" --  (info)
                     }))
                 keymap("n", "<leader>dl", vim.diagnostic.setloclist,
                     vim.tbl_extend("force", opts, {
-                        desc = "Diagnostic loclist"
+                        desc = "\u{f03a} Diagnostic list" --  (list)
                     }))
 
                 -- Actions
                 keymap({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action,
                     vim.tbl_extend("force", opts, {
-                        desc = "Code action"
+                        desc = "\u{f0eb} Code action" --  (lightbulb)
                     }))
                 keymap("n", "<leader>rn", vim.lsp.buf.rename,
                     vim.tbl_extend("force", opts, {
-                        desc = "Rename symbol"
+                        desc = "\u{f040} Rename" --  (pencil)
                     }))
                 keymap("n", "<leader>fm", function()
                     vim.lsp.buf.format({
                         async = true
                     })
                 end, vim.tbl_extend("force", opts, {
-                    desc = "Format buffer"
+                    desc = "\u{f0c9} Format buffer" --  (align justify)
                 }))
             end
         })
