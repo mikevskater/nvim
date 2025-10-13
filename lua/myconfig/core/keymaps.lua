@@ -91,7 +91,9 @@ if not vim.g.vscode then
     keymap("n", "<leader>q", ":q<CR>", {
         desc = "Quit"
     })
-    keymap("n", "<leader><leader>", ":source %<CR>", {
+    
+    -- Source file (Changed from <leader><leader> to <leader>so)
+    keymap("n", "<leader>so", ":source %<CR>", {
         desc = "Source file"
     })
 
@@ -130,7 +132,9 @@ if not vim.g.vscode then
     keymap("n", "<S-l>", ":bnext<CR>", {
         desc = "Next buffer"
     })
-    keymap("n", "<leader>bd", ":bdelete<CR>", {
+    
+    -- Delete buffer (Changed from <leader>bd to <leader>bx)
+    keymap("n", "<leader>bx", ":bdelete<CR>", {
         desc = "Delete buffer"
     })
 

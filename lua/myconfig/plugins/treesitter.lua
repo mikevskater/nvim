@@ -63,18 +63,6 @@ return { -- Main treesitter plugin
             },
 
             -- ==========================================================================
-            -- AUTO TAG (HTML/JSX/XML)
-            -- ==========================================================================
-            autotag = {
-                enable = true,
-                enable_rename = true,
-                enable_close = true,
-                enable_close_on_slash = true,
-                filetypes = {"html", "javascript", "typescript",
-                             "javascriptreact", "typescriptreact", "vue", "xml"}
-            },
-
-            -- ==========================================================================
             -- INCREMENTAL SELECTION
             -- ==========================================================================
             incremental_selection = {
@@ -132,12 +120,12 @@ return { -- Main treesitter plugin
                 },
 
                 -- ----------------------------------------------------------------------
-                -- SWAP TEXT OBJECTS
+                -- SWAP TEXT OBJECTS (Changed from <leader>a to <leader>s)
                 -- ----------------------------------------------------------------------
                 swap = {
                     enable = true,
                     swap_next = {
-                        ["<leader>a"] = {
+                        ["<leader>sa"] = {
                             query = "@parameter.inner",
                             desc = "Swap with next parameter"
                         },
@@ -147,7 +135,7 @@ return { -- Main treesitter plugin
                         }
                     },
                     swap_previous = {
-                        ["<leader>A"] = {
+                        ["<leader>sA"] = {
                             query = "@parameter.inner",
                             desc = "Swap with previous parameter"
                         },
@@ -181,8 +169,8 @@ return { -- Main treesitter plugin
                             desc = "Next loop start"
                         },
 
-                        -- Conditionals
-                        ["]d"] = {
+                        -- Conditionals (Changed from ]d to ]i)
+                        ["]i"] = {
                             query = "@conditional.outer",
                             desc = "Next conditional start"
                         },
@@ -230,10 +218,13 @@ return { -- Main treesitter plugin
                             query = "@loop.*",
                             desc = "Previous loop start"
                         },
-                        ["[d"] = {
+                        
+                        -- Conditionals (Changed from [d to [i)
+                        ["[i"] = {
                             query = "@conditional.outer",
                             desc = "Previous conditional start"
                         },
+                        
                         ["[a"] = {
                             query = "@parameter.inner",
                             desc = "Previous parameter start"
@@ -400,9 +391,9 @@ return { -- Main treesitter plugin
 -- =============================================================================
 -- New features added:
 --
--- 1. SWAP TEXT OBJECTS:
---    <leader>a  - Swap current parameter with next
---    <leader>A  - Swap current parameter with previous
+-- 1. SWAP TEXT OBJECTS (Changed from <leader>a to <leader>s):
+--    <leader>sa - Swap current parameter with next
+--    <leader>sA - Swap current parameter with previous
 --    <leader>sf - Swap current function with next
 --    <leader>sF - Swap current function with previous
 --
@@ -417,7 +408,7 @@ return { -- Main treesitter plugin
 --    Press keymap twice to enter floating window
 --
 -- 4. ADDITIONAL NAVIGATION:
---    ]d / [d - Next/Previous conditional (if/else/switch)
+--    ]i / [i - Next/Previous conditional (if/else/switch) [CHANGED from ]d/[d]
 --    ]o / [o - Next/Previous loop (for/while)
 --    ]s / [s - Next/Previous scope
 --    ]z / [z - Next/Previous fold
@@ -445,6 +436,6 @@ return { -- Main treesitter plugin
 -- 1. Use ]f to jump to next function
 -- 2. Use daf to delete entire function
 -- 3. Use vif to select inside function
--- 4. Use <leader>a to swap function parameters
+-- 4. Use <leader>sa to swap function parameters
 -- 5. Use ; to repeat the last movement
 -- =============================================================================

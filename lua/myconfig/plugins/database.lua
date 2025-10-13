@@ -51,22 +51,22 @@ return
             -- ==========================================================================
             vim.g.db_ui_icons = {
                 expanded = {
-                    db = "\u{25be} \u{f1c0}", -- ▾  (database)
-                    buffers = "\u{25be} \u{f0c5}", -- ▾  (files)
-                    saved_queries = "\u{25be} \u{f0f6}", -- ▾  (file-text)
-                    schemas = "\u{25be} \u{f1c0}", -- ▾  (database)
-                    schema = "\u{25be} \u{e5ff}", -- ▾  (folder)
-                    tables = "\u{25be} \u{f0ce}", -- ▾  (table)
-                    table = "\u{25be} \u{f0ce}" -- ▾  (table)
+                    db = "▾ \u{f1c0}", -- ▾  (database)
+                    buffers = "▾ \u{f0c5}", -- ▾  (files)
+                    saved_queries = "▾ \u{f0f6}", -- ▾  (file-text)
+                    schemas = "▾ \u{f1c0}", -- ▾  (database)
+                    schema = "▾ \u{e5ff}", -- ▾  (folder)
+                    tables = "▾ \u{f0ce}", -- ▾  (table)
+                    table = "▾ \u{f0ce}" -- ▾  (table)
                 },
                 collapsed = {
-                    db = "\u{25b8} \u{f1c0}", -- ▸ 
-                    buffers = "\u{25b8} \u{f0c5}", -- ▸ 
-                    saved_queries = "\u{25b8} \u{f0f6}", -- ▸ 
-                    schemas = "\u{25b8} \u{f1c0}", -- ▸ 
-                    schema = "\u{25b8} \u{e5ff}", -- ▸ 
-                    tables = "\u{25b8} \u{f0ce}", -- ▸ 
-                    table = "\u{25b8} \u{f0ce}" -- ▸ 
+                    db = "▸ \u{f1c0}", -- ▸ 
+                    buffers = "▸ \u{f0c5}", -- ▸ 
+                    saved_queries = "▸ \u{f0f6}", -- ▸ 
+                    schemas = "▸ \u{f1c0}", -- ▸ 
+                    schema = "▸ \u{e5ff}", -- ▸ 
+                    tables = "▸ \u{f0ce}", -- ▸ 
+                    table = "▸ \u{f0ce}" -- ▸ 
                 },
                 saved_query = "\u{f0f6}", --  (file-text)
                 new_query = "\u{f067}", --  (plus)
@@ -120,26 +120,26 @@ return
         end,
 
         keys = { -- ==========================================================================
-        -- DATABASE UI COMMANDS
+        -- DATABASE UI COMMANDS (Changed from <leader>d to <leader>q)
         -- ==========================================================================
         {
-            "<leader>db",
+            "<leader>qb",
             "<cmd>DBUIToggle<cr>",
             desc = "\u{f1c0} Toggle Database UI"
         }, {
-            "<leader>da",
+            "<leader>qa",
             "<cmd>DBUIAddConnection<cr>",
             desc = "\u{f067} Add Database Connection"
         }, {
-            "<leader>df",
+            "<leader>qf",
             "<cmd>DBUIFindBuffer<cr>",
             desc = "\u{f002} Find Database Buffer"
         }, {
-            "<leader>dr",
+            "<leader>qr",
             "<cmd>DBUIRenameBuffer<cr>",
             desc = "\u{f040} Rename Database Buffer"
         }, {
-            "<leader>dl",
+            "<leader>ql",
             "<cmd>DBUILastQueryInfo<cr>",
             desc = "\u{f05a} Last Query Info"
         }}
@@ -155,7 +155,7 @@ return
 
         init = function()
             -- ==========================================================================
-            -- SQL FILETYPE KEYMAPS (Query Editing)
+            -- SQL FILETYPE KEYMAPS (Query Editing) - Changed to <leader>q prefix
             -- ==========================================================================
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {"sql", "mysql", "plsql"},
@@ -167,29 +167,29 @@ return
                     }
 
                     -- Query Execution
-                    keymap("n", "<leader>dw", "<Plug>(DBUI_SaveQuery)",
+                    keymap("n", "<leader>qw", "<Plug>(DBUI_SaveQuery)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f0c7} Save Query"
                         }))
-                    keymap("n", "<leader>de", "<Plug>(DBUI_EditBindParameters)",
+                    keymap("n", "<leader>qe", "<Plug>(DBUI_EditBindParameters)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f040} Edit Bind Parameters"
                         }))
-                    keymap("n", "<leader>dx", "<Plug>(DBUI_ExecuteQuery)",
+                    keymap("n", "<leader>qx", "<Plug>(DBUI_ExecuteQuery)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f04b} Execute Query"
                         }))
-                    keymap("v", "<leader>dx", "<Plug>(DBUI_ExecuteQuery)",
+                    keymap("v", "<leader>qx", "<Plug>(DBUI_ExecuteQuery)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f04b} Execute Selected Query"
                         }))
 
                     -- Navigation & Selection
-                    keymap("n", "<leader>dS", "<Plug>(DBUI_SelectLineVsplit)",
+                    keymap("n", "<leader>qv", "<Plug>(DBUI_SelectLineVsplit)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f338} Open in Vertical Split"
                         }))
-                    keymap("n", "<leader>dJ", "<Plug>(DBUI_JumpToForeignKey)",
+                    keymap("n", "<leader>qj", "<Plug>(DBUI_JumpToForeignKey)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f0c1} Jump to Foreign Key"
                         }))
@@ -262,24 +262,24 @@ return
     }}
 
 -- =============================================================================
--- DADBOD USAGE GUIDE
+-- DADBOD USAGE GUIDE (UPDATED - <leader>q prefix)
 -- =============================================================================
 -- Getting Started:
 -- 1. Install required CLI tools (sqlcmd, mysql, bq)
--- 2. Add connections via :DBUIAddConnection or <leader>da
--- 3. Open DBUI with <leader>db
+-- 2. Add connections via :DBUIAddConnection or <leader>qa
+-- 3. Open DBUI with <leader>qb
 --
--- Custom Keymaps (Leader-based):
--- <leader>db - Toggle Database UI drawer
--- <leader>da - Add new database connection
--- <leader>df - Find database buffer
--- <leader>dr - Rename database buffer
--- <leader>dl - Show last query info
--- <leader>dw - Save query permanently
--- <leader>de - Edit bind parameters
--- <leader>dx - Execute query (normal or visual)
--- <leader>dS - Open in vertical split
--- <leader>dJ - Jump to foreign key
+-- Custom Keymaps (Leader-based) - NOW USING <leader>q:
+-- <leader>qb - Toggle Database UI drawer
+-- <leader>qa - Add new database connection
+-- <leader>qf - Find database buffer
+-- <leader>qr - Rename database buffer
+-- <leader>ql - Show last query info
+-- <leader>qw - Save query permanently
+-- <leader>qe - Edit bind parameters
+-- <leader>qx - Execute query (normal or visual)
+-- <leader>qv - Open in vertical split
+-- <leader>qj - Jump to foreign key
 --
 -- DBUI Drawer Navigation (buffer-local):
 -- o / <CR>   - Open/Toggle database, schema, or table
@@ -292,8 +292,8 @@ return
 --
 -- Query Execution:
 -- :w in query buffer  - Execute query and show results
--- <leader>dx (normal) - Execute entire query buffer
--- <leader>dx (visual) - Execute selected query
+-- <leader>qx (normal) - Execute entire query buffer
+-- <leader>qx (visual) - Execute selected query
 --
 -- Results Window (dbout buffer):
 -- R          - Rerun last query
@@ -320,7 +320,7 @@ return
 -- 1. Use :DBUIAddConnection to avoid committing credentials
 -- 2. Saved queries are stored in ~/.local/share/db_ui/
 -- 3. Use table helpers (right-click tables) for quick queries
--- 4. Bind parameters with :param_name in queries, edit with <leader>de
+-- 4. Bind parameters with :param_name in queries, edit with <leader>qe
 -- 5. For Azure AD auth, you may need go-sqlcmd instead of standard sqlcmd
 --
 -- Troubleshooting:

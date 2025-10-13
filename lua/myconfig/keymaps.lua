@@ -1,6 +1,6 @@
 -- ~\AppData\Local\nvim\lua\myconfig\keymaps.lua
 -- =============================================================================
--- KEYMAPS - Custom Keyboard Shortcuts
+-- KEYMAPS - Custom Keyboard Shortcuts (UPDATED DOCUMENTATION)
 -- =============================================================================
 -- vim.keymap.set() is the modern Lua way to set keybindings
 -- Format: vim.keymap.set(mode, keys, command, options)
@@ -110,7 +110,7 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", {
 })
 
 -- =============================================================================
--- BUFFER NAVIGATION
+-- BUFFER NAVIGATION (UPDATED)
 -- =============================================================================
 
 keymap("n", "<S-h>", ":bprevious<CR>", {
@@ -119,12 +119,14 @@ keymap("n", "<S-h>", ":bprevious<CR>", {
 keymap("n", "<S-l>", ":bnext<CR>", {
     desc = "\u{f054} Next buffer" --  (chevron right)
 })
-keymap("n", "<leader>bd", ":bdelete<CR>", {
+
+-- Delete buffer (Changed from <leader>bd to <leader>bx)
+keymap("n", "<leader>bx", ":bdelete<CR>", {
     desc = "\u{f00d} Delete buffer" --  (close)
 })
 
 -- =============================================================================
--- QUICK ACTIONS
+-- QUICK ACTIONS (UPDATED)
 -- =============================================================================
 
 -- Save file
@@ -137,8 +139,8 @@ keymap("n", "<leader>q", ":q<CR>", {
     desc = "\u{f2d1} Quit" --  (window close)
 })
 
--- Source current file (reload config)
-keymap("n", "<leader><leader>", ":source %<CR>", {
+-- Source current file (Changed from <leader><leader> to <leader>so)
+keymap("n", "<leader>so", ":source %<CR>", {
     desc = "\u{f021} Source file" --  (refresh/reload)
 })
 
@@ -177,9 +179,14 @@ keymap("t", "<Esc><Esc>", "<C-\\><C-n>", {
 })
 
 -- =============================================================================
--- Notes:
+-- NOTES (UPDATED):
+-- =============================================================================
+-- Changes from conflict resolution:
+-- - Buffer delete: <leader>bd → <leader>bx (avoid conflict with bufferline sort)
+-- - Source file: <leader><leader> → <leader>so (resume telescope uses <leader><leader>)
 -- - All keymaps have descriptions (shows up in which-key plugin)
--- - These are based on ThePrimeagen's workflow but you should customize them!
--- - To see what a key does: :map <key>
--- - To unmap a key: :unmap <key>
+-- - Based on ThePrimeagen's workflow with improvements
+-- 
+-- To see what a key does: :map <key>
+-- To unmap a key: :unmap <key>
 -- =============================================================================

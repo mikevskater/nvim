@@ -12,17 +12,13 @@ return {
         -- ==========================================================================
         -- PRESET LAYOUT
         -- ==========================================================================
-        -- "classic" - Traditional which-key layout
-        -- "modern"  - Cleaner, more spacious layout
-        -- "helix"   - Helix-editor style layout
         preset = "modern",
 
         -- ==========================================================================
         -- DELAY CONFIGURATION
         -- ==========================================================================
-        -- Delay before showing popup (in ms)
         delay = function(ctx)
-            return ctx.plugin and 0 or 200 -- No delay for plugins, 200ms for user
+            return ctx.plugin and 0 or 200
         end,
 
         -- ==========================================================================
@@ -30,7 +26,7 @@ return {
         -- ==========================================================================
         icons = {
             breadcrumb = "\u{00bb}", -- »
-            separator = " ", -- "\u{27a1}", -- ➡
+            separator = " ",
             group = "\u{002b}" -- +
         },
 
@@ -38,23 +34,22 @@ return {
         -- PLUGINS & PRESETS
         -- ==========================================================================
         plugins = {
-            marks = true, -- Show marks in which-key
-            registers = true, -- Show registers in which-key
+            marks = true,
+            registers = true,
 
             spelling = {
                 enabled = true,
                 suggestions = 20
             },
 
-            -- Built-in help for common Vim bindings
             presets = {
-                operators = true, -- Help for d, y, c, etc.
-                motions = true, -- Help for w, b, e, etc.
-                text_objects = true, -- Help for i, a text objects
-                windows = true, -- Help for <C-w> bindings
-                nav = true, -- Misc window navigation
-                z = true, -- Bindings for folds, spelling, etc.
-                g = true -- Bindings starting with g
+                operators = true,
+                motions = true,
+                text_objects = true,
+                windows = true,
+                nav = true,
+                z = true,
+                g = true
             }
         },
 
@@ -62,13 +57,12 @@ return {
         -- WINDOW OPTIONS
         -- ==========================================================================
         win = {
-            border = "rounded", -- rounded, single, double, shadow, none
-            padding = {1, 2}, -- [top/bottom, left/right]
-            title = true, -- Show title
-            title_pos = "center", -- left, center, right
+            border = "rounded",
+            padding = {1, 2},
+            title = true,
+            title_pos = "center",
             zindex = 1000,
 
-            -- Window transparency (0-100)
             wo = {
                 winblend = 0
             }
@@ -81,553 +75,207 @@ return {
             width = {
                 min = 20
             },
-            spacing = 3 -- Spacing between columns
+            spacing = 3
         },
 
         -- ==========================================================================
-        -- KEY GROUP DEFINITIONS (NEW SPEC FORMAT)
+        -- KEY GROUP DEFINITIONS (UPDATED)
         -- ==========================================================================
-        spec = { -- File/Find operations (Telescope)
+        spec = { 
+        -- ==========================================================================
+        -- FIND/TELESCOPE OPERATIONS
+        -- ==========================================================================
         {
             "<leader>f",
             group = "Find (Telescope)",
             icon = {
-                icon = "\u{f002}", --  (search)
+                icon = "\u{f002}",
                 color = "blue"
             }
-        }, -- Git operations (Fugitive)
+        },
+        
+        -- Telescope Git subgroup (Changed from <leader>g to <leader>fg)
         {
-            "<leader>g",
-            group = "Git",
-            icon = {
-                icon = "\u{f1d3}", --  (git logo)
-                color = "orange"
-            }
-        }, -- Git subcommands (documented individually for clarity)
-        {
-            "<leader>gs",
-            desc = "\u{f1d3} Git Status", --  (git logo)
+            "<leader>fg",
+            group = "Find Git",
             icon = {
                 icon = "\u{f1d3}",
                 color = "orange"
             }
+        },
+        {
+            "<leader>fgc",
+            desc = "\u{f1d3} Find git commits"
+        },
+        {
+            "<leader>fgs",
+            desc = "\u{f126} Find git status"
+        },
+        {
+            "<leader>fgb",
+            desc = "\u{f126} Find git branches"
+        },
+        {
+            "<leader>fgS",
+            desc = "\u{f01c} Find git stash"
+        },
+        {
+            "<leader>fgC",
+            desc = "\u{f1d3} Find buffer commits"
+        },
+
+        -- ==========================================================================
+        -- GIT OPERATIONS (Fugitive - keeping <leader>g)
+        -- ==========================================================================
+        {
+            "<leader>g",
+            group = "Git",
+            icon = {
+                icon = "\u{f1d3}",
+                color = "orange"
+            }
+        },
+        {
+            "<leader>gs",
+            desc = "\u{f1d3} Git Status"
         }, {
             "<leader>gc",
-            desc = "\u{f044} Commit", --  (edit)
-            icon = {
-                icon = "\u{f044}",
-                color = "green"
-            }
+            desc = "\u{f044} Commit"
         }, {
             "<leader>gC",
-            desc = "\u{f044} Commit Amend", --  (edit)
-            icon = {
-                icon = "\u{f044}",
-                color = "yellow"
-            }
+            desc = "\u{f044} Commit Amend"
         }, {
             "<leader>gp",
-            desc = "\u{f062} Push", --  (arrow up)
-            icon = {
-                icon = "\u{f062}",
-                color = "blue"
-            }
+            desc = "\u{f062} Push"
         }, {
             "<leader>gP",
-            desc = "\u{f063} Pull", --  (arrow down)
-            icon = {
-                icon = "\u{f063}",
-                color = "cyan"
-            }
+            desc = "\u{f063} Pull"
         }, {
             "<leader>gf",
-            desc = "\u{f01e} Fetch", --  (refresh)
-            icon = {
-                icon = "\u{f01e}",
-                color = "azure"
-            }
+            desc = "\u{f01e} Fetch"
         }, {
             "<leader>gd",
-            desc = "\u{f04b} Diff Split", --  (code branch)
-            icon = {
-                icon = "\u{f04b}",
-                color = "yellow"
-            }
+            desc = "\u{f04b} Diff Split"
         }, {
             "<leader>gD",
-            desc = "\u{f338} Diff VSplit", --  (columns)
-            icon = {
-                icon = "\u{f338}",
-                color = "yellow"
-            }
+            desc = "\u{f338} Diff VSplit"
         }, {
             "<leader>gv",
-            desc = "\u{f0e8} 3-way Merge", --  (sitemap)
-            icon = {
-                icon = "\u{f0e8}",
-                color = "red"
-            }
+            desc = "\u{f0e8} 3-way Merge"
         }, {
             "<leader>gb",
-            desc = "\u{f05a} Blame", --  (info)
-            icon = {
-                icon = "\u{f05a}",
-                color = "purple"
-            }
+            desc = "\u{f05a} Blame"
         }, {
             "<leader>gl",
-            desc = "\u{f1da} Log", --  (history)
-            icon = {
-                icon = "\u{f1da}",
-                color = "cyan"
-            }
+            desc = "\u{f1da} Log"
         }, {
             "<leader>gL",
-            desc = "\u{f1da} Log Pretty", --  (history)
-            icon = {
-                icon = "\u{f1da}",
-                color = "cyan"
-            }
+            desc = "\u{f1da} Log Pretty"
         }, {
             "<leader>go",
-            desc = "\u{f1da} Log (File)", --  (history)
-            icon = {
-                icon = "\u{f1da}",
-                color = "azure"
-            }
+            desc = "\u{f1da} Log (File)"
         }, {
             "<leader>gr",
-            desc = "\u{f021} Read (Checkout)", --  (refresh)
-            icon = {
-                icon = "\u{f021}",
-                color = "red"
-            }
+            desc = "\u{f021} Read (Checkout)"
         }, {
             "<leader>gw",
-            desc = "\u{f067} Write (Stage)", --  (plus)
-            icon = {
-                icon = "\u{f067}",
-                color = "green"
-            }
+            desc = "\u{f067} Write (Stage)"
         }, {
             "<leader>ga",
-            desc = "\u{f067} Add All", --  (plus)
-            icon = {
-                icon = "\u{f067}",
-                color = "green"
-            }
+            desc = "\u{f067} Add All"
         }, {
             "<leader>gS",
-            desc = "\u{f187} Stash", --  (archive)
-            icon = {
-                icon = "\u{f187}",
-                color = "grey"
-            }
+            desc = "\u{f187} Stash"
         }, {
             "<leader>gA",
-            desc = "\u{f187} Stash Apply", --  (archive)
-            icon = {
-                icon = "\u{f187}",
-                color = "green"
-            }
+            desc = "\u{f187} Stash Apply"
         }, {
             "<leader>gZ",
-            desc = "\u{f187} Stash Pop", --  (archive)
-            icon = {
-                icon = "\u{f187}",
-                color = "cyan"
-            }
+            desc = "\u{f187} Stash Pop"
         }, {
             "<leader>gm",
-            desc = "\u{f0b2} Move/Rename", --  (arrows)
-            icon = {
-                icon = "\u{f0b2}",
-                color = "yellow"
-            }
+            desc = "\u{f0b2} Move/Rename"
         }, {
             "<leader>gx",
-            desc = "\u{f1f8} Delete File", --  (trash)
-            icon = {
-                icon = "\u{f1f8}",
-                color = "red"
-            }
+            desc = "\u{f1f8} Delete File"
         }, {
             "<leader>gB",
-            desc = "\u{f0ac} Browse Web", --  (globe)
-            icon = {
-                icon = "\u{f0ac}",
-                color = "blue"
-            }
+            desc = "\u{f0ac} Browse Web"
         }, {
             "<leader>gg",
-            desc = "\u{f002} Grep", --  (search)
-            icon = {
-                icon = "\u{f002}",
-                color = "azure"
-            }
+            desc = "\u{f002} Grep"
         }, {
             "<leader>gn",
-            desc = "\u{f126} New Branch", --  (code branch)
-            icon = {
-                icon = "\u{f126}",
-                color = "green"
-            }
+            desc = "\u{f126} New Branch"
         }, {
             "<leader>gt",
-            desc = "\u{f126} Checkout Branch", --  (code branch)
+            desc = "\u{f126} Checkout Branch"
+        },
+
+        -- ==========================================================================
+        -- GIT HUNKS (Changed from <leader>h to gh)
+        -- ==========================================================================
+        {
+            "gh",
+            group = "Git Hunks",
             icon = {
                 icon = "\u{f126}",
                 color = "orange"
             }
-        }, -- Git hunks (from gitsigns)
-        {
-            "<leader>h",
-            group = "Git Hunks",
-            icon = {
-                icon = "\u{f126}", --  (branch/fork)
-                color = "orange"
-            }
-        }, -- Debug/Diagnostics (NOTE: <leader>d is overloaded - used for both Debug and Database)
-        -- Database plugin takes priority for <leader>db, <leader>df, <leader>dr, etc.
-        -- To see debug options, use <leader>ds (step) or other debug-specific prefixes
-        {
-            "<leader>d",
-            group = "Database/Debug",
-            icon = {
-                icon = "\u{f1c0}", --  (database icon, since database is more commonly used)
-                color = "azure"
-            }
-        }, -- Database subgroup (takes precedence when DBUI is active)
-        {
-            "<leader>db",
-            desc = "\u{f1c0} Toggle Database UI", -- Specific binding, not a group
-            icon = {
-                icon = "\u{f1c0}", --  (database)
-                color = "azure"
-            }
-        }, {
-            "<leader>da",
-            desc = "\u{f067} Add Connection" -- Specific database binding
-        }, {
-            "<leader>df",
-            desc = "\u{f002} Find Database Buffer" -- Specific database binding
-        }, {
-            "<leader>dw",
-            desc = "\u{f0c7} Save Query" -- Specific database binding (SQL buffers)
-        }, {
-            "<leader>dx",
-            desc = "\u{f04b} Execute Query" -- Specific database binding (SQL buffers)
-        }, {
-            "<leader>dS",
-            desc = "\u{f338} Open in Vertical Split" -- Specific database binding
-        }, {
-            "<leader>dJ",
-            desc = "\u{f0c1} Jump to Foreign Key" -- Specific database binding
-        }, -- Debug subgroups (use these when debugging)
-        {
-            "<leader>ds",
-            group = "Step",
-            icon = {
-                icon = "\u{f04b}", --  (play)
-                color = "green"
-            }
-        }, {
-            "<leader>du",
-            group = "UI",
-            icon = {
-                icon = "\u{f2d0}", --  (window)
-                color = "cyan"
-            }
-        }, -- Code actions
-        {
-            "<leader>c",
-            group = "Code",
-            icon = {
-                icon = "\u{f121}", --  (code)
-                color = "cyan"
-            }
-        }, -- Buffer operations
-        {
-            "<leader>b",
-            group = "Buffer",
-            icon = {
-                icon = "\u{f0c5}", --  (files)
-                color = "yellow"
-            }
-        }, -- Window/split operations
-        {
-            "<leader>w",
-            group = "Window",
-            icon = {
-                icon = "\u{f2d0}", --  (window)
-                color = "green"
-            }
-        }, -- LSP operations
-        {
-            "<leader>l",
-            group = "LSP",
-            icon = {
-                icon = "\u{f085}", --  (gears)
-                color = "purple"
-            }
-        }, -- Flash/Jump operations (extended)
-        {
-            "<leader>j",
-            group = "Jump (Flash)",
-            icon = {
-                icon = "\u{26a1}", -- ⚡ (lightning bolt)
-                color = "cyan"
-            }
-        }, {
-            "<leader>jl",
-            desc = "\u{f0c9} Jump to Line" --  (list)
-        }, {
-            "<leader>jw",
-            desc = "\u{f031} Jump to Word" --  (text)
-        }, {
-            "<leader>jc",
-            desc = "\u{f021} Continue Last Jump" --  (refresh/repeat)
-        }, {
-            "<leader>jd",
-            desc = "\u{f188} Jump to Diagnostic" --  (bug)
         },
-        -- ==========================================================================
-        -- UNDOTREE - Undo History Visualization
-        -- ==========================================================================
-
-        -- F5 keymap (canonical/official)
-        {
-            "<F4>",
-            desc = "\u{f1da} Toggle Undotree", --  (history)
-            icon = {
-                icon = "\u{f1da}",
-                color = "purple"
-            }
-        }, -- Leader-based toggle (your existing keymap, updated icon)
-        {
-            "<leader>u",
-            desc = "\u{f1da} Toggle Undotree", --  (history)
-            icon = {
-                icon = "\u{f1da}",
-                color = "purple"
-            }
-        }, -- Undotree subgroup (optional, for additional commands)
-        {
-            "<leader>u",
-            group = "Undotree",
-            icon = {
-                icon = "\u{f1da}", --  (history)
-                color = "purple"
-            }
-        }, -- Undotree subcommands
-        {
-            "<leader>uf",
-            desc = "\u{f002} Focus Undotree", --  (search/focus)
-            icon = {
-                icon = "\u{f002}",
-                color = "azure"
-            }
-        }, {
-            "<leader>us",
-            desc = "\u{f06e} Show Undotree", --  (eye)
-            icon = {
-                icon = "\u{f06e}",
-                color = "green"
-            }
-        }, {
-            "<leader>uh",
-            desc = "\u{f070} Hide Undotree", --  (eye-slash)
-            icon = {
-                icon = "\u{f070}",
-                color = "grey"
-            }
-        },
-        -- ==========================================================================
-        -- AUTOPAIRS - Auto-close Brackets/Quotes
-        -- ==========================================================================
-
-        -- Main autopairs group
-        {
-            "<leader>a",
-            group = "Auto-pairs",
-            icon = {
-                icon = "\u{f0c1}", --  (link/chain - represents pairing)
-                color = "cyan"
-            }
-        }, -- Toggle auto-pairs
-        {
-            "<leader>ap",
-            desc = "\u{f074} Toggle Auto-pairs", --  (random/shuffle)
-            icon = {
-                icon = "\u{f074}",
-                color = "yellow"
-            }
-        }, -- Enable auto-pairs
-        {
-            "<leader>ape",
-            desc = "\u{f00c} Enable Auto-pairs", --  (check mark)
-            icon = {
-                icon = "\u{f00c}",
-                color = "green"
-            }
-        }, -- Disable auto-pairs
-        {
-            "<leader>apd",
-            desc = "\u{f00d} Disable Auto-pairs", --  (times/x)
-            icon = {
-                icon = "\u{f00d}",
-                color = "red"
-            }
-        }, -- Fast wrap (insert mode - documented for reference)
-        {
-            mode = "i",
-            {
-                "<M-e>",
-                desc = "\u{f0c1} Fast Wrap", --  (link/chain)
-                icon = {
-                    icon = "\u{f0c1}",
-                    color = "cyan"
-                }
-            }
-        },
-        -- ==========================================================================
-        -- COMPLETION (BLINK.CMP) - Insert Mode Reference
-        -- ==========================================================================
-        -- Note: These are insert mode mappings, shown here for documentation
-        {
-            mode = {"i"},
-            {
-                "<CR>",
-                desc = "\u{f00c} Accept completion" -- ✓ (check)
-            },
-            {
-                "<C-y>",
-                desc = "\u{f00c} Select and accept" -- ✓
-            },
-            {
-                "<C-l>",
-                desc = "\u{f00c} Accept (alt)" -- ✓
-            },
-            {
-                "<C-space>",
-                desc = "\u{f05a} Show documentation" -- ℹ (info)
-            },
-            {
-                "<C-e>",
-                desc = "\u{f00d} Hide completion" -- ✕ (close)
-            },
-            {
-                "<C-g>",
-                desc = "\u{f05e} Cancel completion" -- ⛔ (ban)
-            },
-            {
-                "<C-b>",
-                desc = "\u{f062} Scroll docs up" -- ↑ (arrow up)
-            },
-            {
-                "<C-f>",
-                desc = "\u{f063} Scroll docs down" -- ↓ (arrow down)
-            },
-            {
-                "<C-k>",
-                desc = "\u{f059} Signature help" -- ❓ (question)
-            },
-            {
-                "<M-k>",
-                desc = "\u{f062} Scroll signature up" -- ↑
-            },
-            {
-                "<M-j>",
-                desc = "\u{f063} Scroll signature down" -- ↓
-            },
-            {
-                "<Tab>",
-                desc = "\u{f061} Next snippet/item" -- → (arrow right)
-            },
-            {
-                "<S-Tab>",
-                desc = "\u{f060} Prev snippet/item" -- ← (arrow left)
-            }
-        }, -- Grouping (optional - for organization in which-key display)
-        {
-            group = "Completion",
-            icon = {
-                icon = "\u{f0c7}", -- 💾 (save/complete)
-                color = "green"
-            }
-        },
-        -- ==========================================================================
-        -- GIT SIGNS - Git Decorations
-        -- ==========================================================================
-        {
-            "<leader>h",
-            group = "Git Hunks",
-            icon = {
-                icon = "\u{f126}", --  (branch/fork)
-                color = "orange"
-            }
-        }, -- Individual hunk keymaps
         {
             mode = {"n", "v"},
             {
-                "<leader>hs",
+                "ghs",
                 desc = "\u{f067} Stage hunk"
             },
             {
-                "<leader>hr",
+                "ghr",
                 desc = "\u{f0e2} Reset hunk"
             }
-        }, -- Normal mode only
+        },
         {
-            "<leader>hS",
+            "ghS",
             desc = "\u{f067} Stage buffer"
         }, {
-            "<leader>hR",
+            "ghR",
             desc = "\u{f0e2} Reset buffer"
         }, {
-            "<leader>hU",
+            "ghU",
             desc = "\u{f0e2} Unstage buffer"
         }, {
-            "<leader>hu",
+            "ghu",
             desc = "\u{f0e2} Undo stage hunk"
         }, {
-            "<leader>hp",
+            "ghp",
             desc = "\u{f06e} Preview hunk"
         }, {
-            "<leader>hi",
+            "ghi",
             desc = "\u{f06e} Preview inline"
         }, {
-            "<leader>hd",
+            "ghd",
             desc = "\u{f1e5} Diff this"
         }, {
-            "<leader>hD",
+            "ghD",
             desc = "\u{f1e5} Diff against ~"
         }, {
-            "<leader>hb",
+            "ghb",
             desc = "\u{f1d3} Blame line"
         }, {
-            "<leader>hq",
-            desc = "\u{f03a} Hunks to quickfix"
-        }, {
-            "<leader>hl",
-            desc = "\u{f03a} Hunks to loclist"
-        }, -- Toggle group
-        {
-            "<leader>t",
-            group = "Toggle",
-            icon = {
-                icon = "\u{f204}", --  (toggle-on)
-                color = "cyan"
-            }
-        }, {
-            "<leader>tb",
+            "ght",
             desc = "\u{f1d3} Toggle line blame"
         }, {
-            "<leader>td",
+            "ghx",
             desc = "\u{f06e} Toggle deleted"
+        }, {
+            "ghq",
+            desc = "\u{f03a} Hunks to quickfix"
+        }, {
+            "ghl",
+            desc = "\u{f03a} Hunks to loclist"
         },
 
-        -- Navigation hints (these work automatically but can add to which-key for visibility)
+        -- Navigation hints
         {
             mode = "n",
             {
@@ -647,41 +295,326 @@ return {
                 desc = "\u{f062} First hunk"
             }
         },
+
         -- ==========================================================================
-        -- OIL.NVIM - File Explorer as Buffer
+        -- HARPOON (Keeping <leader>h)
         -- ==========================================================================
         {
-            "<leader>o",
-            group = "Oil",
+            "<leader>h",
+            group = "Harpoon",
             icon = {
-                icon = "\u{f07c}", --  (folder open)
+                icon = "\u{f02e}",
+                color = "azure"
+            }
+        },
+        {
+            "<leader>h",
+            desc = "\u{f03a} Toggle Harpoon menu"
+        },
+        {
+            "<leader>ha",
+            desc = "\u{f02e} Add file to Harpoon"
+        },
+        {
+            "<leader>hp",
+            desc = "\u{f060} Previous Harpoon file"
+        }, {
+            "<leader>hn",
+            desc = "\u{f061} Next Harpoon file"
+        },
+        {
+            "<leader>h1",
+            desc = "\u{2780} Harpoon File 1"
+        }, {
+            "<leader>h2",
+            desc = "\u{2781} Harpoon File 2"
+        }, {
+            "<leader>h3",
+            desc = "\u{2782} Harpoon File 3"
+        }, {
+            "<leader>h4",
+            desc = "\u{2783} Harpoon File 4"
+        }, {
+            "<leader>h5",
+            desc = "\u{2784} Harpoon File 5"
+        }, {
+            "<leader>h6",
+            desc = "\u{2785} Harpoon File 6"
+        }, {
+            "<leader>h7",
+            desc = "\u{2786} Harpoon File 7"
+        }, {
+            "<leader>h8",
+            desc = "\u{2787} Harpoon File 8"
+        }, {
+            "<leader>h9",
+            desc = "\u{2788} Harpoon File 9"
+        },
+
+        -- ==========================================================================
+        -- DATABASE (Changed from <leader>d to <leader>q)
+        -- ==========================================================================
+        {
+            "<leader>q",
+            group = "Database/Query",
+            icon = {
+                icon = "\u{f1c0}",
+                color = "azure"
+            }
+        },
+        {
+            "<leader>qb",
+            desc = "\u{f1c0} Toggle Database UI"
+        }, {
+            "<leader>qa",
+            desc = "\u{f067} Add Connection"
+        }, {
+            "<leader>qf",
+            desc = "\u{f002} Find Database Buffer"
+        }, {
+            "<leader>qr",
+            desc = "\u{f040} Rename Database Buffer"
+        }, {
+            "<leader>ql",
+            desc = "\u{f05a} Last Query Info"
+        }, {
+            "<leader>qw",
+            desc = "\u{f0c7} Save Query"
+        }, {
+            "<leader>qx",
+            desc = "\u{f04b} Execute Query"
+        }, {
+            "<leader>qe",
+            desc = "\u{f040} Edit Bind Parameters"
+        }, {
+            "<leader>qv",
+            desc = "\u{f338} Open in Vertical Split"
+        }, {
+            "<leader>qj",
+            desc = "\u{f0c1} Jump to Foreign Key"
+        },
+
+        -- ==========================================================================
+        -- DEBUG (Keeping <leader>d)
+        -- ==========================================================================
+        {
+            "<leader>d",
+            group = "Debug (DAP)",
+            icon = {
+                icon = "\u{f188}",
+                color = "red"
+            }
+        },
+        {
+            "<leader>dc",
+            desc = "\u{f04b} Continue"
+        },
+        {
+            "<leader>dC",
+            desc = "\u{f0a4} Run to Cursor"
+        },
+        {
+            "<leader>dR",
+            desc = "\u{f01e} Restart Session"
+        },
+        {
+            "<leader>dp",
+            desc = "\u{f04c} Pause"
+        },
+        {
+            "<leader>dt",
+            desc = "\u{f04d} Terminate"
+        },
+        {
+            "<leader>db",
+            desc = "\u{f111} Toggle Breakpoint"
+        },
+        {
+            "<leader>dB",
+            desc = "\u{f059} Conditional Breakpoint"
+        },
+        {
+            "<leader>dL",
+            desc = "\u{f05a} Log Point"
+        },
+        {
+            "<leader>du",
+            desc = "\u{f2d0} Toggle UI"
+        },
+        {
+            "<leader>df",
+            desc = "\u{f2d2} Float Element"
+        },
+        {
+            mode = {"n", "v"},
+            {
+                "<leader>de",
+                desc = "\u{f06e} Eval Expression"
+            }
+        },
+        {
+            "<leader>dE",
+            desc = "\u{f120} Eval (Prompt)"
+        },
+        {
+            "<leader>dh",
+            desc = "\u{f05a} Hover Info"
+        },
+        {
+            "<leader>dr",
+            desc = "\u{f120} Open REPL"
+        },
+        {
+            "<leader>dl",
+            desc = "\u{f04b} Run Last Config"
+        },
+
+        -- Debug step subgroup
+        {
+            "<leader>ds",
+            group = "Step",
+            icon = {
+                icon = "\u{f04b}",
+                color = "green"
+            }
+        },
+        {
+            "<leader>dso",
+            desc = "\u{f063} Step Over"
+        },
+        {
+            "<leader>dsi",
+            desc = "\u{f062} Step Into"
+        },
+        {
+            "<leader>dsO",
+            desc = "\u{f062} Step Out"
+        },
+        {
+            "<leader>dsb",
+            desc = "\u{f04a} Step Back"
+        },
+
+        -- ==========================================================================
+        -- SWAP/REPLACE (Changed treesitter from <leader>a to <leader>s)
+        -- ==========================================================================
+        {
+            "<leader>s",
+            group = "Swap/Replace",
+            icon = {
+                icon = "\u{f0ec}",
                 color = "yellow"
             }
-        }, -- Individual Oil keymaps (ADDED)
-        {
-            "<leader>o",
-            desc = "\u{f07c} Oil (current file)" --  (folder open)
-        }, {
-            "<leader>O",
-            desc = "\u{f07b} Oil (cwd)" --  (folder)
-        }, {
-            "-",
-            desc = "\u{f07c} Parent directory" --  (folder open)
-        }, {
-            "<leader>-",
-            desc = "\u{f2d2} Oil float" --  (window maximize)
         },
+        {
+            "<leader>s",
+            desc = "\u{f002} Replace word under cursor"
+        },
+        {
+            "<leader>sa",
+            desc = "\u{f362} Swap next parameter"
+        },
+        {
+            "<leader>sA",
+            desc = "\u{f361} Swap prev parameter"
+        },
+        {
+            "<leader>sf",
+            desc = "\u{f362} Swap next function"
+        },
+        {
+            "<leader>sF",
+            desc = "\u{f361} Swap prev function"
+        },
+        {
+            "<leader>so",
+            desc = "\u{f021} Source file"
+        },
+
         -- ==========================================================================
-        -- LSP GROUP DEFINITIONS
+        -- CODE ACTIONS
         -- ==========================================================================
+        {
+            "<leader>c",
+            group = "Code",
+            icon = {
+                icon = "\u{f121}",
+                color = "cyan"
+            }
+        },
+
+        -- ==========================================================================
+        -- BUFFER OPERATIONS (Updated delete to <leader>bx)
+        -- ==========================================================================
+        {
+            "<leader>b",
+            group = "Buffer",
+            icon = {
+                icon = "\u{f0c5}",
+                color = "yellow"
+            }
+        },
+        {
+            "<leader>bx",
+            desc = "\u{f00d} Delete buffer"
+        },
+        {
+            "<leader>bd",
+            desc = "\u{f07b} Sort by directory"
+        },
+
+        -- ==========================================================================
+        -- WINDOW/WORKSPACE MANAGEMENT
+        -- ==========================================================================
+        {
+            "<leader>w",
+            group = "Workspace/Window",
+            icon = {
+                icon = "\u{f0b1}",
+                color = "purple"
+            }
+        },
+        {
+            "<leader>w",
+            desc = "\u{f0c7} Save file"
+        },
+        {
+            "<leader>ws",
+            desc = "\u{f002} Workspace symbols"
+        },
+        {
+            "<leader>wa",
+            desc = "\u{f067} Add workspace folder"
+        },
+        {
+            "<leader>wr",
+            desc = "\u{f068} Remove workspace folder"
+        },
+        {
+            "<leader>wl",
+            desc = "\u{f03a} List workspace folders"
+        },
+
+        -- ==========================================================================
+        -- LSP OPERATIONS
+        -- ==========================================================================
+        {
+            "<leader>l",
+            group = "LSP",
+            icon = {
+                icon = "\u{f085}",
+                color = "purple"
+            }
+        },
         {
             "gr",
             group = "LSP (Go/References)",
             icon = {
-                icon = "\u{f1e5}", --  (location arrow)
+                icon = "\u{f1e5}",
                 color = "cyan"
             }
-        }, {
+        },
+        {
             mode = {"n"},
             {
                 "gri",
@@ -703,50 +636,114 @@ return {
                 "grn",
                 desc = "\u{f040} Rename"
             }
-        }, -- LSP Workspace operations
+        },
+
+        -- ==========================================================================
+        -- FLASH/JUMP OPERATIONS
+        -- ==========================================================================
         {
-            "<leader>w",
-            group = "Workspace/Window",
+            "<leader>j",
+            group = "Jump (Flash)",
             icon = {
-                icon = "\u{f0b1}", --  (briefcase)
-                color = "purple"
+                icon = "\u{26a1}",
+                color = "cyan"
             }
+        },
+        {
+            "<leader>jl",
+            desc = "\u{f0c9} Jump to Line"
+        },
+        {
+            "<leader>jw",
+            desc = "\u{f031} Jump to Word"
+        },
+        {
+            "<leader>jc",
+            desc = "\u{f021} Continue Last Jump"
+        },
+        {
+            "<leader>jd",
+            desc = "\u{f188} Jump to Diagnostic"
+        },
+
+        -- ==========================================================================
+        -- UNDOTREE
+        -- ==========================================================================
+        {
+            "<F4>",
+            desc = "\u{f1da} Toggle Undotree"
+        },
+        {
+            "<leader>u",
+            desc = "\u{f1da} Toggle Undotree"
+        },
+        {
+            "<leader>uf",
+            desc = "\u{f002} Focus Undotree"
+        },
+        {
+            "<leader>us",
+            desc = "\u{f06e} Show Undotree"
+        },
+        {
+            "<leader>uh",
+            desc = "\u{f070} Hide Undotree"
+        },
+
+        -- ==========================================================================
+        -- AUTO-PAIRS
+        -- ==========================================================================
+        {
+            "<leader>ap",
+            desc = "\u{f074} Toggle Auto-pairs"
+        },
+        {
+            "<leader>ape",
+            desc = "\u{f00c} Enable Auto-pairs"
+        },
+        {
+            "<leader>apd",
+            desc = "\u{f00d} Disable Auto-pairs"
+        },
+
+        -- ==========================================================================
+        -- OIL.NVIM
+        -- ==========================================================================
+        {
+            "<leader>o",
+            desc = "\u{f07c} Oil (current file)"
         }, {
-            mode = {"n"},
-            {
-                "<leader>ws",
-                desc = "\u{f002} Workspace symbols"
-            },
-            {
-                "<leader>wa",
-                desc = "\u{f067} Add workspace folder"
-            },
-            {
-                "<leader>wr",
-                desc = "\u{f068} Remove workspace folder"
-            },
-            {
-                "<leader>wl",
-                desc = "\u{f03a} List workspace folders"
-            }
-        }, -- Call hierarchy
+            "<leader>O",
+            desc = "\u{f07b} Oil (cwd)"
+        }, {
+            "-",
+            desc = "\u{f07c} Parent directory"
+        }, {
+            "<leader>-",
+            desc = "\u{f2d2} Oil float"
+        },
+
+        -- ==========================================================================
+        -- TREESITTER NAVIGATION (Updated conditionals to ]i/[i)
+        -- ==========================================================================
         {
-            mode = {"n"},
+            mode = "n",
             {
-                "<leader>ic",
-                desc = "\u{f01e} Incoming calls"
+                "]i",
+                desc = "\u{f063} Next conditional"
             },
             {
-                "<leader>oc",
-                desc = "\u{f01e} Outgoing calls"
+                "[i",
+                desc = "\u{f062} Prev conditional"
             },
             {
-                "<leader>cl",
-                desc = "\u{f135} Run code lens"
-            }
-        }, -- Enhanced diagnostic descriptions
-        {
-            mode = {"n"},
+                "]d",
+                desc = "\u{f063} Next diagnostic"
+            },
+            {
+                "[d",
+                desc = "\u{f062} Prev diagnostic"
+            },
             {
                 "[D",
                 desc = "\u{f062} First diagnostic"
@@ -754,467 +751,125 @@ return {
             {
                 "]D",
                 desc = "\u{f063} Last diagnostic"
-            },
-            {
-                "<C-w>d",
-                desc = "\u{f05a} Show diagnostic"
-            },
-            {
-                "<leader>dq",
-                desc = "\u{f03a} Diagnostic quickfix"
-            }
-        },
-        -- =============================================================================
-        -- TELESCOPE GROUPS (Add to existing spec table)
-        -- =============================================================================
-
-        -- Main Telescope/Find group (already exists, just showing for reference)
-        {
-            "<leader>f",
-            group = "Find (Telescope)",
-            icon = {
-                icon = "\u{f002}",
-                color = "blue"
-            }
-        }, -- LSP group (add LSP telescope pickers)
-        {
-            "<leader>l",
-            group = "LSP",
-            icon = {
-                icon = "\u{f085}",
-                color = "purple"
             }
         },
 
-        -- =============================================================================
-        -- NEW TELESCOPE KEYMAPS (Add these to spec table)
-        -- =============================================================================
-
-        -- Resume picker (CRITICAL - override the existing <leader><leader> if present)
-        {
-            "<leader><leader>",
-            desc = "\u{f021} Resume Telescope"
-        }, -- File pickers
-        {
-            "<leader>fp",
-            desc = "\u{f1e5} Telescope Pickers"
-        }, -- Search pickers
-        {
-            "<leader>f.",
-            desc = "\u{f002} Search Buffer"
-        }, -- Vim internals
-        {
-            "<leader>f:",
-            desc = "\u{f489} Command History"
-        }, {
-            "<leader>f/",
-            desc = "\u{f002} Search History"
-        }, {
-            "<leader>f\"",
-            desc = "\u{f0c5} Registers"
-        }, {
-            "<leader>fm",
-            desc = "\u{f02e} Marks"
-        }, {
-            "<leader>fj",
-            desc = "\u{f0e2} Jumplist"
-        }, {
-            "<leader>fo",
-            desc = "\u{f013} Vim Options"
-        }, {
-            "<leader>fa",
-            desc = "\u{f085} Autocommands"
-        }, {
-            "<leader>fH",
-            desc = "\u{f043} Highlights"
-        }, {
-            "<leader>fT",
-            desc = "\u{f016} Filetypes"
-        }, -- Quickfix & Location List
-        {
-            "<leader>fq",
-            desc = "\u{f0cb} Quickfix List"
-        }, {
-            "<leader>fl",
-            desc = "\u{f03a} Location List"
-        }, -- Git pickers (add to existing git group)
-        {
-            "<leader>gb",
-            desc = "\u{f126} Git Branches"
-        }, {
-            "<leader>gS",
-            desc = "\u{f01c} Git Stash"
-        }, {
-            "<leader>gC",
-            desc = "\u{f1d3} Buffer Commits"
-        }, -- LSP pickers (add to LSP group)
-        {
-            "<leader>ls",
-            desc = "\u{f121} Document Symbols"
-        }, {
-            "<leader>lS",
-            desc = "\u{f1e5} Workspace Symbols"
-        }, {
-            "<leader>lw",
-            desc = "\u{f002} Workspace (Dynamic)"
-        }, {
-            "<leader>li",
-            desc = "\u{f060} Incoming Calls"
-        }, {
-            "<leader>lo",
-            desc = "\u{f061} Outgoing Calls"
-        }, -- Misc pickers
-        {
-            "<leader>fC",
-            desc = "\u{f043} Colorscheme"
-        }, {
-            "<leader>ft",
-            desc = "\u{f1bb} Treesitter Symbols"
-        }, {
-            "<leader>fM",
-            desc = "\u{f02d} Man Pages"
-        }, -- Spell suggest (override default z=)
-        {
-            "z=",
-            desc = "\u{f0eb} Spell Suggestions"
-        },
-
-        -- =============================================================================
-        -- COMPLETE EXAMPLE OF UPDATED SPEC TABLE
-        -- =============================================================================
-        -- Here's how your complete spec table should look with all additions:
-        --
-        -- spec = {
-        --     -- File/Find operations (Telescope)
-        --     {
-        --         "<leader>f",
-        --         group = "Find (Telescope)",
-        --         icon = { icon = "\u{f002}", color = "blue" }
-        --     },
-        --     
-        --     -- Git operations
-        --     {
-        --         "<leader>g",
-        --         group = "Git",
-        --         icon = { icon = "\u{f1d3}", color = "orange" }
-        --     },
-        --     
-        --     -- LSP operations
-        --     {
-        --         "<leader>l",
-        --         group = "LSP",
-        --         icon = { icon = "\u{f085}", color = "purple" }
-        --     },
-        --     
-        --     -- ... (other existing groups)
-        --     
-        --     -- All the new keymaps listed above
-        --     {
-        --         "<leader><leader>",
-        --         desc = "\u{f021} Resume Telescope"
-        --     },
-        --     -- ... etc
-        -- }
         -- ==========================================================================
-        -- HARPOON - File Marks & Navigation
+        -- COMMENT.NVIM
         -- ==========================================================================
-        -- Main harpoon group
-        {
-            "<leader>h",
-            group = "Harpoon",
-            icon = {
-                icon = "\u{f02e}", --  (bookmark)
-                color = "azure"
-            }
-        }, -- Harpoon core operations
-        {
-            "<leader>a",
-            desc = "\u{f02e} Add file to Harpoon", --  (bookmark)
-            icon = {
-                icon = "\u{f02e}",
-                color = "green"
-            }
-        }, -- Harpoon navigation
-        {
-            "<leader>hp",
-            desc = "\u{f060} Previous Harpoon file", --  (arrow left)
-            icon = {
-                icon = "\u{f060}",
-                color = "cyan"
-            }
-        }, {
-            "<leader>hn",
-            desc = "\u{f061} Next Harpoon file", --  (arrow right)
-            icon = {
-                icon = "\u{f061}",
-                color = "cyan"
-            }
-        }, -- Harpoon quick jumps (5-9)
-        {
-            "<leader>h5",
-            desc = "\u{2784} Harpoon File 5", -- ➄
-            icon = {
-                icon = "\u{2784}",
-                color = "azure"
-            }
-        }, {
-            "<leader>h6",
-            desc = "\u{2785} Harpoon File 6", -- ➅
-            icon = {
-                icon = "\u{2785}",
-                color = "azure"
-            }
-        }, {
-            "<leader>h7",
-            desc = "\u{2786} Harpoon File 7", -- ➆
-            icon = {
-                icon = "\u{2786}",
-                color = "azure"
-            }
-        }, {
-            "<leader>h8",
-            desc = "\u{2787} Harpoon File 8", -- ➇
-            icon = {
-                icon = "\u{2787}",
-                color = "azure"
-            }
-        }, {
-            "<leader>h9",
-            desc = "\u{2788} Harpoon File 9", -- ➈
-            icon = {
-                icon = "\u{2788}",
-                color = "azure"
-            }
-        }, -- Control-e (not in leader group, but documented for completeness)
-        {
-            "<C-e>",
-            desc = "\u{f03a} Toggle Harpoon menu", --  (list)
-            icon = {
-                icon = "\u{f03a}",
-                color = "azure"
-            }
-        },
-        -- ==========================================================================
-        -- COMMENT.NVIM KEYMAPS
-        -- ==========================================================================
-        -- Linewise comment operations (Normal mode)
         {
             mode = "n",
             {
                 "gc",
-                desc = "\u{f075} Comment (motion)", --  (comment)
-                icon = {
-                    icon = "\u{f075}",
-                    color = "green"
-                }
+                desc = "\u{f075} Comment (motion)"
             },
             {
                 "gcc",
-                desc = "\u{f075} Toggle line comment", --  (comment)
-                icon = {
-                    icon = "\u{f075}",
-                    color = "green"
-                }
+                desc = "\u{f075} Toggle line comment"
             },
             {
                 "gco",
-                desc = "\u{f078} Comment below + INSERT", --  (chevron down)
-                icon = {
-                    icon = "\u{f078}",
-                    color = "green"
-                }
+                desc = "\u{f078} Comment below + INSERT"
             },
             {
                 "gcO",
-                desc = "\u{f077} Comment above + INSERT", --  (chevron up)
-                icon = {
-                    icon = "\u{f077}",
-                    color = "green"
-                }
+                desc = "\u{f077} Comment above + INSERT"
             },
             {
                 "gcA",
-                desc = "\u{f061} Comment EOL + INSERT", --  (arrow right)
-                icon = {
-                    icon = "\u{f061}",
-                    color = "green"
-                }
-            }
-        }, -- Blockwise comment operations (Normal mode)
-        {
-            mode = "n",
+                desc = "\u{f061} Comment EOL + INSERT"
+            },
             {
                 "gb",
-                desc = "\u{f10b} Block comment (motion)", --  (square with corners)
-                icon = {
-                    icon = "\u{f10b}",
-                    color = "cyan"
-                }
+                desc = "\u{f10b} Block comment (motion)"
             },
             {
                 "gbc",
-                desc = "\u{f10b} Toggle block comment", --  (square with corners)
-                icon = {
-                    icon = "\u{f10b}",
-                    color = "cyan"
-                }
+                desc = "\u{f10b} Toggle block comment"
             }
-        }, -- Visual mode comment operations
+        },
         {
             mode = "x",
             {
                 "gc",
-                desc = "\u{f075} Comment selection (linewise)", --  (comment)
-                icon = {
-                    icon = "\u{f075}",
-                    color = "green"
-                }
+                desc = "\u{f075} Comment selection (linewise)"
             },
             {
                 "gb",
-                desc = "\u{f10b} Comment selection (blockwise)", --  (square)
-                icon = {
-                    icon = "\u{f10b}",
-                    color = "cyan"
-                }
+                desc = "\u{f10b} Comment selection (blockwise)"
             }
         },
+
         -- ==========================================================================
-        -- NVIM-SURROUND KEYMAPS
+        -- NVIM-SURROUND
         -- ==========================================================================
-        -- Add operations (Normal mode)
         {
             mode = "n",
             {
                 "ys",
-                desc = "\u{f104}\u{f105} Add surround (motion)", --  (angle brackets)
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
+                desc = "\u{f104}\u{f105} Add surround (motion)"
             },
             {
                 "yss",
-                desc = "\u{f104}\u{f105} Add surround (line)", --  (angle brackets)
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
+                desc = "\u{f104}\u{f105} Add surround (line)"
             },
             {
                 "yS",
-                desc = "\u{f104}\u{23ce}\u{f105} Add surround (motion, new lines)", --  ⏎ 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
+                desc = "\u{f104}\u{23ce}\u{f105} Add surround (new lines)"
             },
             {
                 "ySS",
-                desc = "\u{f104}\u{23ce}\u{f105} Add surround (line, new lines)", --  ⏎ 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
-            }
-        }, -- Delete operation
-        {
-            mode = "n",
+                desc = "\u{f104}\u{23ce}\u{f105} Add surround (line, new lines)"
+            },
             {
                 "ds",
-                desc = "\u{f00d} Delete surround", --  (times/delete)
-                icon = {
-                    icon = "\u{f00d}",
-                    color = "red"
-                }
-            }
-        }, -- Change operations
-        {
-            mode = "n",
+                desc = "\u{f00d} Delete surround"
+            },
             {
                 "cs",
-                desc = "\u{f021} Change surround", --  (refresh/replace)
-                icon = {
-                    icon = "\u{f021}",
-                    color = "yellow"
-                }
+                desc = "\u{f021} Change surround"
             },
             {
                 "cS",
-                desc = "\u{f021}\u{23ce} Change surround (new lines)", --  ⏎
-                icon = {
-                    icon = "\u{f021}",
-                    color = "yellow"
-                }
+                desc = "\u{f021}\u{23ce} Change surround (new lines)"
             }
-        }, -- Visual mode operations
+        },
         {
             mode = "x",
             {
                 "S",
-                desc = "\u{f104}\u{f105} Surround selection", -- 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
+                desc = "\u{f104}\u{f105} Surround selection"
             },
             {
                 "gS",
-                desc = "\u{f104}\u{23ce}\u{f105} Surround selection (new lines)", --  ⏎ 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
+                desc = "\u{f104}\u{23ce}\u{f105} Surround selection (new lines)"
             }
-        }, -- Insert mode operations
-        {
-            mode = "i",
-            {
-                "<C-g>s",
-                desc = "\u{f104}\u{f105} Surround at cursor", -- 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
-            },
-            {
-                "<C-g>S",
-                desc = "\u{f104}\u{23ce}\u{f105} Surround at cursor (new lines)", --  ⏎ 
-                icon = {
-                    icon = "\u{f104}\u{f105}",
-                    color = "cyan"
-                }
-            }
-        }, -- Individual key descriptions
+        },
+
+        -- ==========================================================================
+        -- MISC KEYBINDINGS
+        -- ==========================================================================
         {
             mode = {"n", "v"},
             {
                 "<leader>y",
-                desc = "\u{f0c5} Yank to clipboard" --  (copy)
+                desc = "\u{f0c5} Yank to clipboard"
             },
             {
                 "<leader>d",
-                desc = "\u{f00d} Delete without yank" --  (delete)
+                desc = "\u{f00d} Delete without yank"
             }
-        }, -- Quick actions
+        },
         {
             "<leader><leader>",
-            desc = "\u{f021} Source file" --  (refresh)
+            desc = "\u{f021} Resume Telescope"
         }, {
             "<leader>q",
-            desc = "\u{f2d1} Quit" --  (window close)
-        }, {
-            "<leader>w",
-            desc = "\u{f0c7} Save file" --  (save)
-        }, {
-            "<leader>u",
-            desc = "\u{f1da} Toggle undotree" --  (history)
-        }, {
-            "<leader>-",
-            desc = "\u{f07c} Oil float" --  (folder open)
-        }, {
-            "-",
-            desc = "\u{f115} Parent directory" --  (folder open outline)
+            desc = "\u{f2d1} Quit"
+        },
+        {
+            "z=",
+            desc = "\u{f0eb} Spell Suggestions"
         }}
     },
 
@@ -1228,50 +883,42 @@ return {
                 global = false
             })
         end,
-        desc = "\u{f059} Buffer Local Keymaps" --  (question circle)
+        desc = "\u{f059} Buffer Local Keymaps"
     }}
 }
 
 -- =============================================================================
 -- WHICH-KEY NOTES (UPDATED)
 -- =============================================================================
--- What's new in this configuration:
+-- Major changes applied:
 --
--- 1. MODERN SPEC FORMAT:
---    - Uses new table-based spec instead of old register() function
---    - More intuitive and easier to read
---    - Better integration with lazy.nvim
+-- 1. Git Hunks: <leader>h → gh
+--    - All git hunk operations now use gh prefix
+--    - Harpoon reclaimed <leader>h
 --
--- 2. ICONS:
---    - Custom icons for each key group
---    - Color-coded for visual distinction
---    - Requires a Nerd Font to display properly
+-- 2. Database: <leader>d → <leader>q
+--    - All database operations now use <leader>q
+--    - Debug (DAP) reclaimed <leader>d
 --
--- 3. PRESETS:
---    - Built-in help for common Vim operators
---    - Help for text objects (i/a)
---    - Window management hints (<C-w>)
---    - Fold and spelling hints (z, g)
+-- 3. Harpoon: Updated to use <leader>h
+--    - <leader>ha - Add file
+--    - <leader>h - Toggle menu
+--    - <leader>h1-9 - Jump to files
+--    - Removed conflicting Ctrl bindings
 --
--- 4. MODERN LAYOUT:
---    - Cleaner, more spacious design
---    - Rounded borders
---    - Better readability
+-- 4. Treesitter Swap: <leader>a → <leader>s
+--    - <leader>sa/sA - Swap parameters
+--    - <leader>sf/sF - Swap functions
 --
--- Usage:
--- - Press <leader> and wait - which-key shows options
--- - Type any partial key sequence to see completions
--- - Press <leader>? to see buffer-local keymaps
+-- 5. Treesitter Conditionals: ]d/[d → ]i/[i
+--    - Diagnostics keep ]d/[d
 --
--- Available icons/colors:
--- - Colors: azure, blue, cyan, green, grey, orange, purple, red, yellow
--- - Icons: Any Nerd Font icon or emoji
+-- 6. Telescope Git: <leader>g → <leader>fg
+--    - Git telescope pickers under <leader>fg prefix
 --
--- To add your own groups:
--- Just add to the spec table:
--- {
---   "<leader>x",
---   group = "My Group",
---   icon = { icon = "⚡", color = "red" },
--- },
+-- 7. Source file: <leader><leader> → <leader>so
+--    - Resume Telescope keeps <leader><leader>
+--
+-- 8. Buffer delete: <leader>bd → <leader>bx
+--    - Sort by directory keeps <leader>bd
 -- =============================================================================

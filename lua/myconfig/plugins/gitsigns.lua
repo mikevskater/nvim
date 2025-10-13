@@ -82,17 +82,17 @@ return {
             })
 
             -- ==========================================================================
-            -- HUNK ACTIONS
+            -- HUNK ACTIONS (Changed from <leader>h to gh)
             -- ==========================================================================
 
             -- Stage hunk (normal mode)
-            keymap('n', '<leader>hs', gs.stage_hunk, {
+            keymap('n', 'ghs', gs.stage_hunk, {
                 buffer = bufnr,
                 desc = "\u{f067} Stage hunk" -- +
             })
 
             -- Stage hunk (visual mode - stage selected lines)
-            keymap('v', '<leader>hs', function()
+            keymap('v', 'ghs', function()
                 gs.stage_hunk({vim.fn.line('.'), vim.fn.line('v')})
             end, {
                 buffer = bufnr,
@@ -100,13 +100,13 @@ return {
             })
 
             -- Reset hunk (normal mode)
-            keymap('n', '<leader>hr', gs.reset_hunk, {
+            keymap('n', 'ghr', gs.reset_hunk, {
                 buffer = bufnr,
                 desc = "\u{f0e2} Reset hunk" -- ↻
             })
 
             -- Reset hunk (visual mode - reset selected lines)
-            keymap('v', '<leader>hr', function()
+            keymap('v', 'ghr', function()
                 gs.reset_hunk({vim.fn.line('.'), vim.fn.line('v')})
             end, {
                 buffer = bufnr,
@@ -114,7 +114,7 @@ return {
             })
 
             -- Undo stage hunk
-            keymap('n', '<leader>hu', gs.undo_stage_hunk, {
+            keymap('n', 'ghu', gs.undo_stage_hunk, {
                 buffer = bufnr,
                 desc = "\u{f0e2} Undo stage hunk" -- ↻
             })
@@ -124,19 +124,19 @@ return {
             -- ==========================================================================
 
             -- Stage entire buffer
-            keymap('n', '<leader>hS', gs.stage_buffer, {
+            keymap('n', 'ghS', gs.stage_buffer, {
                 buffer = bufnr,
                 desc = "\u{f067} Stage buffer" -- +
             })
 
             -- Reset entire buffer
-            keymap('n', '<leader>hR', gs.reset_buffer, {
+            keymap('n', 'ghR', gs.reset_buffer, {
                 buffer = bufnr,
                 desc = "\u{f0e2} Reset buffer" -- ↻
             })
 
             -- Reset buffer index (unstage all)
-            keymap('n', '<leader>hU', gs.reset_buffer_index, {
+            keymap('n', 'ghU', gs.reset_buffer_index, {
                 buffer = bufnr,
                 desc = "\u{f0e2} Unstage buffer" -- ↻
             })
@@ -146,25 +146,25 @@ return {
             -- ==========================================================================
 
             -- Preview hunk (popup)
-            keymap('n', '<leader>hp', gs.preview_hunk, {
+            keymap('n', 'ghp', gs.preview_hunk, {
                 buffer = bufnr,
                 desc = "\u{f06e} Preview hunk" -- 👁
             })
 
             -- Preview hunk inline
-            keymap('n', '<leader>hi', gs.preview_hunk_inline, {
+            keymap('n', 'ghi', gs.preview_hunk_inline, {
                 buffer = bufnr,
                 desc = "\u{f06e} Preview hunk inline"
             })
 
             -- Diff this (split view)
-            keymap('n', '<leader>hd', gs.diffthis, {
+            keymap('n', 'ghd', gs.diffthis, {
                 buffer = bufnr,
                 desc = "\u{f1e5} Diff this" -- 
             })
 
             -- Diff against previous revision
-            keymap('n', '<leader>hD', function()
+            keymap('n', 'ghD', function()
                 gs.diffthis('~')
             end, {
                 buffer = bufnr,
@@ -176,7 +176,7 @@ return {
             -- ==========================================================================
 
             -- Show blame line (popup with full info)
-            keymap('n', '<leader>hb', function()
+            keymap('n', 'ghb', function()
                 gs.blame_line({
                     full = true
                 })
@@ -186,7 +186,7 @@ return {
             })
 
             -- Toggle current line blame (inline virtual text)
-            keymap('n', '<leader>tb', gs.toggle_current_line_blame, {
+            keymap('n', 'ght', gs.toggle_current_line_blame, {
                 buffer = bufnr,
                 desc = "\u{f1d3} Toggle line blame"
             })
@@ -196,7 +196,7 @@ return {
             -- ==========================================================================
 
             -- Toggle deleted lines view
-            keymap('n', '<leader>td', gs.toggle_deleted, {
+            keymap('n', 'ghx', gs.toggle_deleted, {
                 buffer = bufnr,
                 desc = "\u{f06e} Toggle deleted" -- 👁
             })
@@ -206,7 +206,7 @@ return {
             -- ==========================================================================
 
             -- Load all hunks into quickfix list
-            keymap('n', '<leader>hq', function()
+            keymap('n', 'ghq', function()
                 gs.setqflist('all')
             end, {
                 buffer = bufnr,
@@ -214,7 +214,7 @@ return {
             })
 
             -- Load all hunks into location list
-            keymap('n', '<leader>hl', function()
+            keymap('n', 'ghl', function()
                 gs.setloclist('all')
             end, {
                 buffer = bufnr,
@@ -235,47 +235,47 @@ return {
 }
 
 -- =============================================================================
--- GITSIGNS NOTES
+-- GITSIGNS NOTES (UPDATED - gh prefix)
 -- =============================================================================
 -- Navigation:
 -- ]c / [c     - Next/Previous hunk
 -- ]H / [H     - Last/First hunk
 --
--- Hunk Actions:
--- <leader>hs  - Stage hunk (works in visual mode too!)
--- <leader>hr  - Reset hunk (works in visual mode too!)
--- <leader>hu  - Undo stage hunk
--- <leader>hp  - Preview hunk (popup)
--- <leader>hi  - Preview hunk inline
+-- Hunk Actions (gh prefix):
+-- ghs         - Stage hunk (works in visual mode too!)
+-- ghr         - Reset hunk (works in visual mode too!)
+-- ghu         - Undo stage hunk
+-- ghp         - Preview hunk (popup)
+-- ghi         - Preview hunk inline
 --
 -- Buffer Actions:
--- <leader>hS  - Stage entire buffer
--- <leader>hR  - Reset entire buffer (discard all changes)
--- <leader>hU  - Unstage entire buffer (reset index)
+-- ghS         - Stage entire buffer
+-- ghR         - Reset entire buffer (discard all changes)
+-- ghU         - Unstage entire buffer (reset index)
 --
 -- Diff:
--- <leader>hd  - View diff in split
--- <leader>hD  - Diff against previous commit (~)
+-- ghd         - View diff in split
+-- ghD         - Diff against previous commit (~)
 --
 -- Blame:
--- <leader>hb  - Show git blame for line (popup)
--- <leader>tb  - Toggle inline blame for current line
+-- ghb         - Show git blame for line (popup)
+-- ght         - Toggle inline blame for current line
 --
 -- Toggles:
--- <leader>td  - Toggle deleted lines visibility
+-- ghx         - Toggle deleted lines visibility
 --
 -- Quickfix:
--- <leader>hq  - Load all hunks into quickfix list
--- <leader>hl  - Load all hunks into location list
+-- ghq         - Load all hunks into quickfix list
+-- ghl         - Load all hunks into location list
 --
 -- Text Objects:
 -- ih          - Hunk text object (use: dih, vih, yih, cih)
 --
 -- Workflow Examples:
--- 1. Stage specific lines: Select in visual mode → <leader>hs
--- 2. Review changes: <leader>hd (split diff) or <leader>hp (popup)
--- 3. Undo mistake: <leader>hu (after staging) or <leader>hr (before staging)
+-- 1. Stage specific lines: Select in visual mode → ghs
+-- 2. Review changes: ghd (split diff) or ghp (popup)
+-- 3. Undo mistake: ghu (after staging) or ghr (before staging)
 -- 4. Delete a hunk: dih
--- 5. Stage entire file: <leader>hS
--- 6. Find who changed line: <leader>hb
+-- 5. Stage entire file: ghS
+-- 6. Find who changed line: ghb
 -- =============================================================================

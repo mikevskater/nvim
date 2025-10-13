@@ -83,7 +83,7 @@ return {
             -- <C-f>      - Scroll documentation down
             -- <Tab>      - Snippet forward / fallback
             -- <S-Tab>    - Snippet backward / fallback
-            -- <C-k>      - Show/hide signature help
+            -- <C-k>      - Show/hide signature help (NORMAL MODE ONLY - no conflict)
             -- ==========================================================================
         },
 
@@ -187,7 +187,7 @@ return {
 }
 
 -- =============================================================================
--- COMPLETION KEYMAPS REFERENCE
+-- COMPLETION KEYMAPS REFERENCE (UPDATED)
 -- =============================================================================
 -- 
 -- ACCEPT COMPLETIONS:
@@ -209,13 +209,16 @@ return {
 -- <C-f>      - Scroll documentation down
 --
 -- SIGNATURE HELP:
--- <C-k>      - Show/hide signature help
+-- <C-k>      - Show/hide signature help (NORMAL MODE - no conflict with window nav)
 -- <M-k>      - Scroll signature up (Alt+k)
 -- <M-j>      - Scroll signature down (Alt+j)
 --
 -- MENU CONTROL:
 -- <C-e>      - Hide completion menu
 -- <C-g>      - Cancel and revert changes
+--
+-- NOTE: Insert mode signature help removed (<C-s> conflicts with save)
+--       Use <C-k> in normal mode or LSP's signature help instead
 --
 -- =============================================================================
 -- TIPS & TRICKS
@@ -256,7 +259,7 @@ return {
 --
 -- Signature help not showing?
 -- - Ensure signature.enabled = true
--- - Press <C-k> to toggle
+-- - Press <C-k> (in normal mode) to toggle
 -- - Some LSPs don't support signatures
 --
 -- Snippets not working?

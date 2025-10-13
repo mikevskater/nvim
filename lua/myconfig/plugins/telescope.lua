@@ -184,21 +184,21 @@ return {
         })
 
         -- ==========================================================================
-        -- GIT PICKERS
+        -- GIT PICKERS (Changed from <leader>g* to <leader>fg*)
         -- ==========================================================================
-        keymap("n", "<leader>gc", builtin.git_commits, {
+        keymap("n", "<leader>fgc", builtin.git_commits, {
             desc = "\u{f1d3} Find git commits"
         })
-        keymap("n", "<leader>gt", builtin.git_status, {
+        keymap("n", "<leader>fgs", builtin.git_status, {
             desc = "\u{f126} Find git status"
         })
-        keymap("n", "<leader>gb", builtin.git_branches, {
+        keymap("n", "<leader>fgb", builtin.git_branches, {
             desc = "\u{f126} Find git branches"
         })
-        keymap("n", "<leader>gS", builtin.git_stash, {
+        keymap("n", "<leader>fgS", builtin.git_stash, {
             desc = "\u{f01c} Find git stash"
         })
-        keymap("n", "<leader>gC", builtin.git_bcommits, {
+        keymap("n", "<leader>fgC", builtin.git_bcommits, {
             desc = "\u{f1d3} Find buffer commits"
         })
 
@@ -253,7 +253,7 @@ return {
 }
 
 -- =============================================================================
--- TELESCOPE USAGE NOTES
+-- TELESCOPE USAGE NOTES (UPDATED)
 -- =============================================================================
 -- MOST IMPORTANT KEYBINDS:
 -- <leader><leader> - Resume last picker (workflow game-changer!)
@@ -270,10 +270,12 @@ return {
 -- 3. Use <Tab> to select multiple items
 -- 4. Use <C-/> or ? to see all available actions
 --
--- GIT WORKFLOW:
--- <leader>gc - Browse commits with diff preview
--- <leader>gt - Git status with staging
--- <leader>gb - Checkout branches
+-- GIT WORKFLOW (MOVED TO <leader>fg prefix):
+-- <leader>fgc - Browse commits with diff preview
+-- <leader>fgs - Git status with staging
+-- <leader>fgb - Checkout branches
+-- <leader>fgS - Browse git stash
+-- <leader>fgC - Buffer commits (file history)
 --
 -- LSP WORKFLOW:
 -- <leader>ls - Browse symbols in current file
