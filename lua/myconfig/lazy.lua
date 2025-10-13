@@ -50,8 +50,6 @@ require("lazy").setup(
     }, {
         import = "myconfig.plugins.comment"
     }, {
-        import = "myconfig.plugins.autopairs"
-    }, {
         import = "myconfig.plugins.whichkey"
     }, {
         import = "myconfig.plugins.dap"
