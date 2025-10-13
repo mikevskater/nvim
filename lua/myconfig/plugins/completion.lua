@@ -1,32 +1,90 @@
 -- ~\AppData\Local\nvim\lua\myconfig\plugins\completion.lua
 -- =============================================================================
--- COMPLETION - Auto-completion Engine (UPDATED with SQL support)
+-- COMPLETION - Auto-completion Engine (UPDATED with comprehensive keymaps)
 -- =============================================================================
--- Added: SQL completion support via vim-dadbod-completion
+-- Updated: Added explicit keymaps, Enter to accept, signature help scrolling
 -- =============================================================================
 return {
     "saghen/blink.cmp",
 
     version = "v1.*",
 
-    dependencies = {
-        "rafamadriz/friendly-snippets",
-        -- SQL completion support (loaded in database.lua)
-    },
+    dependencies = {"rafamadriz/friendly-snippets"},
 
     opts = {
         -- ==========================================================================
-        -- KEYMAP PRESET
+        -- KEYMAP CONFIGURATION
         -- ==========================================================================
         keymap = {
-            preset = "default"
+            -- Start with default preset, then override/add specific keys
+            preset = "default",
 
-            -- You can customize individual keys if needed
-            -- ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-            -- ['<C-e>'] = { 'hide' },
-            -- ['<C-y>'] = { 'select_and_accept' },
-            -- ['<Tab>'] = { 'snippet_forward', 'fallback' },
-            -- ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+            -- ==========================================================================
+            -- ACCEPT KEYMAPS
+            -- ==========================================================================
+            -- Enter to accept completion (most requested feature!)
+            ['<CR>'] = {'accept', 'fallback'},
+
+            -- Alternative accept (doesn't conflict with shell/tmux Ctrl+Y)
+            ['<C-l>'] = {'accept'},
+
+            -- ==========================================================================
+            -- CANCEL KEYMAP
+            -- ==========================================================================
+            -- Cancel completion and revert auto_insert
+            ['<C-g>'] = {'cancel'},
+
+            -- ==========================================================================
+            -- SIGNATURE HELP SCROLLING
+            -- ==========================================================================
+            -- Scroll signature help up (4 lines)
+            ['<M-k>'] = {function(cmp)
+                cmp.scroll_signature_up(4)
+            end, 'fallback'},
+
+            -- Scroll signature help down (4 lines)  
+            ['<M-j>'] = {function(cmp)
+                cmp.scroll_signature_down(4)
+            end, 'fallback'}
+
+            -- ==========================================================================
+            -- ADVANCED: ACCEPT SPECIFIC ITEMS
+            -- ==========================================================================
+            -- Quickly accept first item without selecting
+            -- ['<C-1>'] = { 
+            --     function(cmp) 
+            --         cmp.accept({ index = 1 }) 
+            --     end 
+            -- },
+
+            -- ==========================================================================
+            -- ADVANCED: SHOW SPECIFIC PROVIDERS
+            -- ==========================================================================
+            -- Show only snippets
+            -- ['<C-s>'] = { 
+            --     function(cmp) 
+            --         cmp.show({ providers = { 'snippets' } }) 
+            --     end 
+            -- },
+
+            -- ==========================================================================
+            -- DEFAULT PRESET KEYMAPS (INHERITED)
+            -- ==========================================================================
+            -- These are automatically included from preset = "default":
+            -- 
+            -- <C-space>  - Show/toggle documentation
+            -- <C-e>      - Hide completion menu
+            -- <C-y>      - Select and accept
+            -- <Up>       - Select previous item
+            -- <Down>     - Select next item
+            -- <C-p>      - Select previous (fallback to mappings)
+            -- <C-n>      - Select next (fallback to mappings)
+            -- <C-b>      - Scroll documentation up
+            -- <C-f>      - Scroll documentation down
+            -- <Tab>      - Snippet forward / fallback
+            -- <S-Tab>    - Snippet backward / fallback
+            -- <C-k>      - Show/hide signature help
+            -- ==========================================================================
         },
 
         -- ==========================================================================
@@ -49,47 +107,40 @@ return {
                 snippets = {
                     opts = {
                         friendly_snippets = true,
-                        -- Custom snippet directories
                         search_paths = {vim.fn.stdpath("config") .. "/snippets"},
-                        -- Global snippets available in all filetypes
                         global_snippets = {"all"}
                     }
                 },
 
-                -- ADDED: vim-dadbod completion provider
+                -- vim-dadbod completion provider
                 dadbod = {
                     name = "Dadbod",
                     module = "vim_dadbod_completion.blink",
-                    -- Only enable for SQL filetypes
                     enabled = function()
                         local ft = vim.bo.filetype
                         return ft == "sql" or ft == "mysql" or ft == "plsql"
-                    end,
-                },
+                    end
+                }
             },
 
-            -- Per-filetype sources (ADDED)
             per_filetype = {
-                sql = { "dadbod", "buffer" },
-                mysql = { "dadbod", "buffer" },
-                plsql = { "dadbod", "buffer" },
-            },
+                sql = {"dadbod", "buffer"},
+                mysql = {"dadbod", "buffer"},
+                plsql = {"dadbod", "buffer"}
+            }
         },
 
         -- ==========================================================================
         -- COMPLETION BEHAVIOR
         -- ==========================================================================
         completion = {
-            -- Automatically show completion menu
             menu = {
                 auto_show = true,
-
-                -- ADDED: Rounded border for menu
                 border = "rounded",
+                winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
 
                 draw = {
                     treesitter = {"lsp"},
-
                     columns = {{"kind_icon"}, {
                         "label",
                         "label_description",
@@ -98,23 +149,19 @@ return {
                 }
             },
 
-            -- Documentation window
             documentation = {
                 auto_show = true,
                 auto_show_delay_ms = 200,
-
-                -- ADDED: Rounded border for documentation
                 window = {
-                    border = "rounded"
+                    border = "rounded",
+                    winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder"
                 }
             },
 
-            -- ADDED: Ghost text (inline suggestions)
             ghost_text = {
-                enabled = true -- Show completion as ghost text!
+                enabled = true
             },
 
-            -- Auto-brackets
             accept = {
                 auto_brackets = {
                     enabled = true
@@ -127,10 +174,9 @@ return {
         -- ==========================================================================
         signature = {
             enabled = true,
-
-            -- ADDED: Rounded border for signature help
             window = {
-                border = "rounded"
+                border = "rounded",
+                winhighlight = "Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder"
             }
         }
     },
@@ -141,70 +187,81 @@ return {
 }
 
 -- =============================================================================
--- COMPLETION NOTES (UPDATED)
+-- COMPLETION KEYMAPS REFERENCE
 -- =============================================================================
--- SQL Completion Features:
--- - Table and column name completion
--- - SQL keyword completion
--- - Function completion
--- - Completion based on current database connection
+-- 
+-- ACCEPT COMPLETIONS:
+-- <CR>       - Accept selected item (or fallback)
+-- <C-y>      - Select and accept (default preset)
+-- <C-l>      - Alternative accept key
 --
--- SQL Completion Usage:
--- 1. Open or create a .sql file
--- 2. Connect to database via DBUI
--- 3. Start typing - completions will appear automatically
--- 4. Completions are context-aware based on your connection
+-- NAVIGATION:
+-- <Tab>      - Next snippet placeholder / fallback
+-- <S-Tab>    - Previous snippet placeholder / fallback
+-- <C-n>      - Select next item
+-- <C-p>      - Select previous item
+-- <Down>     - Select next item
+-- <Up>       - Select previous item
 --
--- Example:
--- SELECT * FROM cus<Tab>  → completes to your 'customers' table
--- SELECT name, em<Tab>    → completes to 'email' column
+-- DOCUMENTATION:
+-- <C-space>  - Show/toggle documentation
+-- <C-b>      - Scroll documentation up
+-- <C-f>      - Scroll documentation down
 --
--- Troubleshooting SQL Completion:
--- - No completions? Make sure you're connected to a DB via DBUI
--- - Wrong completions? Check your active connection in DBUI
--- - Slow completions? Large databases may take time to load schema
+-- SIGNATURE HELP:
+-- <C-k>      - Show/hide signature help
+-- <M-k>      - Scroll signature up (Alt+k)
+-- <M-j>      - Scroll signature down (Alt+j)
 --
--- New features enabled:
+-- MENU CONTROL:
+-- <C-e>      - Hide completion menu
+-- <C-g>      - Cancel and revert changes
 --
--- 1. GHOST TEXT:
+-- =============================================================================
+-- TIPS & TRICKS
+-- =============================================================================
+--
+-- 1. ENTER vs CTRL-Y:
+--    - <CR> accepts and continues to next line (natural flow)
+--    - <C-y> accepts without newline (vim traditional)
+--
+-- 2. SIGNATURE HELP SCROLLING:
+--    - Use Alt+j/k when function has many parameters
+--    - Works great with complex APIs
+--
+-- 3. CANCEL vs HIDE:
+--    - <C-g> cancels and reverts auto_insert changes
+--    - <C-e> just hides the menu
+--
+-- 4. GHOST TEXT:
 --    - Shows completion inline as you type
---    - Appears as dimmed text after cursor
---    - Press <Tab> or <CR> to accept
+--    - Press Tab or Enter to accept
+--    - Set `ghost_text.enabled = false` to disable
 --
--- 2. ROUNDED BORDERS:
---    - Completion menu has rounded border
---    - Documentation window has rounded border
---    - Signature help has rounded border
---    - Matches modern UI aesthetics
+-- 5. CUSTOM PROVIDER TRIGGERS:
+--    - Uncomment <C-s> to show only snippets
+--    - Great for snippet-heavy workflows
 --
--- 3. CUSTOM SNIPPETS:
---    - Add your own snippets to: ~/.config/nvim/snippets/
---    - Format: language.snippets (e.g., lua.snippets)
---    - Use VSCode-style snippet syntax
+-- 6. SQL COMPLETION:
+--    - Automatically enabled in .sql files
+--    - Requires vim-dadbod-ui connection
 --
--- Default keybindings:
--- <Tab>      - Select next / accept snippet placeholder
--- <S-Tab>    - Select previous / previous placeholder
--- <CR>       - Accept completion
--- <C-e>      - Close completion menu
--- <C-space>  - Trigger completion manually
--- <C-b>      - Scroll docs up
--- <C-f>      - Scroll docs down
+-- =============================================================================
+-- TROUBLESHOOTING
+-- =============================================================================
 --
--- Example custom snippet file (~/.config/nvim/snippets/lua.snippets):
--- snippet fn "function"
--- function ${1:name}(${2:args})
---   ${0}
--- end
--- endsnippet
+-- Enter not working?
+-- - Check if you have conflicting <CR> mappings
+-- - Try <C-y> as alternative
 --
--- Performance:
--- - blink.cmp is 10-100x faster than nvim-cmp
--- - Updates on every keystroke with minimal lag
--- - Ghost text adds ~0ms overhead
+-- Signature help not showing?
+-- - Ensure signature.enabled = true
+-- - Press <C-k> to toggle
+-- - Some LSPs don't support signatures
 --
--- Troubleshooting:
--- 1. No completions? Check LSP: :LspInfo
--- 2. Ghost text not showing? Make sure enabled = true
--- 3. Manually trigger: <C-space>
+-- Snippets not working?
+-- - Check if friendly-snippets is installed
+-- - Verify snippet files exist
+-- - Try triggering manually with <C-space>
+--
 -- =============================================================================

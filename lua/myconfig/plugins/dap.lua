@@ -53,6 +53,10 @@ return {{
                 border = "rounded",
                 mappings = {
                     close = {"q", "<Esc>"}
+                },
+                -- TRANSPARENCY SETTINGS
+                win_options = {
+                    winblend = 0
                 }
             }
         })
@@ -123,69 +127,228 @@ return {{
         -- ==========================================================================
         local keymap = vim.keymap.set
 
-        -- Start/Continue
+        -- ==========================================================================
+        -- FUNCTION KEYS (F5-F12) - Industry Standard
+        -- ==========================================================================
+        -- F5: Start/Continue (VS Code, Visual Studio, IntelliJ standard)
         keymap("n", "<F5>", dap.continue, {
             desc = "\u{f04b} Debug: Start/Continue" --  (play)
         })
-        keymap("n", "<leader>dc", dap.continue, {
-            desc = "\u{f04b} Debug: Continue"
+
+        -- F9: Toggle Breakpoint (VS Code, Visual Studio, IntelliJ standard)
+        keymap("n", "<F9>", dap.toggle_breakpoint, {
+            desc = "\u{f111} Debug: Toggle Breakpoint" --  (circle)
         })
 
-        -- Step controls
+        -- F10: Step Over
         keymap("n", "<F10>", dap.step_over, {
             desc = "\u{f063} Debug: Step Over" --  (arrow down)
         })
+
+        -- F11: Step Into
         keymap("n", "<F11>", dap.step_into, {
             desc = "\u{f062} Debug: Step Into" --  (arrow down into)
         })
+
+        -- F12: Step Out
         keymap("n", "<F12>", dap.step_out, {
             desc = "\u{f062} Debug: Step Out" --  (arrow up)
         })
-        keymap("n", "<leader>dso", dap.step_over, {
-            desc = "Debug: Step Over"
-        })
-        keymap("n", "<leader>dsi", dap.step_into, {
-            desc = "Debug: Step Into"
-        })
-        keymap("n", "<leader>dsO", dap.step_out, {
-            desc = "Debug: Step Out"
+
+        -- F6: Pause
+        keymap("n", "<F6>", dap.pause, {
+            desc = "\u{f04c} Debug: Pause" --  (pause)
         })
 
-        -- Breakpoints
-        keymap("n", "<leader>db", dap.toggle_breakpoint, {
-            desc = "\u{f111} Debug: Toggle Breakpoint" --  (circle)
+        -- ==========================================================================
+        -- ARROW KEYS - Alternative Step Navigation (Common in IDEs)
+        -- ==========================================================================
+        keymap("n", "<Down>", dap.step_over, {
+            desc = "\u{f063} Debug: Step Over"
         })
+        keymap("n", "<Right>", dap.step_into, {
+            desc = "\u{f061} Debug: Step Into"
+        })
+        keymap("n", "<Left>", dap.step_out, {
+            desc = "\u{f060} Debug: Step Out"
+        })
+        keymap("n", "<Up>", dap.run_to_cursor, {
+            desc = "\u{f062} Debug: Run to Cursor"
+        })
+
+        -- ==========================================================================
+        -- SESSION CONTROL - <leader>d prefix
+        -- ==========================================================================
+        -- Continue/Start
+        keymap("n", "<leader>dc", dap.continue, {
+            desc = "\u{f04b} Continue" --  (play)
+        })
+
+        -- Run to cursor (no breakpoint needed)
+        keymap("n", "<leader>dC", dap.run_to_cursor, {
+            desc = "\u{f0a4} Run to Cursor" --  (arrow to cursor)
+        })
+
+        -- Restart session
+        keymap("n", "<leader>dR", dap.restart, {
+            desc = "\u{f01e} Restart Session" --  (refresh)
+        })
+
+        -- Pause execution
+        keymap("n", "<leader>dp", dap.pause, {
+            desc = "\u{f04c} Pause" --  (pause)
+        })
+
+        -- Terminate session
+        keymap("n", "<leader>dt", dap.terminate, {
+            desc = "\u{f04d} Terminate" --  (stop)
+        })
+
+        -- ==========================================================================
+        -- STEP CONTROLS - <leader>ds prefix
+        -- ==========================================================================
+        keymap("n", "<leader>dso", dap.step_over, {
+            desc = "\u{f063} Step Over"
+        })
+        keymap("n", "<leader>dsi", dap.step_into, {
+            desc = "\u{f062} Step Into"
+        })
+        keymap("n", "<leader>dsO", dap.step_out, {
+            desc = "\u{f062} Step Out"
+        })
+        keymap("n", "<leader>dsb", dap.step_back, {
+            desc = "\u{f04a} Step Back (Reverse)" --  (backward)
+        })
+
+        -- ==========================================================================
+        -- BREAKPOINTS - <leader>db prefix
+        -- ==========================================================================
+        -- Toggle breakpoint
+        keymap("n", "<leader>db", dap.toggle_breakpoint, {
+            desc = "\u{f111} Toggle Breakpoint" --  (circle)
+        })
+
+        -- Conditional breakpoint
         keymap("n", "<leader>dB", function()
             dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
         end, {
-            desc = "\u{f059} Debug: Conditional Breakpoint" --  (question)
+            desc = "\u{f059} Conditional Breakpoint" --  (question)
         })
+
+        -- Log point
         keymap("n", "<leader>dL", function()
             dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
         end, {
-            desc = "Debug: Log Point"
+            desc = "\u{f05a} Log Point" --  (info)
         })
 
-        -- UI controls
-        keymap("n", "<leader>du", dapui.toggle, {
-            desc = "\u{f2d0} Debug: Toggle UI" --  (window)
+        -- Clear all breakpoints
+        keymap("n", "<leader>dbc", dap.clear_breakpoints, {
+            desc = "\u{f00d} Clear All Breakpoints" --  (times)
         })
+
+        -- List breakpoints
+        keymap("n", "<leader>dbl", function()
+            require("telescope.builtin").lsp_document_symbols()
+        end, {
+            desc = "\u{f03a} List Breakpoints" --  (list)
+        })
+
+        -- ==========================================================================
+        -- UI CONTROLS - <leader>du prefix
+        -- ==========================================================================
+        -- Toggle UI
+        keymap("n", "<leader>du", dapui.toggle, {
+            desc = "\u{f2d0} Toggle UI" --  (window)
+        })
+
+        -- Open floating element
+        keymap("n", "<leader>df", function()
+            dapui.float_element()
+        end, {
+            desc = "\u{f2d2} Float Element" --  (window restore)
+        })
+
+        -- Open specific floating windows
+        keymap("n", "<leader>ds", function()
+            dapui.float_element("scopes")
+        end, {
+            desc = "\u{f0ce} Scopes (Float)" --  (table)
+        })
+
+        keymap("n", "<leader>dw", function()
+            dapui.float_element("watches")
+        end, {
+            desc = "\u{f06e} Watches (Float)" --  (eye)
+        })
+
+        keymap("n", "<leader>dk", function()
+            dapui.float_element("stacks")
+        end, {
+            desc = "\u{f0c9} Stack Trace (Float)" --  (bars)
+        })
+
+        -- ==========================================================================
+        -- EVALUATION & INSPECTION - <leader>de prefix
+        -- ==========================================================================
+        -- Eval under cursor (normal & visual)
         keymap("n", "<leader>de", dapui.eval, {
-            desc = "\u{f06e} Debug: Eval" --  (eye)
+            desc = "\u{f06e} Eval Expression" --  (eye)
         })
         keymap("v", "<leader>de", dapui.eval, {
-            desc = "Debug: Eval Selection"
+            desc = "\u{f06e} Eval Selection"
         })
 
-        -- Session controls
+        -- Eval with input prompt
+        keymap("n", "<leader>dE", function()
+            dapui.eval(vim.fn.input("Expression: "))
+        end, {
+            desc = "\u{f120} Eval (Prompt)" --  (terminal)
+        })
+
+        -- Hover (alternative to eval)
+        keymap("n", "<leader>dh", function()
+            require("dap.ui.widgets").hover()
+        end, {
+            desc = "\u{f05a} Hover Info" --  (info)
+        })
+
+        -- ==========================================================================
+        -- REPL & SESSION - <leader>dr prefix
+        -- ==========================================================================
+        -- Open REPL
         keymap("n", "<leader>dr", dap.repl.open, {
-            desc = "Debug: Open REPL"
+            desc = "\u{f120} Open REPL" --  (terminal)
         })
+
+        -- Run last configuration
         keymap("n", "<leader>dl", dap.run_last, {
-            desc = "Debug: Run Last"
+            desc = "\u{f04b} Run Last Config" --  (play)
         })
-        keymap("n", "<leader>dt", dap.terminate, {
-            desc = "\u{f04d} Debug: Terminate" --  (stop)
+
+        -- View active sessions
+        keymap("n", "<leader>dS", function()
+            require("dap").session()
+        end, {
+            desc = "\u{f1da} View Sessions" --  (history)
+        })
+
+        -- ==========================================================================
+        -- NAVIGATION - Stack/Frame
+        -- ==========================================================================
+        -- Go to line (without executing)
+        keymap("n", "<leader>dg", function()
+            dap.goto_()
+        end, {
+            desc = "\u{f01e} Goto Line"
+        })
+
+        -- Navigate stack frames
+        keymap("n", "<leader>dj", dap.down, {
+            desc = "\u{f063} Stack Frame Down"
+        })
+        keymap("n", "<leader>dk", dap.up, {
+            desc = "\u{f062} Stack Frame Up"
         })
     end
 }, -- Python DAP extension (install as regular plugin, NOT via luarocks)

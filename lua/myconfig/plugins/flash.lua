@@ -128,13 +128,16 @@ return {
     -- ==========================================================================
     -- KEYBINDINGS
     -- ==========================================================================
-    keys = {{
+    keys = { -- ======================================================================
+    -- CORE FLASH MOTIONS
+    -- ======================================================================
+    {
         "s",
         mode = {"n", "x", "o"},
         function()
             require("flash").jump()
         end,
-        desc = "\u{26a1} Flash" -- ⚡
+        desc = "\u{26a1} Flash Jump" -- ⚡
     }, {
         "S",
         mode = {"n", "x", "o"},
@@ -142,7 +145,12 @@ return {
             require("flash").treesitter()
         end,
         desc = "\u{f1bb} Flash Treesitter" --  (tree)
-    }, {
+    },
+
+    -- ======================================================================
+    -- REMOTE OPERATIONS (operator-pending & visual)
+    -- ======================================================================
+    {
         "r",
         mode = "o",
         function()
@@ -156,13 +164,100 @@ return {
             require("flash").treesitter_search()
         end,
         desc = "\u{f002} Treesitter Search" --  (search)
-    }, {
+    },
+
+    -- ======================================================================
+    -- SEARCH INTEGRATION
+    -- ======================================================================
+    {
         "<c-s>",
         mode = {"c"},
         function()
             require("flash").toggle()
         end,
         desc = "\u{26a1} Toggle Flash Search" -- ⚡
+    },
+
+    -- ======================================================================
+    -- EXTENDED ACTIONS (Power User Features)
+    -- ======================================================================
+    -- Jump to any line (like easymotion line jump)
+    {
+        "<leader>jl",
+        mode = {"n", "x", "o"},
+        function()
+            require("flash").jump({
+                search = {
+                    mode = "search",
+                    max_length = 0
+                },
+                label = {
+                    after = {0, 0}
+                },
+                pattern = "^"
+            })
+        end,
+        desc = "\u{f0c9} Flash Line" --  (list)
+    }, -- Jump to any word (useful for quick word navigation)
+    {
+        "<leader>jw",
+        mode = {"n", "x", "o"},
+        function()
+            require("flash").jump({
+                pattern = ".", -- initialize with any char
+                search = {
+                    mode = function(pattern)
+                        -- remove leading dot
+                        if pattern:sub(1, 1) == "." then
+                            pattern = pattern:sub(2)
+                        end
+                        -- return word pattern and proper skip pattern
+                        return ([[\<%s\w*\>]]):format(pattern),
+                            ([[\<%s]]):format(pattern)
+                    end
+                },
+                -- select the range
+                jump = {
+                    pos = "range"
+                }
+            })
+        end,
+        desc = "\u{f031} Flash Word" --  (text)
+    }, -- Continue last flash search
+    {
+        "<leader>jc",
+        mode = {"n", "x", "o"},
+        function()
+            require("flash").jump({
+                continue = true
+            })
+        end,
+        desc = "\u{f021} Flash Continue" --  (refresh/repeat)
+    }, -- Jump to diagnostics (show diagnostic without moving permanently)
+    {
+        "<leader>jd",
+        mode = "n",
+        function()
+            require("flash").jump({
+                matcher = function(win)
+                    ---@param diag Diagnostic
+                    return vim.tbl_map(function(diag)
+                        return {
+                            pos = {diag.lnum + 1, diag.col},
+                            end_pos = {diag.end_lnum + 1, diag.end_col - 1}
+                        }
+                    end, vim.diagnostic.get(vim.api.nvim_win_get_buf(win)))
+                end,
+                action = function(match, state)
+                    vim.api.nvim_win_call(match.win, function()
+                        vim.api.nvim_win_set_cursor(match.win, match.pos)
+                        vim.diagnostic.open_float()
+                    end)
+                    state:restore()
+                end
+            })
+        end,
+        desc = "\u{f188} Flash Diagnostic" --  (bug)
     }}
 }
 

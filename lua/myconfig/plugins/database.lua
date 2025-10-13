@@ -119,10 +119,17 @@ return
             }
         end,
 
-        keys = {{
+        keys = { -- ==========================================================================
+        -- DATABASE UI COMMANDS
+        -- ==========================================================================
+        {
             "<leader>db",
             "<cmd>DBUIToggle<cr>",
             desc = "\u{f1c0} Toggle Database UI"
+        }, {
+            "<leader>da",
+            "<cmd>DBUIAddConnection<cr>",
+            desc = "\u{f067} Add Database Connection"
         }, {
             "<leader>df",
             "<cmd>DBUIFindBuffer<cr>",
@@ -147,6 +154,9 @@ return
         lazy = true,
 
         init = function()
+            -- ==========================================================================
+            -- SQL FILETYPE KEYMAPS (Query Editing)
+            -- ==========================================================================
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {"sql", "mysql", "plsql"},
                 callback = function()
@@ -156,6 +166,7 @@ return
                         silent = true
                     }
 
+                    -- Query Execution
                     keymap("n", "<leader>dw", "<Plug>(DBUI_SaveQuery)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f0c7} Save Query"
@@ -164,9 +175,86 @@ return
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f040} Edit Bind Parameters"
                         }))
+                    keymap("n", "<leader>dx", "<Plug>(DBUI_ExecuteQuery)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f04b} Execute Query"
+                        }))
                     keymap("v", "<leader>dx", "<Plug>(DBUI_ExecuteQuery)",
                         vim.tbl_extend("force", opts, {
                             desc = "\u{f04b} Execute Selected Query"
+                        }))
+
+                    -- Navigation & Selection
+                    keymap("n", "<leader>dS", "<Plug>(DBUI_SelectLineVsplit)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f338} Open in Vertical Split"
+                        }))
+                    keymap("n", "<leader>dJ", "<Plug>(DBUI_JumpToForeignKey)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f0c1} Jump to Foreign Key"
+                        }))
+                end
+            })
+
+            -- ==========================================================================
+            -- DBUI DRAWER KEYMAPS (Navigation)
+            -- ==========================================================================
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "dbui",
+                callback = function()
+                    local keymap = vim.keymap.set
+                    local opts = {
+                        buffer = true,
+                        silent = true
+                    }
+
+                    -- Core navigation (these are defaults, but documented for clarity)
+                    keymap("n", "o", "<Plug>(DBUI_SelectLine)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f0c1} Open/Toggle"
+                        }))
+                    keymap("n", "S", "<Plug>(DBUI_SelectLineVsplit)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f338} Open in Vertical Split"
+                        }))
+                    keymap("n", "R", "<Plug>(DBUI_Redraw)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f021} Redraw"
+                        }))
+                    keymap("n", "d", "<Plug>(DBUI_DeleteLine)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f1f8} Delete"
+                        }))
+                    keymap("n", "A", "<Plug>(DBUI_AddConnection)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f067} Add Connection"
+                        }))
+                    keymap("n", "H", "<Plug>(DBUI_ToggleDetails)",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f05a} Toggle Details"
+                        }))
+                end
+            })
+
+            -- ==========================================================================
+            -- DBOUT BUFFER KEYMAPS (Result Window)
+            -- ==========================================================================
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "dbout",
+                callback = function()
+                    local keymap = vim.keymap.set
+                    local opts = {
+                        buffer = true,
+                        silent = true
+                    }
+
+                    -- These are built into dadbod, but we document them for which-key
+                    keymap("n", "R", ":DB<CR>", vim.tbl_extend("force", opts, {
+                        desc = "\u{f021} Rerun Query"
+                    }))
+                    keymap("n", "gq", ":bdelete<CR>",
+                        vim.tbl_extend("force", opts, {
+                            desc = "\u{f2d1} Close Results"
                         }))
                 end
             })
@@ -178,28 +266,39 @@ return
 -- =============================================================================
 -- Getting Started:
 -- 1. Install required CLI tools (sqlcmd, mysql, bq)
--- 2. Add connections via :DBUIAddConnection or configure vim.g.dbs above
+-- 2. Add connections via :DBUIAddConnection or <leader>da
 -- 3. Open DBUI with <leader>db
 --
--- DBUI Navigation:
--- o / <CR>    - Open/Toggle database, schema, or table
+-- Custom Keymaps (Leader-based):
+-- <leader>db - Toggle Database UI drawer
+-- <leader>da - Add new database connection
+-- <leader>df - Find database buffer
+-- <leader>dr - Rename database buffer
+-- <leader>dl - Show last query info
+-- <leader>dw - Save query permanently
+-- <leader>de - Edit bind parameters
+-- <leader>dx - Execute query (normal or visual)
+-- <leader>dS - Open in vertical split
+-- <leader>dJ - Jump to foreign key
+--
+-- DBUI Drawer Navigation (buffer-local):
+-- o / <CR>   - Open/Toggle database, schema, or table
 -- S          - Open in vertical split
 -- R          - Redraw UI
 -- A          - Add connection
 -- d          - Delete connection/query
--- r          - Rename connection/query
--- q          - Quit DBUI
+-- H          - Toggle database details
+-- ?          - Toggle help
 --
 -- Query Execution:
--- :w in query buffer - Execute query and show results
+-- :w in query buffer  - Execute query and show results
+-- <leader>dx (normal) - Execute entire query buffer
 -- <leader>dx (visual) - Execute selected query
--- <leader>dw         - Save query permanently
--- <leader>de         - Edit bind parameters
 --
--- Results Navigation:
--- <           - Previous page
--- >           - Next page
--- R           - Toggle expanded view
+-- Results Window (dbout buffer):
+-- R          - Rerun last query
+-- gq         - Close results window
+-- <C-c>      - Cancel running query
 --
 -- Connection URL Formats:
 --

@@ -2,7 +2,7 @@
 -- =============================================================================
 -- TREESITTER - Advanced Syntax Highlighting (UPDATED)
 -- =============================================================================
--- Added: Rainbow delimiters, context, autotag, and folding support
+-- Added: Swap, repeatable moves, LSP interop, conditional/loop navigation
 -- =============================================================================
 return { -- Main treesitter plugin
 {
@@ -91,6 +91,9 @@ return { -- Main treesitter plugin
             -- TEXT OBJECTS
             -- ==========================================================================
             textobjects = {
+                -- ----------------------------------------------------------------------
+                -- SELECT TEXT OBJECTS
+                -- ----------------------------------------------------------------------
                 select = {
                     enable = true,
                     lookahead = true,
@@ -113,32 +116,201 @@ return { -- Main treesitter plugin
 
                         -- Parameters/arguments
                         ["aa"] = "@parameter.outer",
-                        ["ia"] = "@parameter.inner"
+                        ["ia"] = "@parameter.inner",
+
+                        -- Blocks
+                        ["ab"] = "@block.outer",
+                        ["ib"] = "@block.inner",
+
+                        -- Scopes (from locals query)
+                        ["as"] = {
+                            query = "@local.scope",
+                            query_group = "locals",
+                            desc = "Select language scope"
+                        }
                     }
                 },
 
-                -- Move between functions, classes, etc.
+                -- ----------------------------------------------------------------------
+                -- SWAP TEXT OBJECTS
+                -- ----------------------------------------------------------------------
+                swap = {
+                    enable = true,
+                    swap_next = {
+                        ["<leader>a"] = {
+                            query = "@parameter.inner",
+                            desc = "Swap with next parameter"
+                        },
+                        ["<leader>sf"] = {
+                            query = "@function.outer",
+                            desc = "Swap with next function"
+                        }
+                    },
+                    swap_previous = {
+                        ["<leader>A"] = {
+                            query = "@parameter.inner",
+                            desc = "Swap with previous parameter"
+                        },
+                        ["<leader>sF"] = {
+                            query = "@function.outer",
+                            desc = "Swap with previous function"
+                        }
+                    }
+                },
+
+                -- ----------------------------------------------------------------------
+                -- MOVE BETWEEN TEXT OBJECTS
+                -- ----------------------------------------------------------------------
                 move = {
                     enable = true,
-                    set_jumps = true,
+                    set_jumps = true, -- Add to jumplist
                     goto_next_start = {
-                        ["]f"] = "@function.outer",
-                        ["]c"] = "@class.outer"
+                        -- Functions & Classes
+                        ["]f"] = {
+                            query = "@function.outer",
+                            desc = "Next function start"
+                        },
+                        ["]c"] = {
+                            query = "@class.outer",
+                            desc = "Next class start"
+                        },
+
+                        -- Loops
+                        ["]o"] = {
+                            query = "@loop.*",
+                            desc = "Next loop start"
+                        },
+
+                        -- Conditionals
+                        ["]d"] = {
+                            query = "@conditional.outer",
+                            desc = "Next conditional start"
+                        },
+
+                        -- Parameters
+                        ["]a"] = {
+                            query = "@parameter.inner",
+                            desc = "Next parameter start"
+                        },
+
+                        -- Scopes (from locals query)
+                        ["]s"] = {
+                            query = "@local.scope",
+                            query_group = "locals",
+                            desc = "Next scope start"
+                        },
+
+                        -- Folds (from folds query)
+                        ["]z"] = {
+                            query = "@fold",
+                            query_group = "folds",
+                            desc = "Next fold start"
+                        }
                     },
                     goto_next_end = {
-                        ["]F"] = "@function.outer",
-                        ["]C"] = "@class.outer"
+                        ["]F"] = {
+                            query = "@function.outer",
+                            desc = "Next function end"
+                        },
+                        ["]C"] = {
+                            query = "@class.outer",
+                            desc = "Next class end"
+                        }
                     },
                     goto_previous_start = {
-                        ["[f"] = "@function.outer",
-                        ["[c"] = "@class.outer"
+                        ["[f"] = {
+                            query = "@function.outer",
+                            desc = "Previous function start"
+                        },
+                        ["[c"] = {
+                            query = "@class.outer",
+                            desc = "Previous class start"
+                        },
+                        ["[o"] = {
+                            query = "@loop.*",
+                            desc = "Previous loop start"
+                        },
+                        ["[d"] = {
+                            query = "@conditional.outer",
+                            desc = "Previous conditional start"
+                        },
+                        ["[a"] = {
+                            query = "@parameter.inner",
+                            desc = "Previous parameter start"
+                        },
+                        ["[s"] = {
+                            query = "@local.scope",
+                            query_group = "locals",
+                            desc = "Previous scope start"
+                        },
+                        ["[z"] = {
+                            query = "@fold",
+                            query_group = "folds",
+                            desc = "Previous fold start"
+                        }
                     },
                     goto_previous_end = {
-                        ["[F"] = "@function.outer",
-                        ["[C"] = "@class.outer"
+                        ["[F"] = {
+                            query = "@function.outer",
+                            desc = "Previous function end"
+                        },
+                        ["[C"] = {
+                            query = "@class.outer",
+                            desc = "Previous class end"
+                        }
+                    }
+                },
+
+                -- ----------------------------------------------------------------------
+                -- LSP INTEROP
+                -- ----------------------------------------------------------------------
+                lsp_interop = {
+                    enable = true,
+                    border = "rounded",
+                    floating_preview_opts = {},
+                    peek_definition_code = {
+                        ["<leader>df"] = {
+                            query = "@function.outer",
+                            desc = "\u{f0c1} Peek function definition" --  (link)
+                        },
+                        ["<leader>dF"] = {
+                            query = "@class.outer",
+                            desc = "\u{f0c1} Peek class definition" --  (link)
+                        }
                     }
                 }
             }
+        })
+
+        -- ==========================================================================
+        -- REPEATABLE MOVEMENTS (like ; and , for f/t)
+        -- ==========================================================================
+        local ts_repeat_move = require(
+            "nvim-treesitter.textobjects.repeatable_move")
+
+        -- Repeat movement with ; and ,
+        -- ; goes forward, , goes backward regardless of last direction
+        vim.keymap.set({"n", "x", "o"}, ";",
+            ts_repeat_move.repeat_last_move_next, {
+                desc = "Repeat last move forward"
+            })
+        vim.keymap.set({"n", "x", "o"}, ",",
+            ts_repeat_move.repeat_last_move_previous, {
+                desc = "Repeat last move backward"
+            })
+
+        -- Make builtin f, F, t, T also repeatable with ; and ,
+        vim.keymap.set({"n", "x", "o"}, "f", ts_repeat_move.builtin_f_expr, {
+            expr = true
+        })
+        vim.keymap.set({"n", "x", "o"}, "F", ts_repeat_move.builtin_F_expr, {
+            expr = true
+        })
+        vim.keymap.set({"n", "x", "o"}, "t", ts_repeat_move.builtin_t_expr, {
+            expr = true
+        })
+        vim.keymap.set({"n", "x", "o"}, "T", ts_repeat_move.builtin_T_expr, {
+            expr = true
         })
     end
 },
@@ -199,7 +371,7 @@ return { -- Main treesitter plugin
         function()
             require("treesitter-context").go_to_context()
         end,
-        desc = "Go to context"
+        desc = "\u{f062} Go to context" --  (arrow up)
     }}
 },
 
@@ -224,34 +396,55 @@ return { -- Main treesitter plugin
 }}
 
 -- =============================================================================
--- TREESITTER NOTES
+-- TREESITTER NOTES (UPDATED)
 -- =============================================================================
 -- New features added:
 --
--- 1. RAINBOW DELIMITERS:
---    - Brackets/parens colored by nesting level
---    - Makes it easy to match pairs visually
+-- 1. SWAP TEXT OBJECTS:
+--    <leader>a  - Swap current parameter with next
+--    <leader>A  - Swap current parameter with previous
+--    <leader>sf - Swap current function with next
+--    <leader>sF - Swap current function with previous
 --
--- 2. TREESITTER CONTEXT:
---    - Shows current function/class at top
---    - Press [x to jump to context
---    - Useful when scrolling through long functions
+-- 2. REPEATABLE MOVEMENTS:
+--    ;  - Repeat last treesitter movement forward
+--    ,  - Repeat last treesitter movement backward
+--    Works with f/F/t/T as well!
 --
--- 3. AUTO TAG:
---    - Automatically closes HTML/JSX tags
---    - Renames closing tag when you rename opening tag
---    - Works in: HTML, JSX, TSX, Vue, XML
+-- 3. LSP INTEROP:
+--    <leader>df - Peek function definition without leaving buffer
+--    <leader>dF - Peek class definition without leaving buffer
+--    Press keymap twice to enter floating window
 --
--- 4. FOLDING:
---    - Configured in options.lua
---    - Use 'za' to toggle fold
---    - Use 'zM' to fold all
---    - Use 'zR' to unfold all
+-- 4. ADDITIONAL NAVIGATION:
+--    ]d / [d - Next/Previous conditional (if/else/switch)
+--    ]o / [o - Next/Previous loop (for/while)
+--    ]s / [s - Next/Previous scope
+--    ]z / [z - Next/Previous fold
+--    ]a / [a - Next/Previous parameter
 --
--- Text object examples:
--- daf  - Delete a function
--- vif  - Select inside function
--- yac  - Yank a class
--- ]f   - Jump to next function
--- [f   - Jump to previous function
+-- 5. ADDITIONAL TEXT OBJECTS:
+--    ab / ib - Around/Inside block
+--    as / is - Around/Inside scope (local scope from locals query)
+--
+-- Existing text objects:
+-- af/if  - Around/Inside function
+-- ac/ic  - Around/Inside class
+-- al/il  - Around/Inside loop
+-- ai/ii  - Around/Inside conditional
+-- aa/ia  - Around/Inside parameter
+--
+-- Movement examples:
+-- ]f     - Jump to next function start
+-- [f     - Jump to previous function start
+-- ]F     - Jump to next function end
+-- [F     - Jump to previous function end
+-- ]c     - Jump to next class
+--
+-- Workflow tip:
+-- 1. Use ]f to jump to next function
+-- 2. Use daf to delete entire function
+-- 3. Use vif to select inside function
+-- 4. Use <leader>a to swap function parameters
+-- 5. Use ; to repeat the last movement
 -- =============================================================================

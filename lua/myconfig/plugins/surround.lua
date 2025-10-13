@@ -84,6 +84,9 @@ return {
 -- =============================================================================
 -- NVIM-SURROUND NOTES
 -- =============================================================================
+-- NOTE: All keymaps are documented in which-key.lua for easy discovery!
+--       Press any of the surround keys (ys, ds, cs) to see which-key hints.
+--
 -- What it does:
 -- Manipulate surrounding pairs of characters (quotes, brackets, tags, etc.)
 --

@@ -2,7 +2,7 @@
 -- =============================================================================
 -- OIL.NVIM - File Explorer as Buffer (UPDATED)
 -- =============================================================================
--- Added: Size/mtime/permissions columns, git integration, better float config
+-- Added: Common keymaps (Esc, q, detail toggle), better documentation
 -- =============================================================================
 return {
     "stevearc/oil.nvim",
@@ -18,11 +18,13 @@ return {
         default_file_explorer = true,
 
         -- ==========================================================================
-        -- COLUMNS TO DISPLAY (UPDATED)
+        -- COLUMNS TO DISPLAY
         -- ==========================================================================
-        columns = {"icon" -- "permissions",  -- Uncomment to show file permissions (rwxr-xr-x)
-        -- "size",         -- Uncomment to show file size
-        -- "mtime",        -- Uncomment to show last modified time
+        columns = {"icon"
+        -- Uncomment for detail view (toggle with 'gd' in Oil):
+        -- "permissions",
+        -- "size",
+        -- "mtime",
         },
 
         -- ==========================================================================
@@ -85,40 +87,29 @@ return {
                 return false
             end,
 
-            -- Natural number sorting
             natural_order = "fast",
-
-            -- Case insensitive sorting
             case_insensitive = false,
 
-            sort = {{"type", "asc"}, -- Directories first
-            {"name", "asc"} -- Then alphabetically
-            }
+            sort = {{"type", "asc"}, {"name", "asc"}}
         },
 
         -- ==========================================================================
-        -- GIT INTEGRATION (EXPERIMENTAL - ADDED)
+        -- GIT INTEGRATION (EXPERIMENTAL)
         -- ==========================================================================
-        -- Automatically perform git operations when moving/deleting files
         git = {
-            -- Auto git-add new files
             add = function(path)
-                return false -- Set to true to enable
+                return false
             end,
-
-            -- Auto git-mv when moving files
             mv = function(src_path, dest_path)
-                return false -- Set to true to enable
+                return false
             end,
-
-            -- Auto git-rm when deleting files
             rm = function(path)
-                return false -- Set to true to enable
+                return false
             end
         },
 
         -- ==========================================================================
-        -- FLOATING WINDOW (UPDATED)
+        -- FLOATING WINDOW
         -- ==========================================================================
         float = {
             padding = 2,
@@ -165,22 +156,115 @@ return {
         -- KEYMAPS (within oil buffer)
         -- ==========================================================================
         keymaps = {
+            -- =======================================================================
+            -- HELP
+            -- =======================================================================
             ["g?"] = "actions.show_help",
+
+            -- =======================================================================
+            -- FILE OPERATIONS (Select/Open)
+            -- =======================================================================
             ["<CR>"] = "actions.select",
-            ["<C-s>"] = "actions.select_vsplit",
-            ["<C-h>"] = "actions.select_split",
-            ["<C-t>"] = "actions.select_tab",
+            ["<C-s>"] = {
+                "actions.select",
+                opts = {vertical = true}
+            },
+            ["<C-v>"] = { -- ADDED: Alternative vertical split (more common)
+                "actions.select",
+                opts = {vertical = true},
+                desc = "Open in vertical split"
+            },
+            ["<C-h>"] = {
+                "actions.select",
+                opts = {horizontal = true}
+            },
+            ["<C-x>"] = { -- ADDED: Alternative horizontal split (more common)
+                "actions.select",
+                opts = {horizontal = true},
+                desc = "Open in horizontal split"
+            },
+            ["<C-t>"] = {
+                "actions.select",
+                opts = {tab = true}
+            },
+
+            -- =======================================================================
+            -- PREVIEW & CLOSE
+            -- =======================================================================
             ["<C-p>"] = "actions.preview",
-            ["<C-c>"] = "actions.close",
+            ["<C-c>"] = {
+                "actions.close",
+                mode = "n"
+            },
+            ["<Esc>"] = { -- ADDED: Quick close (common convention)
+                "actions.close",
+                mode = "n",
+                desc = "Close Oil"
+            },
+            ["q"] = { -- ADDED: Vim convention for closing special buffers
+                "actions.close",
+                mode = "n",
+                desc = "Close Oil"
+            },
+
+            -- =======================================================================
+            -- NAVIGATION
+            -- =======================================================================
+            ["-"] = {
+                "actions.parent",
+                mode = "n"
+            },
+            ["_"] = {
+                "actions.open_cwd",
+                mode = "n"
+            },
+
+            -- =======================================================================
+            -- DIRECTORY OPERATIONS
+            -- =======================================================================
+            ["`"] = {
+                "actions.cd",
+                mode = "n"
+            },
+            ["~"] = {
+                "actions.cd",
+                opts = {scope = "tab"},
+                mode = "n"
+            },
+
+            -- =======================================================================
+            -- VIEW OPTIONS
+            -- =======================================================================
             ["<C-l>"] = "actions.refresh",
-            ["-"] = "actions.parent",
-            ["_"] = "actions.open_cwd",
-            ["`"] = "actions.cd",
-            ["~"] = "actions.tcd",
-            ["gs"] = "actions.change_sort",
-            ["gx"] = "actions.open_external",
-            ["g."] = "actions.toggle_hidden",
-            ["g\\"] = "actions.toggle_trash"
+            ["gs"] = {
+                "actions.change_sort",
+                mode = "n"
+            },
+            ["g."] = {
+                "actions.toggle_hidden",
+                mode = "n"
+            },
+            ["g\\"] = {
+                "actions.toggle_trash",
+                mode = "n"
+            },
+            ["gd"] = { -- ADDED: Toggle detail view (popular recipe)
+                desc = "Toggle file detail view",
+                callback = function()
+                    local oil = require("oil")
+                    local config = require("oil.config")
+                    if #config.columns == 1 then
+                        oil.set_columns({"icon", "permissions", "size", "mtime"})
+                    else
+                        oil.set_columns({"icon"})
+                    end
+                end
+            },
+
+            -- =======================================================================
+            -- EXTERNAL
+            -- =======================================================================
+            ["gx"] = "actions.open_external"
         },
 
         use_default_keymaps = true
@@ -190,14 +274,31 @@ return {
         require("oil").setup(opts)
 
         -- ==========================================================================
-        -- CUSTOM KEYBINDINGS
+        -- GLOBAL KEYBINDINGS (outside Oil buffer)
         -- ==========================================================================
+        
+        -- Open Oil in parent directory of current file
         vim.keymap.set("n", "-", "<CMD>Oil<CR>", {
-            desc = "Open parent directory"
+            desc = "\u{f07c} Open parent directory" --  (folder open)
         })
 
+        -- Open Oil in floating window
         vim.keymap.set("n", "<leader>-", "<CMD>Oil --float<CR>", {
-            desc = "Open parent directory (float)"
+            desc = "\u{f2d2} Oil float" --  (window maximize)
+        })
+
+        -- ADDED: Open Oil from anywhere (current file's directory)
+        vim.keymap.set("n", "<leader>o", function()
+            require("oil").open()
+        end, {
+            desc = "\u{f07c} Oil (current file dir)" --  (folder open)
+        })
+
+        -- ADDED: Open Oil in CWD
+        vim.keymap.set("n", "<leader>O", function()
+            require("oil").open(vim.fn.getcwd())
+        end, {
+            desc = "\u{f07b} Oil (cwd)" --  (folder)
         })
     end
 }
@@ -205,51 +306,66 @@ return {
 -- =============================================================================
 -- OIL.NVIM USAGE GUIDE (UPDATED)
 -- =============================================================================
--- New features:
---
--- 1. ADDITIONAL COLUMNS (commented out by default):
---    Uncomment in columns section to enable:
---    - "permissions" - Shows rwxr-xr-x style permissions
---    - "size"        - Shows file size (bytes/KB/MB)
---    - "mtime"       - Shows last modified time
---
--- 2. GIT INTEGRATION (experimental):
---    Set to true to auto-perform git operations:
---    - git.add = true  → Auto git-add new files
---    - git.mv = true   → Auto git-mv moved files
---    - git.rm = true   → Auto git-rm deleted files
---
--- 3. ENHANCED FLOAT WINDOW:
---    - Larger max size (100x30)
---    - Rounded borders
---    - Better visibility
+-- CRITICAL WORKFLOW:
+-- Oil is a BUFFER, not a file tree! Edit like any buffer, then :w to save.
 --
 -- Basic usage:
--- -           - Open oil in current directory
+-- -           - Open oil in current file's directory
 -- <leader>-   - Open oil in floating window
+-- <leader>o   - Open oil (alternative)
+-- <leader>O   - Open oil in working directory
 --
--- Within oil:
+-- Within Oil buffer:
+-- =================
+-- 
+-- FILE SELECTION:
 -- <CR>        - Open file/directory
--- -           - Go to parent directory
--- _           - Go to working directory
--- g?          - Show help
--- g.          - Toggle hidden files
--- <C-p>       - Preview file
--- <C-s>       - Open in vertical split
--- <C-h>       - Open in horizontal split
+-- <C-v>       - Open in vertical split
+-- <C-x>       - Open in horizontal split
 -- <C-t>       - Open in new tab
+-- <C-p>       - Preview file
 --
--- File operations (like normal buffer):
--- dd          - Cut line (stage file for move/delete)
--- yy          - Yank line (copy file path)
--- p           - Paste (move/copy file)
--- R or cw     - Rename (edit the filename!)
--- :w          - Save changes (performs file operations)
+-- NAVIGATION:
+-- -           - Go to parent directory
+-- _           - Go to CWD
+-- `           - CD to directory under cursor
+-- ~           - CD to directory under cursor (tab-local)
 --
--- Pro tips:
--- 1. Use visual mode to select multiple files
--- 2. Edit filenames like any text
--- 3. Create new files by adding lines
--- 4. Enable columns to see more file info
--- 5. Enable git integration if you use git
+-- VIEW CONTROLS:
+-- <C-l>       - Refresh
+-- g.          - Toggle hidden files
+-- gd          - Toggle detail view (size/mtime/permissions)
+-- gs          - Change sort order
+-- g\          - Toggle trash view
+-- g?          - Show help
+--
+-- CLOSING:
+-- q           - Close Oil buffer
+-- <Esc>       - Close Oil buffer
+-- <C-c>       - Close Oil buffer
+--
+-- FILE OPERATIONS (Use normal Vim commands!):
+-- ====================
+-- dd          - Cut file (delete line)
+-- yy          - Copy file (yank line)
+-- p           - Paste file (paste line)
+-- cw / R      - Rename file (change word / replace)
+-- o           - Create new file below (new line)
+-- O           - Create new file above
+-- I           - Edit at start of filename
+-- A           - Edit at end of filename
+-- :w          - **SAVE CHANGES** (This actually performs the operations!)
+-- :q!         - Discard all changes
+--
+-- IMPORTANT NOTES:
+-- 1. Changes are NOT saved until you :w
+-- 2. You can undo with 'u' before saving
+-- 3. Visual mode works! Select multiple files with V
+-- 4. Use dd/yy/p across different Oil buffers for cross-directory operations
+-- 5. Oil respects your trash settings (delete_to_trash = true)
+--
+-- Advanced:
+-- - Open multiple Oil buffers in splits for drag-and-drop style operations
+-- - Use visual-block mode (Ctrl+V) for bulk operations
+-- - Combine with macros for repetitive file operations
 -- =============================================================================
