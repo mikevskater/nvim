@@ -23,7 +23,15 @@ return {
             -- ACCEPT KEYMAPS
             -- ==========================================================================
             -- Enter to accept completion (most requested feature!)
-            ['<CR>'] = {'accept', 'fallback'},
+            ['<CR>'] = {
+                function(cmp)
+                    if cmp.is_visible() then
+                        return cmp.accept()
+                    else
+                        return vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<CR>', true, true, true), 'n', true)
+                    end
+                end
+            },
 
             -- Alternative accept (doesn't conflict with shell/tmux Ctrl+Y)
             ['<C-l>'] = {'accept'},
@@ -124,9 +132,9 @@ return {
             },
 
             per_filetype = {
-                sql = {"dadbod", "buffer"},
-                mysql = {"dadbod", "buffer"},
-                plsql = {"dadbod", "buffer"}
+                sql = {"dadbod", "snippets", "buffer"},
+                mysql = {"dadbod", "snippets", "buffer"},
+                plsql = {"dadbod", "snippets", "buffer"}
             }
         },
 

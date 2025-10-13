@@ -1,0 +1,248 @@
+{
+  "Select All": {
+    "prefix": "ss",
+    "body": [
+      "SELECT *",
+      "FROM ${1:table_name}",
+      "WHERE ${2:condition}$0"
+    ],
+    "description": "SELECT * with WHERE clause"
+  },
+  
+  "Select Columns": {
+    "prefix": "ssc",
+    "body": [
+      "SELECT",
+      "    ${1:column1},",
+      "    ${2:column2}",
+      "FROM ${3:table_name}",
+      "WHERE ${4:condition}$0"
+    ],
+    "description": "SELECT specific columns"
+  },
+
+  "Select Top N": {
+    "prefix": "sst",
+    "body": [
+      "SELECT TOP ${1:100}",
+      "    ${2:*}",
+      "FROM ${3:table_name}",
+      "WHERE ${4:condition}$0"
+    ],
+    "description": "SELECT TOP N rows (SQL Server)"
+  },
+
+  "Inner Join": {
+    "prefix": "ij",
+    "body": [
+      "INNER JOIN ${1:table_name} ${2:alias}",
+      "    ON ${2:alias}.${3:column} = ${4:other_table}.${5:column}$0"
+    ],
+    "description": "INNER JOIN clause"
+  },
+
+  "Left Join": {
+    "prefix": "lj",
+    "body": [
+      "LEFT JOIN ${1:table_name} ${2:alias}",
+      "    ON ${2:alias}.${3:column} = ${4:other_table}.${5:column}$0"
+    ],
+    "description": "LEFT JOIN clause"
+  },
+
+  "Insert Into": {
+    "prefix": "ii",
+    "body": [
+      "INSERT INTO ${1:table_name} (",
+      "    ${2:column1},",
+      "    ${3:column2}",
+      ")",
+      "VALUES (",
+      "    ${4:value1},",
+      "    ${5:value2}",
+      ")$0"
+    ],
+    "description": "INSERT INTO statement"
+  },
+
+  "Update": {
+    "prefix": "upd",
+    "body": [
+      "UPDATE ${1:table_name}",
+      "SET",
+      "    ${2:column1} = ${3:value1},",
+      "    ${4:column2} = ${5:value2}",
+      "WHERE ${6:condition}$0"
+    ],
+    "description": "UPDATE statement"
+  },
+
+  "Delete": {
+    "prefix": "del",
+    "body": [
+      "DELETE FROM ${1:table_name}",
+      "WHERE ${2:condition}$0"
+    ],
+    "description": "DELETE statement"
+  },
+
+  "Create Table": {
+    "prefix": "ct",
+    "body": [
+      "CREATE TABLE ${1:table_name} (",
+      "    ${2:column1} ${3:INT} ${4:NOT NULL},",
+      "    ${5:column2} ${6:VARCHAR(255)},",
+      "    ${7:PRIMARY KEY (${2:column1})}",
+      ")$0"
+    ],
+    "description": "CREATE TABLE statement"
+  },
+
+  "Begin Transaction": {
+    "prefix": "bt",
+    "body": [
+      "BEGIN TRANSACTION",
+      "",
+      "${1:-- SQL statements here}",
+      "",
+      "COMMIT TRANSACTION$0",
+      "-- ROLLBACK TRANSACTION"
+    ],
+    "description": "BEGIN/COMMIT TRANSACTION block"
+  },
+
+  "Try Catch": {
+    "prefix": "try",
+    "body": [
+      "BEGIN TRY",
+      "    BEGIN TRANSACTION",
+      "    ",
+      "    ${1:-- SQL statements here}",
+      "    ",
+      "    COMMIT TRANSACTION",
+      "END TRY",
+      "BEGIN CATCH",
+      "    IF @@TRANCOUNT > 0",
+      "        ROLLBACK TRANSACTION",
+      "    ",
+      "    THROW",
+      "END CATCH$0"
+    ],
+    "description": "TRY/CATCH block with transaction (SQL Server)"
+  },
+
+  "Case Statement": {
+    "prefix": "case",
+    "body": [
+      "CASE",
+      "    WHEN ${1:condition1} THEN ${2:result1}",
+      "    WHEN ${3:condition2} THEN ${4:result2}",
+      "    ELSE ${5:default_result}",
+      "END AS ${6:column_name}$0"
+    ],
+    "description": "CASE statement"
+  },
+
+  "Common Table Expression": {
+    "prefix": "cte",
+    "body": [
+      "WITH ${1:CTE_Name} AS (",
+      "    SELECT",
+      "        ${2:columns}",
+      "    FROM ${3:table_name}",
+      "    WHERE ${4:condition}",
+      ")",
+      "SELECT *",
+      "FROM ${1:CTE_Name}$0"
+    ],
+    "description": "Common Table Expression (CTE)"
+  },
+
+  "Stored Procedure": {
+    "prefix": "sp",
+    "body": [
+      "CREATE PROCEDURE ${1:procedure_name}",
+      "    ${2:@param1 INT,}",
+      "    ${3:@param2 VARCHAR(255)}",
+      "AS",
+      "BEGIN",
+      "    SET NOCOUNT ON;",
+      "    ",
+      "    ${4:-- Procedure logic here}",
+      "    ",
+      "END$0"
+    ],
+    "description": "Create Stored Procedure"
+  },
+
+  "If Exists": {
+    "prefix": "ife",
+    "body": [
+      "IF EXISTS (",
+      "    SELECT 1",
+      "    FROM ${1:table_name}",
+      "    WHERE ${2:condition}",
+      ")",
+      "BEGIN",
+      "    ${3:-- Action if exists}",
+      "END$0"
+    ],
+    "description": "IF EXISTS block"
+  },
+
+  "Declare Variable": {
+    "prefix": "dec",
+    "body": [
+      "DECLARE @${1:variable_name} ${2:INT} = ${3:NULL}$0"
+    ],
+    "description": "DECLARE variable (SQL Server)"
+  },
+
+  "Select Into Temp Table": {
+    "prefix": "sit",
+    "body": [
+      "SELECT",
+      "    ${1:columns}",
+      "INTO #${2:temp_table_name}",
+      "FROM ${3:table_name}",
+      "WHERE ${4:condition}$0"
+    ],
+    "description": "SELECT INTO temp table"
+  },
+
+  "Group By Having": {
+    "prefix": "gbh",
+    "body": [
+      "SELECT",
+      "    ${1:column},",
+      "    ${2:COUNT(*)} AS ${3:count}",
+      "FROM ${4:table_name}",
+      "GROUP BY ${1:column}",
+      "HAVING ${2:COUNT(*)} > ${5:1}$0"
+    ],
+    "description": "GROUP BY with HAVING clause"
+  },
+
+  "Window Function": {
+    "prefix": "wf",
+    "body": [
+      "${1:ROW_NUMBER}() OVER (",
+      "    PARTITION BY ${2:partition_column}",
+      "    ORDER BY ${3:order_column}",
+      ") AS ${4:row_num}$0"
+    ],
+    "description": "Window function with PARTITION BY"
+  },
+
+  "Comment Block": {
+    "prefix": "cb",
+    "body": [
+      "/*",
+      " * ${1:Description}",
+      " * Author: ${2:Your Name}",
+      " * Date: ${3:CURRENT_DATE}",
+      " */$0"
+    ],
+    "description": "Multi-line comment block"
+  }
+}
