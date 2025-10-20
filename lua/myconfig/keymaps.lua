@@ -135,7 +135,7 @@ keymap("n", "<leader>w", ":w<CR>", {
 })
 
 -- Quit
-keymap("n", "<leader>q", ":q<CR>", {
+keymap("n", "<leader>Q", ":q<CR>", {
     desc = "\u{f2d1} Quit" --  (window close)
 })
 
