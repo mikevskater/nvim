@@ -88,7 +88,7 @@ if not vim.g.vscode then
     keymap("n", "<leader>w", ":w<CR>", {
         desc = "Save file"
     })
-    keymap("n", "<leader>q", ":q<CR>", {
+    keymap("n", "<leader>Q", ":q<CR>", {
         desc = "Quit"
     })
     

@@ -848,7 +848,7 @@ return {
             "<leader><leader>",
             desc = "\u{f021} Resume Telescope"
         }, {
-            "<leader>q",
+            "<leader>Q",
             desc = "\u{f2d1} Quit"
         },
         {
