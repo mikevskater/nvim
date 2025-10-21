@@ -151,11 +151,27 @@ return {
         -- ==========================================================================
         -- BUFFER MANAGEMENT
         -- ==========================================================================
+        -- Close current buffer without closing window
+        keymap("n", "<leader>bd", "<cmd>bdelete!<cr>", {
+            desc = "\u{f00d} Delete (close) buffer" --  (close/X)
+        })
+       
+        -- Open new empty buffer
+        keymap("n", "<leader>bn", "<cmd>enew<cr>", {
+            desc = "\u{f0fe} New empty buffer" --  (file/new)
+        })
+ 
+        -- Open new empty buffer in a split window (vertically)
+        keymap("n", "<leader>bN", "<cmd>vnew<cr>", {
+            desc = "\u{f0fe} New empty buffer (split)" --  (file/new)
+        })
+        
         -- Move buffers (reorder in bufferline)
-        keymap("n", "<leader>bp", "<cmd>BufferLineMovePrev<cr>", {
+        keymap("n", "<leader>bmp", "<cmd>BufferLineMovePrev<cr>", {
             desc = "\u{f060} Move buffer left" --  (arrow left)
         })
-        keymap("n", "<leader>bn", "<cmd>BufferLineMoveNext<cr>", {
+
+        keymap("n", "<leader>bmn", "<cmd>BufferLineMoveNext<cr>", {
             desc = "\u{f061} Move buffer right" --  (arrow right)
         })
 
@@ -207,7 +223,7 @@ return {
         keymap("n", "<leader>be", "<cmd>BufferLineSortByExtension<cr>", {
             desc = "\u{f0c9} Sort by extension" --  (align justify)
         })
-        keymap("n", "<leader>bd", "<cmd>BufferLineSortByDirectory<cr>", {
+        keymap("n", "<leader>bs", "<cmd>BufferLineSortByDirectory<cr>", {
             desc = "\u{f07b} Sort by directory" --  (folder)
         })
         keymap("n", "<leader>br", "<cmd>BufferLineSortByRelativeDirectory<cr>",

@@ -82,6 +82,23 @@ return {
                         unnamed = "\u{f016}", --  (file)
                         newfile = "\u{f067}" --  (plus)
                     }
+                }, {
+                    -- Database connection info (vim-dadbod-ui)
+                    function()
+                        local ok, db_ui = pcall(require, 'lualine.components.db_ui')
+                        if ok then
+                            return db_ui.db_ui()
+                        end
+                        return ''
+                    end,
+                    icon = "\u{f1c0}", --  (database icon)
+                    color = function()
+                        local ok, db_ui = pcall(require, 'lualine.components.db_ui')
+                        if ok then
+                            return db_ui.db_ui_color()
+                        end
+                        return nil
+                    end
                 }},
 
                 -- Right side
@@ -163,6 +180,7 @@ return {
 -- - Git diff (added/modified/removed lines)
 -- - Diagnostics (errors, warnings, info, hints)
 -- - Filename (with path and status)
+-- - Database connection (shows server → schema → table when in SQL buffer)
 --
 -- RIGHT SIDE:
 -- - Active LSP servers
@@ -180,7 +198,12 @@ return {
 --
 -- Available components:
 -- - branch, buffers, diagnostics, diff, encoding, fileformat,
---   filename, filetype, hostname, location, mode, progress, tabs
+--   filename, filetype, hostname, location, mode, progress, tabs, db_ui
+--
+-- Database connection colors (vim-dadbod-ui):
+-- - Press <Leader>c in DBUI drawer on any connection to set colors
+-- - Colors saved to ~/.local/share/db_ui/lualine_colors.json
+-- - Use different colors for prod/dev/staging to prevent mistakes
 --
 -- To disable mode in command line (since lualine shows it):
 -- Set in options.lua: opt.showmode = false
