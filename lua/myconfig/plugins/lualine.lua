@@ -82,27 +82,29 @@ return {
                         unnamed = "\u{f016}", --  (file)
                         newfile = "\u{f067}" --  (plus)
                     }
-                }, {
-                    -- Database connection info (vim-dadbod-ui)
-                    function()
-                        local ok, db_ui = pcall(require, 'lualine.components.db_ui')
-                        if ok then
-                            return db_ui.db_ui()
-                        end
-                        return ''
-                    end,
-                    icon = "\u{f1c0}", --  (database icon)
-                    color = function()
-                        local ok, db_ui = pcall(require, 'lualine.components.db_ui')
-                        if ok then
-                            return db_ui.db_ui_color()
-                        end
-                        return nil
-                    end
                 }},
 
                 -- Right side
-                lualine_x = {{ -- Show active LSP servers
+                lualine_x = {
+                {
+                    -- SSNS database connection with icon
+                    function()
+                        local ok, ssns = pcall(require, 'lualine.components.ssns')
+                        if ok then
+                            return ssns.ssns()
+                        end
+                        return ''
+                    end,
+                    -- Icon is included in the component text now (database-type specific)
+                    color = function()
+                        local ok, ssns = pcall(require, 'lualine.components.ssns')
+                        if ok then
+                            return ssns.ssns_color()
+                        end
+                        return nil
+                    end                      
+                },
+                { -- Show active LSP servers
                 function()
                     local clients = vim.lsp.get_clients({
                         bufnr = 0

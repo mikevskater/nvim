@@ -23,7 +23,7 @@ return {
             -- ACCEPT KEYMAPS
             -- ==========================================================================
             -- Enter to accept completion (most requested feature!)
-            ['<CR>'] = {
+            ['<C-y>'] = {
                 function(cmp)
                     if cmp.is_visible() then
                         return cmp.accept()
@@ -100,7 +100,7 @@ return {
         -- ==========================================================================
         appearance = {
             use_nvim_cmp_as_default = true,
-            nerd_font_variant = "mono"
+            nerd_font_variant = "mono",
         },
 
         -- ==========================================================================
@@ -112,29 +112,25 @@ return {
 
             -- Custom provider configurations
             providers = {
-                snippets = {
+                ssns = {
+                    name = 'ssns',
+                    module = 'ssns.completion.source',
+                    score_offset = 10,  -- Prioritize SSNS completions
+                },
+                snippets = {                    
                     opts = {
                         friendly_snippets = true,
                         search_paths = {vim.fn.stdpath("config") .. "/snippets"},
                         global_snippets = {"all"}
                     }
                 },
-
-                -- vim-dadbod completion provider
-                dadbod = {
-                    name = "Dadbod",
-                    module = "vim_dadbod_completion.blink",
-                    enabled = function()
-                        local ft = vim.bo.filetype
-                        return ft == "sql" or ft == "mysql" or ft == "plsql"
-                    end
-                }
             },
 
             per_filetype = {
-                sql = {"dadbod", "snippets", "buffer"},
-                mysql = {"dadbod", "snippets", "buffer"},
-                plsql = {"dadbod", "snippets", "buffer"}
+                -- Disable dadbod for now (using SSNS instead)
+                sql = {"buffer", "ssns"},
+                mysql = {"buffer", "ssns"},
+                plsql = {"buffer", "ssns"}
             }
         },
 
