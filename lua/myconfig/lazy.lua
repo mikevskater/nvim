@@ -63,9 +63,21 @@ require("lazy").setup(
         import = "myconfig.plugins.surround"
     }, {
         import = "myconfig.plugins.indent-blankline"
+    }, 
+    --{import = "myconfig.plugins.database"},
+    {
+        import = "myconfig.plugins.plenary"
     }, {
-        import = "myconfig.plugins.database"
-    }}, {
+        import = "myconfig.plugins.sheet_todo"
+    }, {
+        import = "myconfig.plugins.nvim-float"
+    }, {
+		import = "myconfig.plugins.nvim-colorpicker"
+	},{
+        import = "myconfig.plugins.nvim-favdir"
+    }
+
+	}, {
         -- ==========================================================================
         -- LAZY.NVIM OPTIONS
         -- ==========================================================================
@@ -169,6 +181,13 @@ vim.keymap.set("n", "<leader>l", ":Lazy<CR>", {
 -- ✨ flash.lua          - Enhanced jump navigation (better than f/t)
 -- ✨ surround.lua       - Add/change/delete surrounding pairs
 -- ✨ indent-blankline   - Visual indent guides
+-- ✨ plenary.lua        - Testing framework & utility library for Neovim
+--
+-- Test keybindings (plenary):
+-- <leader>tt - Run tests in current file
+-- <leader>ta - Run all tests in test/ directory
+-- <leader>ts - Run SSNS QueryParser tests (plenary)
+-- <leader>tm - Run SSNS manual tests (standalone)
 --
 -- Installation:
 -- 1. Save all plugin files to lua/myconfig/plugins/

@@ -43,9 +43,9 @@ opt.colorcolumn = "80"
 -- =============================================================================
 
 -- Indentation
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
+opt.tabstop = 2
+opt.softtabstop = 2
+opt.shiftwidth = 2
 opt.expandtab = true
 opt.smartindent = true
 opt.breakindent = true
@@ -102,6 +102,14 @@ opt.clipboard = "unnamedplus"
 -- =============================================================================
 
 opt.mouse = "a"
+
+-- =============================================================================
+-- SHELL CONFIGURATION (Windows)
+-- =============================================================================
+
+-- Note: On Windows, use PowerShell as default shell
+-- For bash commands, use explicit: :!bash -c "command"
+-- Or run from external Git Bash terminal
 
 -- =============================================================================
 -- FOLDING (ADDED - Treesitter-based)

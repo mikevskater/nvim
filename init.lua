@@ -26,6 +26,9 @@ else
     -- =========================================================================
     -- Full-featured Neovim configuration with all plugins
 
+    -- Configure Node.js provider BEFORE loading plugins
+    require("myconfig.node_provider")
+
     require("myconfig")
 
 end
