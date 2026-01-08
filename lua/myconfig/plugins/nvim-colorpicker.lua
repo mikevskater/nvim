@@ -2,12 +2,12 @@
 -- Add this to your lazy.nvim plugin specs
 
 return {
-    -- Dependency for nvim-colorpicker UI
-    {"mikevskater/nvim-float", lazy = true},
     -- Core color picker plugin setup
-    {"mikevskater/nvim-colorpicker", 
-        lazy = true,
-        event = {"BufReadPre", "BufNewFile"},
+    {
+      "mikevskater/nvim-colorpicker", 
+      --dir = "E:\\nvim\\plugin_dev\\nvim-colorpicker",
+        --lazy = true,
+        --event = {"BufReadPre", "BufNewFile"},
         opts = {
             -- Default config options used just to show how you can change settings.
             -- These can just be deleted if you dont want to change anything.

@@ -281,25 +281,6 @@ return {
         vim.keymap.set("n", "-", "<CMD>Oil<CR>", {
             desc = "\u{f07c} Open parent directory" --  (folder open)
         })
-
-        -- Open Oil in floating window
-        vim.keymap.set("n", "<leader>-", "<CMD>Oil --float<CR>", {
-            desc = "\u{f2d2} Oil float" --  (window maximize)
-        })
-
-        -- ADDED: Open Oil from anywhere (current file's directory)
-        vim.keymap.set("n", "<leader>o", function()
-            require("oil").open()
-        end, {
-            desc = "\u{f07c} Oil (current file dir)" --  (folder open)
-        })
-
-        -- ADDED: Open Oil in CWD
-        vim.keymap.set("n", "<leader>O", function()
-            require("oil").open(vim.fn.getcwd())
-        end, {
-            desc = "\u{f07b} Oil (cwd)" --  (folder)
-        })
     end
 }
 

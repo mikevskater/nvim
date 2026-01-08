@@ -12,7 +12,7 @@ return {
     -- ==========================================================================
     {
         name = "ssns",
-        --dir = "C:/Users/ShiFt/AppData/Local/nvim-data/ssns",
+        --dir = "E:\\nvim\\plugin_dev\\ssns",
         dir = "mikevskater/ssns",
 
         -- Load immediately (not lazy) for remote plugin registration
@@ -29,23 +29,23 @@ return {
                 completion = {
                     debug = true,
                 },
-                connections = {
+                --connections = {
                     -- SQL Server Express local instance
-                    sqlExpress_local = "sqlserver://.\\SQLEXPRESS",
+                    --sqlExpress_local = "sqlserver://.\\SQLEXPRESS",
 
                     -- MySQL local instance
-                    mySql_local = "mysql://root:password@localhost:3306",
+                    --mySql_local = "mysql://root:password@localhost:3306",
                     
                     -- sqLite local file
-                    uma_db = "sqlite://C:/Users/ShiFt/AppData/LocalLow/Cygames/Umamusume/master/master.mdb",
+                    --uma_db = "sqlite://C:/Users/ShiFt/AppData/LocalLow/Cygames/Umamusume/master/master.mdb",
                     -- Add more connections here:
                     -- prod_server = "sqlserver://server\\instance/database",
                     -- dev_mysql = "mysql://user:pass@server:3306/database",
-                },
+                --},
 
                 ui = {
-                    position = "left",  -- "left", "right", "float"
-                    width = 60,
+                    position = "float",  -- "left", "right", "float"
+                    --width = 45,
                     ssms_style = true,
                     show_schema_prefix = true,
 
@@ -77,6 +77,11 @@ return {
             {
                 "<leader>qb",
                 "<cmd>SSNS<cr>",
+                desc = " Toggle SSNS Database UI"
+            },
+            {
+                "<leader>qf",
+                "<cmd>SSNSFloat<cr>",
                 desc = " Toggle SSNS Database UI"
             },
             {
