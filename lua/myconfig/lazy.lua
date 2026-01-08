@@ -63,19 +63,17 @@ require("lazy").setup(
         import = "myconfig.plugins.surround"
     }, {
         import = "myconfig.plugins.indent-blankline"
-    }, 
-    {
-        import = "myconfig.plugins.plenary"
     }, {
         import = "myconfig.plugins.nvim-float"
     }, {
         import = "myconfig.plugins.sheet_todo"
     }, {
 		import = "myconfig.plugins.nvim-colorpicker"
-	},{
+	}, {
         import = "myconfig.plugins.nvim-favdir"
+    }, {
+        import = "myconfig.plugins.database"
     },
-    {import = "myconfig.plugins.database"},
 
 	}, {
         -- ==========================================================================
