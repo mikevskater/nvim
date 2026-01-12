@@ -16,59 +16,50 @@ return {
         "mikevskater/ssns",
 
         -- Load immediately (not lazy) for remote plugin registration
-        lazy = false,
+        lazy = true,
 
         -- Auto-register remote plugin on install/update
         build = ":UpdateRemotePlugins",
 
-        cmd = {"SSNS", "SSNSOpen", "SSNSClose", "SSNSConnect", "SSNSRefresh", "SSNSStats", "SSNSDebug"},
+        cmd = {
+            "SSNS",
+            "SSNSOpen",
+            "SSNSClose",
+            "SSNSConnect",
+            "SSNSRefresh",
+            "SSNSStats",
+            "SSNSDebug"
+        },
+        
+        opts = {
+            completion = {
+                debug = false,
+            },
+            ui = {
+                position = "float",  -- "left", "right", "float"
+                --width = 45,
+                ssms_style = true,
+                show_schema_prefix = true,
 
-        config = function()
+                -- Result set divider configuration
+                -- Format: supports repeat patterns (N<char>), raw strings, variables, and auto-width
+                -- Repeat: "20#" = 20 hashes, "10-" = 10 dashes
+                -- Auto-width: "%fit%" = matches longest line width
+                -- Multi-line: use \n (newline character, e.g., "20#\n20#\n20#")
+                -- Variables: %row_count%, %col_count%, %run_time%, %result_set_num%, %total_result_sets%, %date%, %time%, %fit%
+                -- Examples:
+                --   "5-(%row_count% rows)5-" → "-----(11 rows)-----"
+                --   "%fit%=\n---- Result Set %result_set_num% (%row_count% rows, %run_time%) ----\n%fit%="
+                --     → auto-sizes "=" to match the middle line width
+                --   "Query executed at %time% on %date% - %row_count% rows returned"
+                result_set_divider = "%fit%=\n---- Result Set %result_set_num% (%row_count% rows, %run_time%) ----\n%fit%=",
+                show_result_set_info = true,  -- Show divider/info before first result set and single result sets
+            },
 
-            require('ssns').setup({
-                completion = {
-                    debug = true,
-                },
-                --connections = {
-                    -- SQL Server Express local instance
-                    --sqlExpress_local = "sqlserver://.\\SQLEXPRESS",
-
-                    -- MySQL local instance
-                    --mySql_local = "mysql://root:password@localhost:3306",
-                    
-                    -- sqLite local file
-                    --uma_db = "sqlite://C:/Users/ShiFt/AppData/LocalLow/Cygames/Umamusume/master/master.mdb",
-                    -- Add more connections here:
-                    -- prod_server = "sqlserver://server\\instance/database",
-                    -- dev_mysql = "mysql://user:pass@server:3306/database",
-                --},
-
-                ui = {
-                    position = "float",  -- "left", "right", "float"
-                    --width = 45,
-                    ssms_style = true,
-                    show_schema_prefix = true,
-
-                    -- Result set divider configuration
-                    -- Format: supports repeat patterns (N<char>), raw strings, variables, and auto-width
-                    -- Repeat: "20#" = 20 hashes, "10-" = 10 dashes
-                    -- Auto-width: "%fit%" = matches longest line width
-                    -- Multi-line: use \n (newline character, e.g., "20#\n20#\n20#")
-                    -- Variables: %row_count%, %col_count%, %run_time%, %result_set_num%, %total_result_sets%, %date%, %time%, %fit%
-                    -- Examples:
-                    --   "5-(%row_count% rows)5-" → "-----(11 rows)-----"
-                    --   "%fit%=\n---- Result Set %result_set_num% (%row_count% rows, %run_time%) ----\n%fit%="
-                    --     → auto-sizes "=" to match the middle line width
-                    --   "Query executed at %time% on %date% - %row_count% rows returned"
-                    result_set_divider = "%fit%=\n---- Result Set %result_set_num% (%row_count% rows, %run_time%) ----\n%fit%=",
-                    show_result_set_info = true,  -- Show divider/info before first result set and single result sets
-                },
-
-                cache = {
-                    ttl = 300,  -- 5 minutes
-                },
-            })
-        end,
+            cache = {
+                ttl = 300,  -- 5 minutes
+            },
+        },
 
         keys = {
             -- ==========================================================================

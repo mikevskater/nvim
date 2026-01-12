@@ -73,6 +73,8 @@ require("lazy").setup(
         import = "myconfig.plugins.nvim-favdir"
     }, {
         import = "myconfig.plugins.database"
+    }, {
+        import = 'myconfig.plugins.iconsearch'
     },
 
 	}, {
