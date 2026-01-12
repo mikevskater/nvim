@@ -13,7 +13,7 @@ return {
     {
         name = "ssns",
         --dir = "E:\\nvim\\plugin_dev\\ssns",
-        dir = "mikevskater/ssns",
+        "mikevskater/ssns",
 
         -- Load immediately (not lazy) for remote plugin registration
         lazy = false,
