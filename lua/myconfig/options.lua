@@ -17,7 +17,7 @@ opt.signcolumn = "yes"
 
 -- Cursor
 opt.cursorline = true
--- opt.guicursor = ""
+opt.guicursor = "n-v-c:block,i:ver1,r:ver1,o:block"
 
 -- Colors
 opt.termguicolors = true
@@ -43,9 +43,9 @@ opt.colorcolumn = "80"
 -- =============================================================================
 
 -- Indentation
-opt.tabstop = 2
-opt.softtabstop = 2
-opt.shiftwidth = 2
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.shiftwidth = 4
 opt.expandtab = true
 opt.smartindent = true
 opt.breakindent = true

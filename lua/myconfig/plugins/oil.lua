@@ -165,24 +165,6 @@ return {
             -- FILE OPERATIONS (Select/Open)
             -- =======================================================================
             ["<CR>"] = "actions.select",
-            ["<C-s>"] = {
-                "actions.select",
-                opts = {vertical = true}
-            },
-            ["<C-v>"] = { -- ADDED: Alternative vertical split (more common)
-                "actions.select",
-                opts = {vertical = true},
-                desc = "Open in vertical split"
-            },
-            ["<C-h>"] = {
-                "actions.select",
-                opts = {horizontal = true}
-            },
-            ["<C-x>"] = { -- ADDED: Alternative horizontal split (more common)
-                "actions.select",
-                opts = {horizontal = true},
-                desc = "Open in horizontal split"
-            },
             ["<C-t>"] = {
                 "actions.select",
                 opts = {tab = true}
@@ -192,10 +174,6 @@ return {
             -- PREVIEW & CLOSE
             -- =======================================================================
             ["<C-p>"] = "actions.preview",
-            ["<C-c>"] = {
-                "actions.close",
-                mode = "n"
-            },
             ["<Esc>"] = { -- ADDED: Quick close (common convention)
                 "actions.close",
                 mode = "n",

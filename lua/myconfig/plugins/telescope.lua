@@ -52,8 +52,8 @@ return {
                         ["<C-j>"] = actions.move_selection_next,
                         ["<C-q>"] = actions.send_selected_to_qflist +
                             actions.open_qflist,
-                        ["<C-x>"] = actions.select_horizontal,
-                        ["<C-v>"] = actions.select_vertical,
+                        --["<C-x>"] = actions.select_horizontal,
+                        --["<C-v>"] = actions.select_vertical,
                         ["<C-t>"] = actions.select_tab
                     },
                     n = {

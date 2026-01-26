@@ -14,7 +14,11 @@ return {
         name = "ssns",
         --dir = "E:\\nvim\\plugin_dev\\ssns",
         "mikevskater/ssns",
-
+        dependencies = {
+            {"mikevskater/nvim-xlsx", lazy = true},
+            {"mikevskater/nvim-float", lazy = true},
+            {"mikevskater/nvim-colorpicker", lazy = true},
+        },
         -- Load immediately (not lazy) for remote plugin registration
         lazy = true,
 

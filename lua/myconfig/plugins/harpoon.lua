@@ -101,41 +101,6 @@ return {
         end, {
             desc = "\u{2788} Harpoon File 9" -- ➈
         })
-
-        -- =============================================================================
-        -- EXTEND - UI enhancements (open in splits/tabs)
-        -- =============================================================================
-        -- Add keymaps within the harpoon menu for split/vsplit/tab opening
-        harpoon:extend({
-            UI_CREATE = function(cx)
-                vim.keymap.set("n", "<C-v>", function()
-                    harpoon.ui:select_menu_item({
-                        vsplit = true
-                    })
-                end, {
-                    buffer = cx.bufnr,
-                    desc = "\u{f338} Open in vsplit" --  columns
-                })
-
-                vim.keymap.set("n", "<C-x>", function()
-                    harpoon.ui:select_menu_item({
-                        split = true
-                    })
-                end, {
-                    buffer = cx.bufnr,
-                    desc = "\u{f0db} Open in split" --  rows
-                })
-
-                vim.keymap.set("n", "<C-t>", function()
-                    harpoon.ui:select_menu_item({
-                        tabedit = true
-                    })
-                end, {
-                    buffer = cx.bufnr,
-                    desc = "\u{f24d} Open in tab" --  clone
-                })
-            end
-        })
     end
 }
 
