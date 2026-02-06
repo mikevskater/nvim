@@ -7,33 +7,34 @@
 -- Features: Class-based architecture, real connections, lazy loading
 -- =============================================================================
 return {
+
     -- ==========================================================================
     -- SSNS - PURE LUA DATABASE UI
     -- ==========================================================================
     {
-        name = "ssns",
+        name = "nvim-ssns",
         --dir = "E:\\nvim\\plugin_dev\\ssns",
-        "mikevskater/ssns",
+        "mikevskater/nvim-ssns",
         dependencies = {
             {"mikevskater/nvim-xlsx", lazy = true},
             {"mikevskater/nvim-float", lazy = true},
             {"mikevskater/nvim-colorpicker", lazy = true},
         },
         -- Load immediately (not lazy) for remote plugin registration
-        lazy = true,
+        lazy = false,
 
         -- Auto-register remote plugin on install/update
-        build = ":UpdateRemotePlugins",
-
-        cmd = {
-            "SSNS",
-            "SSNSOpen",
-            "SSNSClose",
-            "SSNSConnect",
-            "SSNSRefresh",
-            "SSNSStats",
-            "SSNSDebug"
-        },
+        build = function()
+            -- Install global neovim package if not present
+            vim.fn.system('npm list -g neovim || npm install -g neovim')
+            -- Install local dependencies
+            vim.fn.system('cd ' .. vim.fn.stdpath('data') .. '/lazy/nvim-ssns/rplugin/node/ssns-db && npm install')
+            -- Register remote plugins in manifest
+            vim.cmd("UpdateRemotePlugins")
+        end,
+        
+        --'cd rplugin/node/ssns-db && npm install',
+        
         
         opts = {
             completion = {
