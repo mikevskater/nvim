@@ -114,7 +114,7 @@ return {
             providers = {
                 ssns = {
                     name = 'ssns',
-                    module = 'ssns.completion.source',
+                    module = 'nvim-ssns.completion.source',
                     score_offset = 10,  -- Prioritize SSNS completions
                 },
                 snippets = {                    
@@ -130,7 +130,8 @@ return {
                 -- Disable dadbod for now (using SSNS instead)
                 sql = {"buffer", "ssns"},
                 mysql = {"buffer", "ssns"},
-                plsql = {"buffer", "ssns"}
+                plsql = {"buffer", "ssns"},
+                ssns = {"buffer", "ssns"},
             }
         },
 

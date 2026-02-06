@@ -89,7 +89,7 @@ return {
                 {
                     -- SSNS database connection with icon
                     function()
-                        local ok, ssns = pcall(require, 'lualine.components.ssns')
+                        local ok, ssns = pcall(require, 'lualine.components.nvim-ssns')
                         if ok then
                             return ssns.ssns()
                         end
@@ -97,7 +97,7 @@ return {
                     end,
                     -- Icon is included in the component text now (database-type specific)
                     color = function()
-                        local ok, ssns = pcall(require, 'lualine.components.ssns')
+                        local ok, ssns = pcall(require, 'lualine.components.nvim-ssns')
                         if ok then
                             return ssns.ssns_color()
                         end
