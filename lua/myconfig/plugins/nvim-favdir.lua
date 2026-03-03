@@ -1,17 +1,11 @@
 return {
-  --dir = "E:/nvim/plugin_dev/nvim-favdir"
+  --dir = "E:/nvim/plugin_dev/nvim-favdir", 
   "mikevskater/nvim-favdir",
   dependencies = {
     {'mikevskater/nvim-float', lazy = true},
+    {'mikevskater/nvim-colorpicker', lazy = true},
   },
   name = "nvim-favdir",
-  cmd = {
-    "FavdirOpen",
-    "FavdirToggle",
-    "FavdirAddDir",
-    "FavdirAddFile",
-    "FavdirSandbox"
-  },
   keys = {
     {
       "<leader>ofd",
