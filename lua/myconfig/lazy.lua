@@ -66,7 +66,7 @@ require("lazy").setup(
     }, {
         import = "myconfig.plugins.nvim-float"
     }, {
-        import = "myconfig.plugins.sheet_todo"
+        import = "myconfig.plugins.nvim-todo"
     }, {
 		import = "myconfig.plugins.nvim-colorpicker"
 	}, {
